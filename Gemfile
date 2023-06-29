@@ -70,3 +70,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+# ユーザー認証機能を実装するためのDevise Gemを導入します。
+gem 'devise'
