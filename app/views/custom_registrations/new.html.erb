@@ -3,10 +3,10 @@
   <%= render 'shared/flash_notice' %>
 
   <div class="registration-title">
-    <h1>Sigin up</h1>
+    <h1>Sign up</h1>
   </div>
 
-  <div class="registration-note">
+  <div class="registration-instructions">
     <p>※未入力があるとSigin upができません。</p>
   </div>
 
@@ -25,7 +25,7 @@
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "もう一度パスワード入力" %>
+        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "再度パスワード入力" %>
       </div>
 
       <div class="registration-actions">

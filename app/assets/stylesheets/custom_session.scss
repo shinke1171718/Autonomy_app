@@ -1,36 +1,35 @@
 @import 'shared/styles';
 
-.new-registration-container{
+.new-session-container{
   @include form-container;
 
-  .registration-title {
+  .session-title{
     @include form-title;
   }
-
-  .registration-instructions {
+  .session-instructions{
     @include form-instructions;
   }
-
-  .registration-field input {
+  .session-input{
+    width: 33%;
+    @media screen and (max-width: 390px) {
+      width: 75%;
+    }
+  }
+  .session-field input{
     @include field-form;
   }
-
-  .registration-actions {
+  .session-actions{
     @include form-submit-button;
   }
-
-  .registration-actions input[type="submit"] {
+  .session-actions input[type="submit"]{
     @include form-submit-button-input;
   }
-
-  .registration-link{
+  .session-link{
     @include form-link;
   }
-
-  .registration-link a {
+  .session-link a {
     text-decoration: none; /* リンクのアンダーラインを消す */
   }
-
   .flash.notice {
     @include flash-notice;
   }
