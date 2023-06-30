@@ -79,3 +79,5 @@ gem 'pry-rails'
 gem 'pry-byebug'
 # コントローラーのアクションに引数を渡すためのジェム
 gem 'action_args'
+# Sassコンパイラを導入するためのジェム
+gem 'sassc'
