@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_scope :user do
+    get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration
+    post 'users/registration', to: 'custom_registrations#create', as: :user_custom_registration
+  end
 end

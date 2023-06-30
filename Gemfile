@@ -73,3 +73,11 @@ end
 
 # ユーザー認証機能を実装するためのDevise Gemを導入します。
 gem 'devise'
+# デバッグ用のコンソールツールを導入するためのジェム
+gem 'pry-rails'
+# Pryとbyebugを組み合わせたデバッグ用のジェム
+gem 'pry-byebug'
+# コントローラーのアクションに引数を渡すためのジェム
+gem 'action_args'
+# Sassコンパイラを導入するためのジェム
+gem 'sassc'
