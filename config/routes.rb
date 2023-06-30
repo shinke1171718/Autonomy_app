@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'custom_sessions/new'
   devise_for :users
   devise_scope :user do
     get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration
