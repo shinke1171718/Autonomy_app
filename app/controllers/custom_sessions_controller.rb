@@ -33,6 +33,7 @@ class CustomSessionsController < ApplicationController
     reset_session
     #sessions#newへ戻る
     flash[:notice] = "ログアウトしました。"
+    #一時的にsigninの画面にパスを出しています。
     redirect_to new_user_custom_session_path
   end
 end
