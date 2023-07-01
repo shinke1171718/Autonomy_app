@@ -1,0 +1,30 @@
+<div class="new-session-container">
+
+  <%= render 'shared/flash_notice' %>
+
+  <div class="session-title">
+    <h1>Sign in</h1>
+  </div>
+
+  <div class="session-instructions">
+    <p>※未入力があるとLog inができません。</p>
+  </div>
+
+  <div class="session-input">
+    <%= form_with url: user_custom_session_path, local: true do |f| %>
+      <div class="session-field">
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
+      </div>
+      <div class="session-field">
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード" %>
+      </div>
+      <div class="session-actions">
+        <%= f.submit "Log in" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="session-link">
+	  <%= link_to '新規登録の方はこちら', new_user_custom_registration_path %>
+  </div>
+</div>

@@ -1,12 +1,14 @@
+<%= link_to "ログアウト", destroy_user_custom_session_path, method: :get %>
+
 <div class="new-registration-container">
 
   <%= render 'shared/flash_notice' %>
 
   <div class="registration-title">
-    <h1>Sigin up</h1>
+    <h1>Sign up</h1>
   </div>
 
-  <div class="registration-note">
+  <div class="registration-instructions">
     <p>※未入力があるとSigin upができません。</p>
   </div>
 
@@ -25,7 +27,7 @@
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "もう一度パスワード入力" %>
+        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "再度パスワード入力" %>
       </div>
 
       <div class="registration-actions">
@@ -33,7 +35,7 @@
       </div>
 
       <div class="registration-link">
-        <%= link_to 'すでに登録された方はこちら', new_user_session_path %>
+        <%= link_to 'すでに登録された方はこちら', new_user_custom_session_path %>
       </div>
     <% end %>
   </div>
