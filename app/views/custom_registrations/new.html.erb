@@ -1,3 +1,5 @@
+<%= link_to "ログアウト", destroy_user_custom_session_path, method: :get %>
+
 <div class="new-registration-container">
 
   <%= render 'shared/flash_notice' %>
@@ -33,7 +35,7 @@
       </div>
 
       <div class="registration-link">
-        <%= link_to 'すでに登録された方はこちら', new_user_session_path %>
+        <%= link_to 'すでに登録された方はこちら', new_user_custom_session_path %>
       </div>
     <% end %>
   </div>

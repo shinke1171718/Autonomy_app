@@ -11,7 +11,7 @@
   </div>
 
   <div class="session-input">
-    <%= form_with url: user_session_path, local: true do |f| %>
+    <%= form_with url: user_custom_session_path, local: true do |f| %>
       <div class="session-field">
         <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
       </div>
@@ -25,6 +25,6 @@
   </div>
 
   <div class="session-link">
-	  <%= link_to '新規登録の方はこちら', new_user_registration_path %>
+	  <%= link_to '新規登録の方はこちら', new_user_custom_registration_path %>
   </div>
 </div>
