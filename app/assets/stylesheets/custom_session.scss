@@ -28,7 +28,7 @@
     @include form-link;
   }
   .session-link a {
-    text-decoration: none; /* リンクのアンダーラインを消す */
+    text-decoration: none;
   }
   .flash.notice {
     @include flash-notice;
