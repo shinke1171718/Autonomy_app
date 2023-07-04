@@ -1,0 +1,37 @@
+@import 'shared/styles';
+
+.new-registration-container{
+  @include form-container;
+
+  .registration-title {
+    @include form-title;
+  }
+
+  .registration-instructions {
+    @include form-instructions;
+  }
+
+  .registration-field input {
+    @include field-form;
+  }
+
+  .registration-actions {
+    @include form-submit-button;
+  }
+
+  .registration-actions input[type="submit"] {
+    @include form-submit-button-input;
+  }
+
+  .registration-link{
+    @include form-link;
+  }
+
+  .registration-link a {
+    text-decoration: none; /* リンクのアンダーラインを消す */
+  }
+
+  .flash.notice {
+    @include flash-notice;
+  }
+}
