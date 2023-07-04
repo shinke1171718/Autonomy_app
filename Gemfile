@@ -81,5 +81,3 @@ gem 'pry-byebug'
 gem 'action_args'
 # Sassコンパイラを導入するためのジェム
 gem 'sassc'
-#ハンバーガーメニューを実装するため導入
-gem 'jquery-rails'
