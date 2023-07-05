@@ -5,7 +5,7 @@
   </div>
   <div class="menu-bar_right">
     <div class="menu-bar_menu">
-      <%= link_to "/mypage", class: "menu-bar_link mypage-link" do %>
+      <%= link_to user_my_page_path(current_user.id), class: "menu-bar_link mypage-link" do %>
         <span class="menu-bar_icon"></span>
         <span class="menu-bar_text">マイページ</span>
       <% end %>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: 'users#index'
+  get 'users/:id/my_page', to: 'users#my_page', as: :user_my_page
   devise_for :users
   devise_scope :user do
     get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration
