@@ -1,0 +1,39 @@
+<div class="edit-registration-container">
+
+  <%= render 'shared/flash_notice' %>
+
+  <div class="registration-title">
+    <h1>ユーザー情報更新</h1>
+  </div>
+
+  <div class="registration-input">
+    <%= form_with model: @user, url: update_user_custom_registration_path, local: true, method: :patch do |f| %>
+      <div class="registration-field">
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
+      </div>
+
+      <div class="registration-field">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
+      </div>
+
+      <div class="registration-field">
+        <%= f.password_field :current_password, autocomplete: "current_password", placeholder: "現在のパスワードを入力" %>
+      </div>
+
+      <div class="registration-field">
+        <%= f.password_field :password, autocomplete: "password", placeholder: "新しいパスワードを入力" %>
+      </div>
+
+      <div class="registration-field">
+        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "もう一度新しいパスワードを入力" %>
+      </div>
+
+      <div class="registration-actions">
+        <%= f.submit "更新" %>
+      </div>
+    <% end %>
+    <div class="registration-back-button">
+      <%= button_to "戻る", user_my_page_path(current_user.id), class: "back-button", method: :get %>
+    </div>
+  </div>
+</div>
