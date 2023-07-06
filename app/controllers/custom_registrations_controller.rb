@@ -43,15 +43,15 @@ class CustomRegistrationsController < ApplicationController
 
     if edit_user_params[:password].present? && edit_user_params[:password_confirmation].present?
       # パスワードがある場合の処理
-      if !@user.authenticate(edit_user_params[:current_password])
+      if !@user.valid_password?(edit_user_params[:current_password])
         flash[:notice] = "現在のパスワードが正しくありません。"
         render :edit
         return
       end
 
       @user.update(edit_user_params)
-      flash[:notice] = "ユーザー情報とパスワードを更新しました。"
-      render :edit
+      flash[:notice] = "ユーザー情報とパスワードを更新しました。再度ログインをお願いします。"
+      redirect_to user_custom_session_path
     else
       # パスワードがない場合の処理
       @user.update(user_params_without_password)
