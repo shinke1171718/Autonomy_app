@@ -11,21 +11,21 @@
   </div>
 
   <div class="registration-input">
-    <%= form_with model: @user, url: user_custom_registration_path, local: true do |f| %>
+    <%= form_with url: user_custom_registration_path, local: true do |f| %>
       <div class="registration-field">
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
+        <%= f.text_field :name, name: 'user[name]', autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
       </div>
 
       <div class="registration-field">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, name: 'user[email]', autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password, autocomplete: "password", placeholder: "パスワード" %>
+        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード" %>
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "再度パスワード入力" %>
+        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "再度パスワード入力" %>
       </div>
 
       <div class="registration-actions">
