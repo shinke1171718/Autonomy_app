@@ -1,0 +1,43 @@
+.my-page-container{
+  @media screen and (max-width: 500px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .my-page-title{
+    font-size: 15px;
+  }
+
+  .my-page-list li {
+    font-size: 20px;
+    list-style-type: none;
+    font-weight: bold;
+    padding-bottom: 10px;
+  }
+
+
+  .back-button{
+    padding: 30px;
+    padding-left: 0px;
+  }
+
+  .custom-back-button {
+    display: inline-block;
+    padding: 3px 70px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #0d0e0e;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    @media screen and (max-width: 260px) {
+      white-space: nowrap;
+    }
+  }
+}

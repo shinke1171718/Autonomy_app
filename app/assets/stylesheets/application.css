@@ -13,3 +13,8 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+  background-image: url('background-image.jpg');
+  background-size: cover;
+}
