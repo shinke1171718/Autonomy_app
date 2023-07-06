@@ -6,7 +6,7 @@
   <div class="my-page-list">
     <ul>
       <li class="logout-user"><%= link_to "ログアウト", destroy_user_custom_session_path, method: :get %></li>
-      <li class="edit-user"><%= link_to "ユーザー情報編集" %></li>
+      <li class="edit-user"><%= link_to "ユーザー情報編集",edit_user_custom_registration_path, method: :get %></li>
       <li class="back-button"><%= button_to "戻る", root_path, class: "custom-back-button", method: :get %></li>
     </ul>
   </div>

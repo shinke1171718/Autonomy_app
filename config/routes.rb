@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     get 'users/session', to: 'custom_sessions#new', as: :new_user_custom_session
     post 'users/session', to: 'custom_sessions#create', as: :user_custom_session
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
+    get 'registrations/edit', to: 'custom_registrations#edit', as: :edit_user_custom_registration
+    patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
   end
 end
