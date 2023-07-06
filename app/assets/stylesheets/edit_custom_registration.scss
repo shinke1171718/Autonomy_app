@@ -7,6 +7,10 @@
     @include form-title;
   }
 
+  .registration-instructions{
+    @include form-instructions;
+  }
+
   .registration-input{
     width: 200px;
     @media screen and (max-width: 400px){

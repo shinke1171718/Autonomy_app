@@ -6,6 +6,10 @@
     <h1>ユーザー情報更新</h1>
   </div>
 
+  <div class="registration-instructions">
+    <p>※パスワードの入力は必須ではありません。</p>
+  </div>
+
   <div class="registration-input">
     <%= form_with model: @user, url: update_user_custom_registration_path, local: true, method: :patch do |f| %>
       <div class="registration-field">
