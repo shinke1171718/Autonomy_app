@@ -5,7 +5,7 @@
   </div>
   <div class="menu-bar_right">
     <div id="menu" class="desktop-menu">
-      <%= link_to "ユーザー情報", user_my_page_path(current_user.id), class: "menu_link" %>
+      <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "menu_link" %>
       <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "menu_link" %>
       <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "menu_link" %>
     </div>
