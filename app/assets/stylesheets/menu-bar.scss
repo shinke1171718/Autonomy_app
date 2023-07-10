@@ -108,7 +108,7 @@
 
 // ハンバーガーメニュー展開前のスタイル
 .mobile-menu-content{
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   opacity: 0;
@@ -126,6 +126,7 @@
 
 // ハンバーガーメニュー展開後のスタイル
 .mobile-menu-content.open{
+  display: flex;
   right: 38%;
   opacity: 1;
 }
