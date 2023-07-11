@@ -1,6 +1,10 @@
 <div class="edit-registration-container">
 
-  <%= render 'shared/flash_notice' %>
+  <% if flash[:edit_notice] %>
+    <div class="flash notice">
+      <%= flash[:edit_notice] %>
+    </div>
+  <% end %>
 
   <div class="registration-title">
     <h1>ユーザー情報更新</h1>

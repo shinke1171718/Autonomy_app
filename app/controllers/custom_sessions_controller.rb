@@ -12,13 +12,11 @@ class CustomSessionsController < ApplicationController
       session[:user_id] = user.id
       # current_userに値を設定する
       sign_in(user)
-      #ログインしましたとアナウンス
-      flash[:notice] = "※ログインしました"
       #もし一致する場合にはroot_pathへ移動
       redirect_to root_path
     else
       #ログインできませんでしたとアナウンス
-      flash[:notice] = "※ユーザー名かパスワードのどちらかが違います。"
+      flash[:sign_in_notice] = "※ユーザー名かパスワードのどちらかが違います。"
       #合わない場合にはsessions#newへ戻る
       render 'new'
     end
@@ -32,7 +30,7 @@ class CustomSessionsController < ApplicationController
     #セッションの完全な処理
     reset_session
     #sessions#newへ戻る
-    flash[:notice] = "※ログアウトしました。"
+    flash[:sign_in_notice] = "※ログアウトしました。"
     #一時的にsigninの画面にパスを出しています。
     redirect_to new_user_custom_session_path
   end
