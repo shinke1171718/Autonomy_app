@@ -1,6 +1,10 @@
 <div class="new-registration-container">
 
-  <%= render 'shared/flash_notice' %>
+  <% if flash[:sign_up_notice] %>
+    <div class="flash notice">
+      <%= flash[:sign_up_notice] %>
+    </div>
+  <% end %>
 
   <div class="registration-title">
     <h1>Sign up</h1>
