@@ -32,27 +32,23 @@ class CustomRegistrationsController < ApplicationController
   end
 
   def edit
-    @user = current_user
   end
 
   def update
-    #ユーザーのデータを格納する
-    @user = current_user
-
     if edit_user_params[:password].present? && edit_user_params[:password_confirmation].present?
       # パスワードがある場合の処理
-      if !@user.valid_password?(edit_user_params[:current_password])
+      if !current_user.valid_password?(edit_user_params[:current_password])
         flash[:edit_notice] = "現在のパスワードが正しくありません。"
         render :edit
         return
       end
 
-      @user.update(edit_user_params)
+      current_user.update(edit_user_params)
       flash[:sign_in_notice] = "ユーザー情報とパスワードを更新しました。再度ログインをお願いします。"
       redirect_to user_custom_session_path
     else
       # パスワードがない場合の処理
-      @user.update(user_params_without_password)
+      current_user.update(user_params_without_password)
       flash[:edit_notice] = "ユーザー情報を更新しました。（パスワード未更新）"
       render :edit
     end
