@@ -1,0 +1,34 @@
+<div class="menu-bar">
+  <div class="menu-bar_left">
+    <span class="menu-bar_app-name">Autonomy</span>
+    <span class="menu-bar_subtitle">~自炊で毎日の健康管理を~</span>
+  </div>
+  <div class="menu-bar_right">
+    <div id="menu" class="desktop-menu">
+      <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "menu_link" %>
+      <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "menu_link" %>
+      <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "menu_link" %>
+    </div>
+    <div class="mobile-menu-botton">
+      <button class="hamburger">
+        <span class="hamburger_bar"></span>
+        <span class="hamburger_bar"></span>
+        <span class="hamburger_bar"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-menu-content">
+  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu_link" %>
+  <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "mobile-menu_link" %>
+  <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "mobile-menu_link" %>
+</div>
+
+<div id="mask"></div>
+
+<%= javascript_include_tag 'custom/menu' %>
+
+
+
+
