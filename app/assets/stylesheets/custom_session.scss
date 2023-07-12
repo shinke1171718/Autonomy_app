@@ -6,31 +6,35 @@
   .session-title{
     @include form-title;
   }
+
   .session-instructions{
     @include form-instructions;
   }
+
   .session-input{
     width: 33%;
     @media screen and (max-width: 390px) {
       width: 75%;
     }
   }
+
   .session-field input{
     @include field-form;
   }
+
   .session-actions{
     @include form-submit-button;
   }
+
   .session-actions input[type="submit"]{
     @include form-submit-button-input;
   }
+
   .session-link{
     @include form-link;
   }
+
   .session-link a {
     text-decoration: none;
-  }
-  .flash.notice {
-    @include flash-notice;
   }
 }
