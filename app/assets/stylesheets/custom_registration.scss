@@ -28,10 +28,6 @@
   }
 
   .registration-link a {
-    text-decoration: none; /* リンクのアンダーラインを消す */
-  }
-
-  .flash.notice {
-    @include flash-notice;
+    text-decoration: none;
   }
 }
