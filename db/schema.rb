@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_034050) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_034358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_034050) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "menu_ingredients", force: :cascade do |t|
+    t.bigint "ingredient_id", null: false
+    t.bigint "menu_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ingredient_id"], name: "index_menu_ingredients_on_ingredient_id"
+    t.index ["menu_id"], name: "index_menu_ingredients_on_menu_id"
+  end
+
   create_table "menus", force: :cascade do |t|
     t.string "menu_name", default: "", null: false
     t.text "menu_contents", default: "", null: false
@@ -85,6 +94,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_034050) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "menu_ingredients", "ingredients"
+  add_foreign_key "menu_ingredients", "menus"
   add_foreign_key "user_menus", "menus"
   add_foreign_key "user_menus", "users"
 end
