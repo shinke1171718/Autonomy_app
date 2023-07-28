@@ -1,0 +1,34 @@
+<div class="menu-registration-container">
+
+  <div class="menu-registration-title">
+    <h1>献立登録（１/２）</h1>
+  </div>
+
+  <div class="menu-registration-input">
+    <%= form_with model: @menu, url: user_menus_path(current_user.id), local: true, method: :post do |f| %>
+
+      <div class="name-registration-field">
+        <%= f.text_field :menu_name, autofocus: true, autocomplete: "menu_name", placeholder: "献立名" %>
+      </div>
+
+      <div class="menu-registration-field">
+        <%= f.text_field :menu_contents, autofocus: true, autocomplete: "menu_contents", placeholder: "献立内容" %>
+      </div>
+
+      <div class="content-registration-field">
+        <%= f.text_area :contents, autofocus: true, autocomplete: "contents", placeholder: "作り方" %>
+      </div>
+
+      <div class="image-registration-field">
+        <%= f.file_field :image, autofocus: true, autocomplete: "image", placeholder: "献立の写真" %>
+      </div>
+
+      <div class="menu-registration-actions">
+        <%= f.submit "登録" %>
+      </div>
+    <% end %>
+    <div class="menu-registration-back-button">
+      <%= button_to "戻る", user_menus_path, class: "back-button", method: :get %>
+    </div>
+  </div>
+</div>

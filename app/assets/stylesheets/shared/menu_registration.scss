@@ -1,0 +1,142 @@
+.menu-registration-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 40px;
+  box-sizing: border-box;
+
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  margin: 0 auto;
+  margin-bottom: 60px;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    box-sizing: border-box;
+
+    width: 100%;
+    margin: 20px auto 60px;
+    margin-bottom: 60px;
+  }
+}
+
+.menu-registration-title{
+  font-size: 15px;
+  margin-bottom: 10px;
+  @media screen and (max-width: 400px) {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+}
+
+.menu-registration-instructions{
+  font-size: 13px;
+  position: relative;
+  margin-top: -40px;
+  margin-bottom: 10px;
+  opacity: 0.4;
+  @media screen and (max-width: 600px) {
+    font-size: 10px;
+  }
+}
+
+.menu-registration-input{
+  width: 400px;
+  @media screen and (max-width: 400px){
+    width: 73%;
+  }
+}
+
+.name-registration-field input{
+  width: 90%;
+  padding: 10px 4%;
+  font-size: 13px;
+  margin-bottom: 13px;
+  margin-right: 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.menu-registration-field input{
+  width: 90%;
+  padding: 10px 4%;
+  font-size: 13px;
+  margin-bottom: 13px;
+  margin-right: 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+  width: 90%;
+  height: 200px;
+  padding: 10px 4%;
+  font-size: 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  opacity: 0.8;
+}
+
+.image-registration-field input{
+  width: 90%;
+  padding: 10px 4%;
+  font-size: 13px;
+  margin-bottom: 13px;
+  margin-right: 13px;
+}
+
+.menu-registration-actions {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.menu-registration-actions input{
+  padding: 10px 40%;
+  font-size: 15px;
+  background-color: #1E9AF4;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.menu-registration-back-button {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.back-button{
+  margin-top: 10px;
+  padding: 10px 40%;
+  font-size: 15px;
+  background-color: #000000;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  @media screen and (max-width: 400px) {
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 10px 40%;
+    font-size: 15px;
+    background-color: #000000;
+    color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+}

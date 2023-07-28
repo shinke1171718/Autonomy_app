@@ -1,0 +1,64 @@
+.button-set-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menu-list-button{
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin-top: 10px;
+  padding: 10px 10%;
+  font-size: 15px;
+  background-color: #000000;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  width: 400px;
+  @media screen and (max-width: 400px) {
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 10px 40%;
+    font-size: 15px;
+    background-color: #000000;
+    color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+}
+
+
+
+.shoppingList-button{
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin-top: 10px;
+  padding: 10px 10%;
+  font-size: 15px;
+  background-color: #000000;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  width: 400px;
+  @media screen and (max-width: 400px) {
+    margin-top: 10px;
+    margin-left: 5px;
+    padding: 10px 40%;
+    font-size: 15px;
+    background-color: #000000;
+    color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+}
