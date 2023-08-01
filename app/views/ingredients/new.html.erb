@@ -1,0 +1,48 @@
+<div class="ingredient-registration-container">
+
+  <div class="ingredient-registration-title">
+    <h1>献立登録（２/２）</h1>
+  </div>
+
+  <p>食材リスト</p>
+  <div class="ingredients-list">
+    <% if @ingredients.present? %>
+      <% @ingredients.each do |ingredient| %>
+        <div class="ingredient-item">
+          <span class="ingredient-name"><%= ingredient.name %></span>
+          <span class="ingredient-quantity"><%= ingredient.quantity %></span>
+          <span class="ingredient-unit"><%= ingredient.unit %></span>
+        </div>
+      <% end %>
+    <% else %>
+      <p>食材は登録されていません。</p>
+    <% end %>
+  </div>
+
+
+  <div class="ingredient-registration-input">
+    <%= form_with model: @ingredient, url: user_menu_ingredients_path(current_user.id), local: true, method: :post, params: { menu_id: @menu.id } do |f| %>
+      <%= f.hidden_field :menu_id, value: @menu.id %>
+
+        <div class="ingredient-registration-field">
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: " 食材名", maxlength: 15, class: "ingredient-name" %>
+          <%= f.text_field :quantity, autofocus: true, autocomplete: "quantitys", placeholder: " 数量", maxlength: 4, class: "ingredient-quantity" %>
+          <%= f.select :unit, [['g', 'g'], ['kg', 'kg'], ['ml', 'ml'], ['L', 'L'], ['個', '個'], ['枚', '枚'], ['匹', '匹'], ['切れ', '切れ'], ['杯', '杯'], ['缶', '缶'], ['本', '本'], ['袋', '袋']], prompt: '単位', class: "ingredient-unit" %>
+
+          <div class="ingredient-registration-actions">
+            <%= f.submit "追加" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="ingredient-registration-button">
+      <%= button_to "登録", user_menus_path, class: "ingredient-button", method: :get %>
+    </div>
+
+    <div class="ingredient-registration-back-button">
+      <%= button_to "戻る", user_menus_path, class: "ingredient-back-button", method: :get %>
+    </div>
+
+  </div>
+</div>

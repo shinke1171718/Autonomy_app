@@ -43,11 +43,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_034050) do
   end
 
   create_table "ingredients", force: :cascade do |t|
+    t.bigint "menu_id", null: false
     t.string "name", default: "", null: false
     t.integer "quantity", null: false
     t.string "unit", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_ingredients_on_menu_id"
   end
 
   create_table "menus", force: :cascade do |t|
@@ -85,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_034050) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ingredients", "menus"
   add_foreign_key "user_menus", "menus"
   add_foreign_key "user_menus", "users"
 end

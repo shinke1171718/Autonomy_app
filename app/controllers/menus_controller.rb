@@ -11,6 +11,7 @@ class MenusController < ApplicationController
 
   def create
     menu = Menu.new(menu_params)
+
     if menu.menu_name.blank?
       flash[:notice] = "献立名を登録してください。"
       render 'new'
@@ -35,7 +36,10 @@ class MenusController < ApplicationController
     end
 
     menu.original_menu = true
+
     menu.save
+
+    redirect_to new_user_menu_ingredient_path(menu_id: menu.id)
   end
 
 
