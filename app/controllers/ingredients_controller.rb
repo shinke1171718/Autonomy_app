@@ -9,6 +9,7 @@ class IngredientsController < ApplicationController
   def create
     ingredient = Ingredient.new(ingredient_params)
     redirect_path = new_user_menu_ingredient_path(current_user.id)
+    existing_ingredient = Ingredient.find_by(name: ingredient.name)
 
     if ingredient.name.blank?
       flash_message = "食材名を登録してください。"
@@ -20,6 +21,10 @@ class IngredientsController < ApplicationController
       flash_message = "単位を登録してください。"
     end
 
+    if existing_ingredient.present?
+      flash_message = '同じ名前の食材がすでに存在します。'
+    end
+
     if flash_message.present?
       flash[:notice] = flash_message
       redirect_to redirect_path
@@ -27,7 +32,18 @@ class IngredientsController < ApplicationController
     end
 
     ingredient.save
+    flash[:notice] = '食材を登録しました。'
     redirect_to redirect_path
+  end
+
+  def destroy
+    @ingredient = Ingredient.find(params[:id])
+    @ingredient.destroy
+    flash[:notice] = "食材を削除しました。"
+    respond_to do |format|
+      format.html { redirect_to new_user_menu_ingredient_path(current_user.id) }
+      format.js
+    end
   end
 
   private

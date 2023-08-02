@@ -4,11 +4,15 @@
     <h1>献立登録（２/２）</h1>
   </div>
 
-  <p>食材リスト</p>
+  <div class ="contents-title">
+    <p>　食材リスト　</p>
+  </div>
+
   <div class="ingredients-list">
     <% if @ingredients.present? %>
       <% @ingredients.each do |ingredient| %>
         <div class="ingredient-item">
+          <%= button_to '✖️', user_menu_ingredient_path(current_user, @menu, ingredient), method: :delete, remote: true %>
           <span class="ingredient-name"><%= ingredient.name %></span>
           <span class="ingredient-quantity"><%= ingredient.quantity %></span>
           <span class="ingredient-unit"><%= ingredient.unit %></span>
@@ -19,13 +23,19 @@
     <% end %>
   </div>
 
+  <div class ="contents-title">
+    <p>　食材登録　</p>
+  </div>
 
   <div class="ingredient-registration-input">
+    <div class ="contents-description">
+      ※各入力欄に食材情報を入力して食材を登録してください。
+    </div>
     <%= form_with model: @ingredient, url: user_menu_ingredients_path(current_user.id), local: true, method: :post, params: { menu_id: @menu.id } do |f| %>
       <%= f.hidden_field :menu_id, value: @menu.id %>
 
         <div class="ingredient-registration-field">
-          <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: " 食材名", maxlength: 15, class: "ingredient-name" %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: " 食材名 (上限15文字)", maxlength: 15, class: "ingredient-name" %>
           <%= f.text_field :quantity, autofocus: true, autocomplete: "quantitys", placeholder: " 数量", maxlength: 4, class: "ingredient-quantity" %>
           <%= f.select :unit, [['g', 'g'], ['kg', 'kg'], ['ml', 'ml'], ['L', 'L'], ['個', '個'], ['枚', '枚'], ['匹', '匹'], ['切れ', '切れ'], ['杯', '杯'], ['缶', '缶'], ['本', '本'], ['袋', '袋']], prompt: '単位', class: "ingredient-unit" %>
 
