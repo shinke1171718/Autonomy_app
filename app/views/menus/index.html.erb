@@ -7,13 +7,13 @@
   <div class ="menus_list">
     <%= button_to "オリジナル献立作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get %>
 
-    <div class ="original_menus_list">
-      <% @original_menus.each do |menu| %>
-        <% if menu.image.attached? %>
+    <div class="original_menus_list">
+      <% if @original_menus.any? %>
+        <% @original_menus.each do |menu| %>
           <%= image_tag(rails_blob_path(menu.image.variant(resize_to_limit: [200, 200])), class: "rounded-image") %>
-        <% else %>
-          <p>オリジナル献立が設定されていません。</p>
         <% end %>
+      <% else %>
+        <p>オリジナル献立が設定されていません。</p>
       <% end %>
     </div>
   </div>

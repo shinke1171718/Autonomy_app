@@ -1,6 +1,12 @@
 class MenusController < ApplicationController
 
   def index
+    #献立登録時にブラウザの戻るボタンを押された場合の処理
+    if session[:menu_id].present?
+      flash[:notice] = "予期せぬエラーで登録中のデータが誤って登録されました。修正/削除お願いします。"
+      session[:menu_id] = nil
+    end
+
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
     @original_menus = Menu.where(id: menu_ids)
     @default_menus = Menu.where(original_menu: false)
