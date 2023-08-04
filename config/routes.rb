@@ -16,6 +16,9 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :menus do
+        member do
+          delete :destroy_related_data, as: :destroy_related_data
+        end
         resources :ingredients
       end
     end

@@ -5,7 +5,7 @@
   </div>
 
   <div class="menu-registration-input">
-    <%= form_with model: @menu, url: user_menus_path(current_user.id), local: true, method: :post do |f| %>
+    <%= form_with model: @menu, url: user_menu_path, local: true, method: :patch do |f| %>
 
       <div class="name-registration-field">
         <%= f.text_field :menu_name, autofocus: true, autocomplete: "menu_name", placeholder: "献立名" %>
@@ -24,13 +24,19 @@
       </div>
 
       <div class="menu-registration-actions">
-        <%= f.submit "登録" %>
+        <%= f.submit "次へ" %>
       </div>
     <% end %>
 
-    <div class="menu-registration-back-button">
-      <%= button_to "戻る", user_menus_path, class: "back-button", method: :get %>
-    </div>
+    <% if @new_menu.blank? %>
+      <div class="menu-registration-back-button">
+        <%= button_to "戻る", user_menus_path, class: "back-button", method: :get %>
+      </div>
+    <% else %>
+      <div class="menu-registration-back-button">
+        <%= button_to "戻る", destroy_related_data_user_menu_path(current_user, @menu), class: "back-button", method: :delete %>
+      </div>
+    <% end %>
 
   </div>
 </div>

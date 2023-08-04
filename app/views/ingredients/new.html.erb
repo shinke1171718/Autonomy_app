@@ -13,13 +13,16 @@
       <% @ingredients.each do |ingredient| %>
         <div class="ingredient-item">
           <%= button_to '✖️', user_menu_ingredient_path(current_user, @menu, ingredient), method: :delete, remote: true %>
+          <span class="ingredient-name"><%= ingredient.id %></span>
           <span class="ingredient-name"><%= ingredient.name %></span>
           <span class="ingredient-quantity"><%= ingredient.quantity %></span>
           <span class="ingredient-unit"><%= ingredient.unit %></span>
         </div>
       <% end %>
     <% else %>
-      <p>食材は登録されていません。</p>
+      <div class ="no-ingredients-message">
+        <p>食材は登録されていません。</p>
+      </div>
     <% end %>
   </div>
 
@@ -47,11 +50,11 @@
     <% end %>
 
     <div class="ingredient-registration-button">
-      <%= button_to "登録", user_menus_path, class: "ingredient-button", method: :get %>
+      <%= button_to "次へ（未実装）", user_menus_path, class: "ingredient-button", method: :get %>
     </div>
 
     <div class="ingredient-registration-back-button">
-      <%= button_to "戻る", user_menus_path, class: "ingredient-back-button", method: :get %>
+      <%= button_to "戻る", edit_user_menu_path(current_user, @menu), class: "ingredient-back-button", method: :get %>
     </div>
 
   </div>

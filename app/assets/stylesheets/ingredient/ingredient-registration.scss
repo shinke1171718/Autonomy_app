@@ -49,7 +49,7 @@
     }
   }
 
-  // 登録した献立一覧
+  // 献立リストのスタイル
   .ingredients-list {
     height: 200px;
     overflow-y: auto;
@@ -114,8 +114,13 @@
         }
       }
     }
+
+    .no-ingredients-message{
+      text-align: center;
+    }
   }
 
+  // 献立画面のスタイル
   .ingredient-registration-input{
     width: 60%;
     @media screen and (max-width: 1000px) {
