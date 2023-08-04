@@ -4,9 +4,6 @@ class IngredientsController < ApplicationController
     @menu = Menu.find(params[:menu_id])
     @ingredient = Ingredient.new
     @ingredients = Ingredient.where(menu_id: @menu.id)
-
-    # 新規登録時にmenuの編集を行う場合にviewを変更するために必要
-    session[:menu_id] = @menu.id
   end
 
   def create

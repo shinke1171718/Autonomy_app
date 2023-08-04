@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     resources :users do
       resources :menus do
         member do
+          get 'confirm', to: 'menus#confirm', as: :confirm
           delete :destroy_related_data, as: :destroy_related_data
+          get 'reset_session', to: 'menus#reset_session', as: :reset_session
         end
         resources :ingredients
       end

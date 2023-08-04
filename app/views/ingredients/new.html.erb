@@ -49,11 +49,11 @@
     <% end %>
 
     <div class="ingredient-registration-button">
-      <%= button_to "次へ（未実装）", user_menus_path, class: "ingredient-button", method: :get %>
+      <%= button_to "最終確認へ", confirm_user_menu_path(current_user, @menu, @ingredients), class: "ingredient-button", method: :get %>
     </div>
 
     <div class="ingredient-registration-back-button">
-      <%= button_to "戻る", edit_user_menu_path(current_user, @menu), class: "ingredient-back-button", method: :get %>
+      <%= button_to "献立の編集", edit_user_menu_path(current_user, @menu), class: "ingredient-back-button", method: :get %>
     </div>
 
   </div>

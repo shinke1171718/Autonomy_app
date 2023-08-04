@@ -1,7 +1,8 @@
 class MenusController < ApplicationController
 
   def index
-    @original_menus = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
+    menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
+    @original_menus = Menu.where(id: menu_ids)
     @default_menus = Menu.where(original_menu: false)
   end
 
@@ -19,6 +20,9 @@ class MenusController < ApplicationController
     menu.original_menu = true
     menu.save
     UserMenu.create(user_id: current_user.id, menu_id: menu.id)
+
+    # 新規登録時にmenuの編集を行う場合にviewを変更するために必要
+    session[:menu_id] = menu.id
     redirect_to_new_ingredient(menu)
   end
 
@@ -48,6 +52,18 @@ class MenusController < ApplicationController
     session[:menu_id] = nil
     redirect_to user_menus_path(current_user)
   end
+
+
+  def confirm
+    @menu = Menu.find(params[:id])
+    @ingredients = Ingredient.where(menu_id: @menu.id)
+  end
+
+  def reset_session
+    session[:menu_id] = nil
+    redirect_to user_menus_path(current_user)
+  end
+
 
   private
 

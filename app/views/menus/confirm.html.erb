@@ -1,0 +1,53 @@
+<div class="ingredient-registration-container">
+
+  <div class="ingredient-registration-title">
+    <h1>献立の内容確認（view未完成）</h1>
+  </div>
+
+  <div class ="contents-title">
+    <p>　献立名　</p>
+  </div>
+  <p><%= @menu.menu_name %></p>
+  <%= image_tag(rails_blob_path(@menu.image.variant(resize_to_limit: [200, 200])), class: "rounded-image") %>
+
+  <div class ="contents-title">
+    <p>　献立の内容　</p>
+  </div>
+  <p><%= @menu.menu_contents %></p>
+
+  <div class ="contents-title">
+    <p>　作り方　</p>
+  </div>
+  <p><%= @menu.contents.gsub("\n", '<br>').html_safe %></p>
+
+
+
+  <div class ="contents-title">
+    <p>　食材リスト　</p>
+  </div>
+
+  <div class="ingredients-list">
+    <% if @ingredients.present? %>
+      <% @ingredients.each do |ingredient| %>
+        <div class="ingredient-item">
+          <span class="ingredient-name"><%= ingredient.name %></span>
+          <span class="ingredient-quantity"><%= ingredient.quantity %></span>
+          <span class="ingredient-unit"><%= ingredient.unit %></span>
+        </div>
+      <% end %>
+    <% else %>
+      <div class ="no-ingredients-message">
+        <p>食材は登録されていません。</p>
+      </div>
+    <% end %>
+  </div>
+
+
+  <div class="ingredient-registration-button">
+    <%= button_to "登録をする", reset_session_user_menu_path, class: "ingredient-button", method: :get %>
+  </div>
+
+  <div class="ingredient-registration-back-button">
+    <%= button_to "編集に戻る", new_user_menu_ingredient_path(menu_id: @menu.id), class: "ingredient-back-button", method: :get %>
+  </div>
+</div>
