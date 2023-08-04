@@ -13,7 +13,6 @@
       <% @ingredients.each do |ingredient| %>
         <div class="ingredient-item">
           <%= button_to '✖️', user_menu_ingredient_path(current_user, @menu, ingredient), method: :delete, remote: true %>
-          <span class="ingredient-name"><%= ingredient.id %></span>
           <span class="ingredient-name"><%= ingredient.name %></span>
           <span class="ingredient-quantity"><%= ingredient.quantity %></span>
           <span class="ingredient-unit"><%= ingredient.unit %></span>
