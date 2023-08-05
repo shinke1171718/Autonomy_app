@@ -22,6 +22,7 @@ Rails.application.routes.draw do
           get 'reset_session', to: 'menus#reset_session', as: :reset_session
         end
         resources :ingredients
+        resources :temp_ingredients
       end
     end
   end
