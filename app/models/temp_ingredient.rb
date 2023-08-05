@@ -1,0 +1,2 @@
+class TempIngredient < ApplicationRecord
+end
