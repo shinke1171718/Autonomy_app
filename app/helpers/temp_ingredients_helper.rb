@@ -1,0 +1,2 @@
+module TempIngredientsHelper
+end

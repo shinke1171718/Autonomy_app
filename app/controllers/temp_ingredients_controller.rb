@@ -1,0 +1,2 @@
+class TempIngredientsController < ApplicationController
+end
