@@ -17,12 +17,17 @@ Rails.application.routes.draw do
     resources :users do
       resources :menus do
         member do
-          get 'confirm', to: 'menus#confirm', as: :confirm
+          get 'new_confirm', to: 'menus#new_confirm', as: :new_confirm
+          get 'edit_confirm', to: 'menus#edit_confirm', as: :edit_confirm
           delete :destroy_related_data, as: :destroy_related_data
           get 'reset_session', to: 'menus#reset_session', as: :reset_session
         end
         resources :ingredients
         resources :temp_ingredients
+          member do
+            delete :new_destroy, to: 'menus#new_destroy', as: :new_destroy
+            delete :edit_destroy, to: 'menus#edit_destroy', as: :edit_destroy
+          end
       end
     end
   end
