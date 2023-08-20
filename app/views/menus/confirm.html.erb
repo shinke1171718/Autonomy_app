@@ -1,53 +1,58 @@
-<div class="ingredient-registration-container">
+<div class = "menu-container">
 
   <div class="ingredient-registration-title">
-    <h1>献立の内容確認（view未完成）</h1>
+    <h1>献立の内容確認</h1>
   </div>
 
   <div class ="contents-title">
     <p>　献立名　</p>
   </div>
-  <p><%= @menu.menu_name %></p>
-  <%= image_tag(rails_blob_path(@menu.image.variant(resize_to_limit: [200, 200])), class: "rounded-image") %>
+
+  <p><%= session[:menu]["menu_name"] %></p>
 
   <div class ="contents-title">
-    <p>　献立の内容　</p>
+    <p>　献立内容　</p>
   </div>
-  <p><%= @menu.menu_contents %></p>
+  <p><%= session[:menu]["menu_contents"] %></p>
 
   <div class ="contents-title">
     <p>　作り方　</p>
   </div>
-  <p><%= @menu.contents.gsub("\n", '<br>').html_safe %></p>
-
-
+  <p><%= session[:menu]["contents"] %></p>
 
   <div class ="contents-title">
-    <p>　食材リスト　</p>
+    <p>　献立画像　</p>
   </div>
+  <%= image_tag session[:menu_image]["file_path"], alt: "Menu Image" %>
 
-  <div class="ingredients-list">
-    <% if @ingredients.present? %>
-      <% @ingredients.each do |ingredient| %>
-        <div class="ingredient-item">
-          <span class="ingredient-name"><%= ingredient.name %></span>
-          <span class="ingredient-quantity"><%= ingredient.quantity %></span>
-          <span class="ingredient-unit"><%= ingredient.unit %></span>
+
+  <div class="ingredient-registration-container">
+    <div class ="contents-title">
+      <p>　食材リスト　</p>
+    </div>
+
+    <div class="ingredients-list">
+      <% if session[:temp_ingredients].present? %>
+        <% session[:temp_ingredients].each do |ingredient| %>
+          <div class="ingredient-item">
+            <span class="ingredient-name"><%= ingredient["name"] %></span>
+            <span class="ingredient-quantity"><%= ingredient["quantity"] %></span>
+            <span class="ingredient-unit"><%= ingredient["unit"] %></span>
+          </div>
+        <% end %>
+      <% else %>
+        <div class ="no-ingredients-message">
+          <p>食材は登録されていません。</p>
         </div>
       <% end %>
-    <% else %>
-      <div class ="no-ingredients-message">
-        <p>食材は登録されていません。</p>
-      </div>
-    <% end %>
+    </div>
   </div>
 
-
   <div class="ingredient-registration-button">
-    <%= button_to "登録をする", reset_session_user_menu_path, class: "ingredient-button", method: :get %>
+    <%= button_to "登録をする", user_menus_path(current_user),class: "ingredient-button", method: :post %>
   </div>
 
   <div class="ingredient-registration-back-button">
-    <%= button_to "編集に戻る", new_user_menu_ingredient_path(menu_id: @menu.id), class: "ingredient-back-button", method: :get %>
+    <%= button_to "編集に戻る", new_user_menu_path(current_user), class: "ingredient-back-button", method: :get %>
   </div>
 </div>

@@ -3,13 +3,13 @@ class TempIngredientsController < ApplicationController
   def create
     temp_ingredient = TempIngredient.new(temp_ingredient_params)
     validate_temp_ingredient(temp_ingredient)
-    render_or_save_temp_ingredient(temp_ingredient, 'new', 'new_user_menu_path(current_user)')
+    render_or_save_temp_ingredient(temp_ingredient, new_user_menu_path(current_user))
   end
 
   def update
     temp_ingredient = TempIngredient.new(temp_ingredient_params)
     validate_temp_ingredient(temp_ingredient)
-    render_or_save_temp_ingredient(temp_ingredient, 'new', 'edit_user_menu_path(current_user, menu)')
+    render_or_save_temp_ingredient(temp_ingredient, edit_user_menu_path(current_user, menu))
   end
 
   def new_destroy
@@ -45,9 +45,9 @@ class TempIngredientsController < ApplicationController
     end
   end
 
-  def render_or_save_temp_ingredient(temp_ingredient, view, path)
+  def render_or_save_temp_ingredient(temp_ingredient, path)
     if flash[:notice].present?
-      render view
+      redirect_to path
     else
       temp_ingredient.save
       flash[:notice] = '食材を登録しました。'
@@ -55,7 +55,7 @@ class TempIngredientsController < ApplicationController
     end
   end
 
-  def destroy_and_redirect(temp_ingredient, redirect_path)
+  def destroy_and_redirect(temp_ingredient, path)
     temp_ingredient.destroy
     flash[:notice] = "食材を削除しました。"
     respond_to do |format|

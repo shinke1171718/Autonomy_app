@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
       redirect_to new_user_custom_session_path
     end
   end
+
+  def set_flash_notice(message)
+    flash[:notice] = message
+  end
 end
