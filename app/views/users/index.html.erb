@@ -1,6 +1,5 @@
 <%= render 'shared/menu' %>
 
-
 <div class="button-set-container">
   <%= button_to "献立リストに追加", user_menus_path(current_user.id), class: "menu-list-button", method: :get %>
   <%= button_to "買い出しに行く", user_menus_path(current_user.id), class: "shoppingList-button", method: :get %>

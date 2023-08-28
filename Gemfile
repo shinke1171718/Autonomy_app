@@ -83,5 +83,5 @@ gem 'action_args'
 gem 'sassc'
 #画像のリサイズに必要な「ImageMagick」を使用できるようにするジェム
 gem 'image_processing'
-
+#jqueryを導入するためのジェム
 gem 'jquery-rails'
