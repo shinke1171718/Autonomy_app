@@ -10,7 +10,7 @@
     </div>
 
     <div class="menu-registration-input">
-      <%= form_with model: @menu, url: new_confirm_user_menu_path(current_user.id), local: true, method: :post, id: 'submit-form' do |f| %>
+      <%= form_with model: @menu, url: new_confirm_user_menu_path(current_user.id), method: :post, id: 'submit-form' do |f| %>
 
         <div class="name-registration-field">
           <%= f.text_field :menu_name, autofocus: true, autocomplete: "menu_name", placeholder: "献立名" %>
@@ -31,35 +31,19 @@
         <div class ="contents-title">
           <p>２.食材リスト設定</p>
         </div>
-        <div class="ingredient-registration-container">
-          <div class="ingredients-list">
-            <% if session[:temp_ingredients].present? %>
-              <% session[:temp_ingredients].each do |ingredient| %>
-                <div class="ingredient-item">
-                  <%= hidden_field_tag "ingredient[name]", ingredient["name"] %>
-                  <%= f.submit '✖️', name: "delete" %>
-                  <span class="ingredient-name"><%= ingredient["name"] %></span>
-                  <span class="ingredient-quantity"><%= ingredient["quantity"] %></span>
-                  <span class="ingredient-unit"><%= ingredient["unit"] %></span>
-                </div>
-              <% end %>
+        <div class="ingredient-registration-input">
+          <div class ="contents-description">
+            ※各入力欄に食材情報を入力して食材を登録してください。
+          </div>
+
+          <div class="ingredient-registration-field">
+            <%= f.fields_for :ingredients do |ingredient_form| %>
+              <div class="ingredient-form-container"></div>
             <% end %>
           </div>
-
-          <div class="ingredient-registration-input">
-            <div class ="contents-description">
-              ※各入力欄に食材情報を入力して食材を登録してください。
-            </div>
-
-            <div class="ingredient-registration-field">
-              <%= f.fields_for :ingredients do |ingredient_form| %>
-                <div class="ingredient-form-container"></div>
-              <% end %>
-            </div>
-          </div>
-          <div id="ingredient-plus">
-            <button class="ingredient-registration-actions">食材を追加する</button>
-          </div>
+        </div>
+        <div id="ingredient-plus">
+          <button type="button" class="ingredient-registration-actions">食材を追加する</button>
         </div>
 
         <div class="menu-registration-actions">
