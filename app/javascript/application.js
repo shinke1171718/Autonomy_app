@@ -4,7 +4,3 @@ import "controllers"
 import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
-
-$(document).on("turbo:load", () => {
-  console.log("動いたよ");
-});
