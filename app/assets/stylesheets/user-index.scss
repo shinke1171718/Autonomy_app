@@ -1,0 +1,30 @@
+.button-set-container {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+
+  .menu-list-button{
+    @extend .home-page-button-style;
+  }
+
+  .shoppingList-button{
+    @extend .home-page-button-style;
+  }
+}
+
+
+.home-page-button-style {
+  margin-top: 10px;
+  padding: 10px 10%;
+  font-size: 15px;
+  background-color: #000000;
+  color: white;
+  border-radius: 20px;
+  // white-space: nowrap;
+
+  @media screen and (max-width: 400px) {
+    margin-top: 10px;
+    width: 90%;
+  }
+}
