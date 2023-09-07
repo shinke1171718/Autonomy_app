@@ -1,0 +1,61 @@
+<div class = "menu-container">
+  <div class="menu-registration-container">
+
+    <div class="menu-registration-title">
+      <h1>献立登録</h1>
+    </div>
+
+    <div class ="contents-title">
+      <p>１.食材情報入力</p>
+    </div>
+
+    <div class="menu-registration-input">
+      <!-- 下記のパスは一時的：バックエンド設定後「new_confirm_user_menu_path(current_user.id)」というパスを設定 -->
+      <%= form_with model: @menu, url: new_user_menu_path(current_user.id), method: :post, id: 'submit-form' do |f| %>
+
+        <div class="name-registration-field">
+          <%= f.text_field :menu_name, autofocus: true, autocomplete: "menu_name", placeholder: "献立名" %>
+        </div>
+
+        <div class="menu-registration-field">
+          <%= f.text_field :menu_contents, autofocus: true, autocomplete: "menu_contents", placeholder: "献立内容" %>
+        </div>
+
+        <div class="content-registration-field">
+          <%= f.text_area :contents, autofocus: true, autocomplete: "contents", placeholder: "作り方" %>
+        </div>
+
+        <div class="image-registration-field">
+          <%= f.file_field :image, autofocus: true, autocomplete: "image", placeholder: "献立の写真" %>
+        </div>
+
+        <div class ="contents-title">
+          <p>２.食材リスト設定</p>
+        </div>
+        <div class="ingredient-registration-input">
+          <div class ="contents-description">
+            ※各入力欄に食材情報を入力して食材を登録してください。
+          </div>
+
+          <div class="ingredient-registration-field">
+            <%= f.fields_for :ingredients do |ingredient_form| %>
+              <div class="ingredient-form-container"></div>
+            <% end %>
+          </div>
+        </div>
+        <div id="ingredient-plus">
+          <button type="button" class="ingredient-registration-actions">食材を追加する</button>
+        </div>
+
+        <div class="menu-registration-actions">
+          <%= f.submit "次へ", name: "create" %>
+        </div>
+      <% end %>
+
+      <div class="menu-registration-back-button">
+        <%= button_to "戻る", user_menus_path, class: "back-button", method: :get %>
+      </div>
+
+    </div>
+  </div>
+</div>

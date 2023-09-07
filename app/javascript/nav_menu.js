@@ -1,6 +1,4 @@
-import jquery from "jquery"
-window.$ = jquery
-
+import $ from 'jquery';
 
 $(document).on('turbo:load', function() {
   $('.mobile-menu-botton').on('click', function () {
