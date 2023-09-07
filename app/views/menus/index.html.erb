@@ -1,0 +1,26 @@
+<%= render 'shared/menu' %>
+
+<div class ="menus_container">
+
+  <h3 class="original-menu-heading">オリジナル献立</h3>
+
+  <div class ="menus_list">
+    <%= button_to "オリジナル献立作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get %>
+
+    <div class="original_menus_list">
+      <% if @original_menus.any? %>
+        <% @original_menus.each do |menu| %>
+          <%= image_tag(rails_blob_path(menu.image.variant(resize_to_limit: [200, 200])), class: "rounded-image") %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <h3 class="menu-list-heading">標準献立</h3>
+
+  <div class ="default_menus_list">
+    <% @default_menus.each do |menu| %>
+      <%= image_tag(rails_blob_path(menu.image.variant(resize_to_limit: [200, 200])), class: "rounded-image") %>
+    <% end %>
+  </div>
+</div>

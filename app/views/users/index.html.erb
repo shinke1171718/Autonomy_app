@@ -1,10 +1,10 @@
 <%= render 'shared/menu' %>
 
 <div class="button-set-container">
-  <%= button_to "献立リスト追加", root_path, method: :get, class: "menu-list-button" %>
+  <%= button_to "献立リスト追加", user_menus_path(current_user.id), class: "menu-list-button", method: :get %>
   <%= button_to "買い出しに行く", root_path, method: :get , class: "shoppingList-button"%>
 
   <!-- 下記のリダイレクト先が完成次第、下記のコードに切り替えてください。（＃を取るのを忘れずに） -->
-  <%#= button_to "献立リストに追加", user_menus_path(current_user.id), class: "menu-list-button", method: :get %>
+  <%#= button_to "献立リスト追加", user_menus_path(current_user.id), class: "menu-list-button", method: :get %>
   <%#= button_to "買い出しに行く", user_menus_path(current_user.id), class: "shoppingList-button", method: :get %>
 </div>
