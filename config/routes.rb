@@ -10,5 +10,11 @@ Rails.application.routes.draw do
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
     get 'registrations/edit', to: 'custom_registrations#edit', as: :edit_user_custom_registration
     patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
+
+
+    resources :users do
+      resources :menus do
+      end
+    end
   end
 end
