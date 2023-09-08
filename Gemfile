@@ -81,3 +81,5 @@ gem 'pry-byebug'
 gem 'action_args'
 # Sassコンパイラを導入するためのジェム
 gem 'sassc'
+#画像のリサイズに必要な「ImageMagick」を使用できるようにするジェム
+gem 'image_processing'
