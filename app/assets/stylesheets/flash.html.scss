@@ -1,8 +1,18 @@
 .flash {
   display: block;
+  margin-top: 5px;
   padding: 10px;
+  text-align: center;
   margin-bottom: 10px;
-  border-radius: 5px;
-  background-color: #000;
-  color: white;
+
+}
+
+.error {
+  background-color: #ffd0d0;
+  color: rgb(253, 0, 0);
+}
+
+.notice {
+  background-color: #c3baf3;
+  color: rgb(47, 0, 255);
 }

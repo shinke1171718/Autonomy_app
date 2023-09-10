@@ -12,8 +12,11 @@ Rails.application.routes.draw do
     patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
 
 
+    post '/users/:user_id/menus/new_confirm', to: 'menus#new_confirm', as: :new_confirm_user_menu
+
     resources :users do
       resources :menus do
+        resources :ingredients
       end
     end
   end

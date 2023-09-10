@@ -1,5 +1,9 @@
-<% if flash[:notice] %>
+<% if flash.now[:error] %>
+  <div class="flash error">
+    <%= flash.now[:error] %>
+  </div>
+<% elsif flash.now[:notice] %>
   <div class="flash notice">
-    <%= flash[:notice] %>
+    <%= flash.now[:notice] %>
   </div>
 <% end %>
