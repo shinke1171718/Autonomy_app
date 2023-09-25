@@ -38,14 +38,18 @@
 
           <div class="ingredient-registration-field">
             <%= f.fields_for :ingredients do |ingredient_form| %>
-              <% (1..10).each do |index| %>
-                <div class="custom-ingredient-fields">
-                  <span class="form-number"><%= format('%02d', index) %></span>
-                  <%= ingredient_form.text_field :name, autofocus: true, autocomplete: "name", placeholder: " 食材名 (上限15文字)", maxlength: 15, class: "ingredient-name" %>
-                  <%= ingredient_form.text_field :quantity, autofocus: true, autocomplete: "quantitys", placeholder: " 数量", maxlength: 4, class: "ingredient-quantity" %>
-                  <%= ingredient_form.select :unit, [['g', 'g'], ['kg', 'kg'], ['ml', 'ml'], ['L', 'L'], ['個', '個'], ['枚', '枚'], ['匹', '匹'], ['切れ', '切れ'], ['丁', '丁'], ['杯', '杯'], ['缶', '缶'], ['本', '本'], ['袋', '袋'], ['束', '束'], ['合', '合'], ['大さじ', '大さじ'], ['小さじ', '小さじ']], prompt: '単位', class: "ingredient-unit" %>
-                </div>
-              <% end %>
+              <div class="ingredient-registration-field">
+                <% (0..9).each do |index| %>
+                  <% index = index.to_i %>
+                  <div class="custom-ingredient-fields">
+                    <%= ingredient_form.hidden_field :"[#{index}]form_number", value: index + 1 %>
+                    <span class="form-number"><%= format('%02d', index + 1) %></span>
+                    <%= ingredient_form.text_field :"[#{index}]name", autofocus: true, autocomplete: "name", placeholder: " 食材名 (上限15文字)", maxlength: 15, class: "ingredient-name", value: @menu.ingredients[index]&.name %>
+                    <%= ingredient_form.text_field :"[#{index}]quantity", autofocus: true, autocomplete: "quantity", placeholder: " 数量", maxlength: 4, class: "ingredient-quantity", value: @menu.ingredients[index]&.quantity %>
+                    <%= ingredient_form.select :"[#{index}]unit", [['g', 'g'], ['kg', 'kg'], ['ml', 'ml'], ['L', 'L'], ['個', '個'], ['枚', '枚'], ['匹', '匹'], ['切れ', '切れ'], ['丁', '丁'], ['杯', '杯'], ['缶', '缶'], ['本', '本'], ['袋', '袋'], ['束', '束'], ['合', '合'], ['大さじ', '大さじ'], ['小さじ', '小さじ']], prompt: '単位', class: "ingredient-unit", selected:  @menu.ingredients[index]&.unit %>
+                  </div>
+                <% end %>
+              </div>
             <% end %>
           </div>
         </div>
