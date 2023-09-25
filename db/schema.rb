@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_08_034052) do
 
   create_table "ingredients", force: :cascade do |t|
     t.bigint "menu_id", null: false
+    t.integer "form_number", null: false
     t.string "name", default: "", null: false
     t.integer "quantity", null: false
     t.string "unit", default: "", null: false
