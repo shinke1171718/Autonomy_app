@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_08_034052) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_073545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_08_034052) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_ingredients_on_menu_id"
+  end
+
+  create_table "menu_ingredients", force: :cascade do |t|
+    t.bigint "menu_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ingredient_id"], name: "index_menu_ingredients_on_ingredient_id"
+    t.index ["menu_id"], name: "index_menu_ingredients_on_menu_id"
   end
 
   create_table "menus", force: :cascade do |t|

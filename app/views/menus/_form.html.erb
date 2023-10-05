@@ -1,0 +1,69 @@
+<div class="menu-registration-container">
+
+  <div class="menu-registration-title">
+    <h1>献立登録</h1>
+  </div>
+
+  <div class ="contents-title">
+    <p>１.献立情報入力</p>
+  </div>
+
+  <div class="menu-registration-input">
+    <%= form_with model: @menu, url: new_confirm_user_menu_path(current_user.id), method: :post, id: "menu_form" do |f| %>
+
+      <div id="menu-error_name" class="menu-error"></div>
+      <div class="name-registration-field">
+        <%= f.text_field :menu_name, id: "menu_name", autofocus: true, autocomplete: "menu_name", placeholder: "献立名(最大20字)", maxlength: 20 %>
+      </div>
+
+      <div id="menu-error-contents-1" class="menu-error"></div>
+      <div class="menu-registration-field">
+        <%= f.text_field :menu_contents, id: "menu_contents", autofocus: true, autocomplete: "menu_contents", placeholder: "献立内容(最大20字)", maxlength: 20 %>
+      </div>
+
+      <div id="menu-error-contents-2" class="menu-error"></div>
+      <div class="content-registration-field">
+        <%= f.text_area :contents, id: "contents", autofocus: true, autocomplete: "contents", placeholder: "作り方(最大700字)", maxlength: 700 %>
+      </div>
+
+      <div class="image-registration-field">
+        <%= f.file_field :image, autofocus: true, autocomplete: "image", placeholder: "献立の写真" %>
+      </div>
+
+      <div class ="contents-title">
+        <p>２.食材リスト設定</p>
+      </div>
+
+      <div class="ingredient-registration-input">
+
+        <div id="ingredients-error" class="ingredients-error-message"></div>
+
+        <div class="ingredient-registration-field">
+          <%= f.fields_for :ingredients do |ingredient_form| %>
+            <div class="ingredient-registration-field">
+              <% @form_count.each do |index| %>
+                <div class="custom-ingredient-fields">
+                  <%= ingredient_form.hidden_field :"[#{index}]form_number", value: index + 1 %>
+                  <span class="form-number"><%= format('%02d', index + 1) %></span>
+                  <%= ingredient_form.text_field :"[#{index}]name", id: "ingredient_name[#{index}]", autofocus: true, autocomplete: "name", placeholder: " 食材名 (上限15文字)", maxlength: 15, class: "ingredient-name", value: @menu.ingredients[index]&.name %>
+                  <%= ingredient_form.text_field :"[#{index}]quantity", id: "ingredient_quantity[#{index}]", autofocus: true, autocomplete: "quantity", placeholder: " 数量", maxlength: 4, class: "ingredient-quantity", value: @menu.ingredients[index]&.quantity, oninput: "this.value = this.value.replace(/[^0-9.]/g, '')" %>
+                  <%= ingredient_form.select :"[#{index}]unit", [['g', 'g'], ['kg', 'kg'], ['ml', 'ml'], ['L', 'L'], ['個', '個'], ['枚', '枚'], ['匹', '匹'], ['切れ', '切れ'], ['丁', '丁'], ['杯', '杯'], ['缶', '缶'], ['本', '本'], ['袋', '袋'], ['束', '束'], ['合', '合'], ['大さじ', '大さじ'], ['小さじ', '小さじ']], prompt: '単位', class: "ingredient-unit", selected:  @menu.ingredients[index]&.unit, id: "ingredient_unit[#{index}]" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+
+      <div class="menu-registration-actions", data-turbo-action="submit">
+        <%= f.submit "次へ"%>
+      </div>
+    <% end %>
+
+    <div class="menu-registration-back-button">
+      <%= button_to "戻る", user_menus_path, class: "back-button", method: :get %>
+    </div>
+
+  </div>
+</div>
