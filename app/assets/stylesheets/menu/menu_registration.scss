@@ -52,7 +52,7 @@
 
   .menu-registration-container{
     text-align: center;
-    width: 55%;
+    width: 60%;
     @media screen and (max-width: 1050px) {
       width: 80%;
     }
@@ -60,9 +60,14 @@
       width: 100%;
     }
 
+    .menu-error-message{
+      font-size: 17px;
+      color: rgb(250, 43, 43);
+    }
+
     .menu-registration-input{
       .menu-error{
-        font-size: 17px;
+        font-size: 15px;
         color: rgb(250, 43, 43);
         text-align: left;
         margin-left: 20px;
