@@ -1,4 +1,5 @@
 class MenusController < ApplicationController
+  before_action :set_form_count, only: [:new, :new_confirm]
 
   def index
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
@@ -10,7 +11,6 @@ class MenusController < ApplicationController
   def new
     @menu = Menu.new
     new_ingredients(@menu)
-    Rails.logger.info '通ったよ'
   end
 
 
@@ -18,22 +18,22 @@ class MenusController < ApplicationController
     @menu = Menu.new(menu_params)
     new_ingredient_forms(@menu)
 
-    flash.now[:error] = "入力内容に不備があります。"
-    render 'new', status: :unprocessable_entity
-    return
-
-    # if @menu.valid? && @ingredients.all?(&:valid?)
-    #   render 'confirm'
-    #   return
-    # else
-    #   flash.now[:error] = "入力内容に不備があります。"
-    #   render 'new', status: :unprocessable_entity
-    #   return
-    # end
+    if @menu.valid? && @menu.ingredients.all?(&:valid?) && validate_unique_name(@menu.ingredients)
+      render 'confirm'
+      return
+    else
+      flash[:error] = "誤った入力が検出されました。"
+      redirect_to new_user_menu_path
+    end
   end
 
 
   private
+
+  def set_form_count
+    @form_count = 0..9
+    @MaxCount = 14
+  end
 
   def menu_params
     params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:form_number, :name, :quantity, :unit])
@@ -48,13 +48,27 @@ class MenusController < ApplicationController
       ingredient_forms << ingredient_form
     end
 
+    ingredient_forms.reject! do |ingredient|
+      ingredient.name.blank? &&
+      ingredient.quantity.blank? &&
+      ingredient.unit.blank?
+    end
+
     @menu.ingredients = ingredient_forms
   end
 
 
   def new_ingredients(menu)
     menu.ingredients = []
-    10.times { menu.ingredients << Ingredient.new }
+    setting_form_number = 10
+    setting_form_number.times { menu.ingredients << Ingredient.new }
+  end
+
+  def validate_unique_name(ingredients)
+    if ingredients.map(&:name).uniq.count != ingredients.count
+      return false
+    end
+    return true
   end
 
 end

@@ -52,12 +52,32 @@
 
   .menu-registration-container{
     text-align: center;
-    width: 55%;
+    width: 60%;
     @media screen and (max-width: 1050px) {
       width: 80%;
     }
     @media screen and (max-width: 500px) {
       width: 100%;
+    }
+
+    .menu-error-message{
+      font-size: 17px;
+      color: rgb(250, 43, 43);
+    }
+
+    .menu-registration-input{
+      .menu-error{
+        font-size: 15px;
+        color: rgb(250, 43, 43);
+        text-align: left;
+        margin-left: 20px;
+      }
+
+      .ingredients-error-message{
+        font-size: 17px;
+        color: rgb(250, 43, 43);
+        text-align: center;
+      }
     }
 
     .name-registration-field input,
@@ -101,14 +121,6 @@
     }
   }
 
-  .contents-description{
-    font-size: 10px;
-    margin-top: 30px;
-    @media screen and (max-width: 400px) {
-      text-align: center;
-    }
-  }
-
   // 献立リストのスタイル
 
   // 献立画面のスタイル
@@ -144,7 +156,7 @@
           }
         }
         .ingredient-quantity{
-          width: 30px;
+          width: 60px;
         }
 
         select {
@@ -152,10 +164,8 @@
         }
 
         .form-number{
-          padding-top: 5px;
-          padding-left: 5px;
-          padding-right: 5px;
-          background-color: #ffa9a9;
+          padding: 10px;
+          background-color: #f99d68;
           border: 1px solid #ccc;
         }
       }
