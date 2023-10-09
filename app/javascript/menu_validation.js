@@ -52,8 +52,6 @@ document.addEventListener("turbo:load", function(event) {
         duplication_error.textContent = "⚠️重複登録された食材があります。";
       }
     }
-
-
   });
 });
 
@@ -66,7 +64,8 @@ function validateAndHighlightInput(element ,sub_errorMessage, inputElement, even
     sub_errorMessage.textContent = "⚠️必須";
     inputElement.style.backgroundColor = "rgb(255, 184, 184)";
   } else {
-    errorMessage.textContent = "";
+    menu_main_errorMessage.textContent = "";
+    sub_errorMessage.textContent = "";
     inputElement.style.backgroundColor = "";
   }
 }

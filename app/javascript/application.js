@@ -5,3 +5,4 @@ import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
 import "./menu_validation";
+import "./addForm";
