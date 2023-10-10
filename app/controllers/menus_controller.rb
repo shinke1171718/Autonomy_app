@@ -1,5 +1,4 @@
 class MenusController < ApplicationController
-  before_action :set_form_count, only: [:new, :new_confirm]
 
   def index
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
@@ -29,11 +28,6 @@ class MenusController < ApplicationController
 
 
   private
-
-  def set_form_count
-    @form_count = 0..9
-    @MaxCount = 14
-  end
 
   def menu_params
     params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:form_number, :name, :quantity, :unit])

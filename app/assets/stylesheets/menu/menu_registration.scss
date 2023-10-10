@@ -7,7 +7,7 @@
 
   background-color: #ffffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
   margin: 0 auto;
   margin-top: 30px;
@@ -17,7 +17,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px 40px;
     box-sizing: border-box;
     width: 100%;
     margin: 20px auto 60px;
@@ -84,10 +83,13 @@
     .menu-registration-field input,
     textarea{
       width: 100%;
-      padding: 10px 4%;
+      padding-top: 13px;
+      padding-bottom: 13px;
+      padding-left: 8px;
+      margin-top: 7px;
       font-size: 13px;
-      margin-bottom: 13px;
-      margin-right: 13px;
+      margin-bottom: 7px;
+      margin-right: 7px;
       border-radius: 20px;
       border: 1px solid rgba(0, 0, 0, 0.2);
     }
@@ -155,6 +157,11 @@
             border-right: none;
           }
         }
+
+        .ingredient-name{
+          width: 450px;
+        }
+
         .ingredient-quantity{
           width: 60px;
         }
@@ -167,8 +174,35 @@
           padding: 10px;
           background-color: #f99d68;
           border: 1px solid #ccc;
+          @media screen and (max-width: 700px) {
+            display: none;
+          }
+        }
+
+        a {
+          text-decoration: none;
+          font-size: 15px;
+        }
+
+        .form-delete_button{
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-top: 10px;
         }
       }
     }
+
+  .count-up-botton{
+    button{
+      width: 200px;
+      background-color: #f99d68;
+      border: #2c2c2c;
+      padding: 2%;
+      font-size: 15px;
+      color: #000000;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+  }
   }
 }
