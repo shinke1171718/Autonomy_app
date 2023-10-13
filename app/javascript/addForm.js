@@ -50,7 +50,6 @@ function createNewForm() {
         <div class ="form-delete_button">\
           <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down">❌</a>\
         </div>\
-        <input value="${paddedNewFormCount}" autocomplete="off" type="hidden" name="menu[ingredients][[${newFormCount_back}]form_number]" id="menu_ingredients_[${newFormCount_back}]form_number">\
         <span class="form-number">${paddedNewFormCount}</span>\
         <input id="ingredient_name[${newFormCount_back}]" autofocus="autofocus" autocomplete="name" placeholder=" 食材名 (上限15文字)" maxlength="15" class="ingredient-name" value="" size="15" type="text" name="menu[ingredients][[${newFormCount_back}]name]">\
         <input type="text" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][[${newFormCount_back}]quantity]" autofocus="true" autocomplete="quantity" placeholder=" 数量" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" class="ingredient-quantity">\
