@@ -7,5 +7,7 @@ class CreateMaterials < ActiveRecord::Migration[7.0]
       t.references :unit,                    null: false
       t.timestamps default: -> { 'CURRENT_TIMESTAMP' }
     end
+    # ここでのunitは変換時に利用するデータです。
+    # 通常時の単位は中間モデルで設定しています。
   end
 end
