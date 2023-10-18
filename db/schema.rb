@@ -49,11 +49,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110904) do
   end
 
   create_table "ingredients", force: :cascade do |t|
-    t.string "name", default: "", null: false
-    t.integer "quantity", null: false
-    t.string "unit", default: "", null: false
+    t.bigint "material_unit_id", null: false
+    t.bigint "unit_id", null: false
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["material_unit_id"], name: "index_ingredients_on_material_unit_id"
+    t.index ["unit_id"], name: "index_ingredients_on_unit_id"
   end
 
   create_table "material_units", force: :cascade do |t|
