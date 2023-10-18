@@ -1,5 +1,7 @@
 class Ingredient < ApplicationRecord
   has_many :menus, through: :menu_ingredients
+  has_many :material_units
+  has_many :units, through: :material_units
 
   validates :name, presence: true, length: { maximum: 15 }
   validates :quantity, presence: true, length: { maximum: 4 }
