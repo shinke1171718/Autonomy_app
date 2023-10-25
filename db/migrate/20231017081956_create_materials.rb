@@ -5,6 +5,7 @@ class CreateMaterials < ActiveRecord::Migration[7.0]
       t.integer :conversion_factor,          null: false, default: ""
       t.references :category,                null: false
       t.references :unit,                    null: false
+      t.string :default_name,                null: false, default: ""
       t.timestamps default: -> { 'CURRENT_TIMESTAMP' }
     end
     # ここでのunitは変換時に利用するデータです。

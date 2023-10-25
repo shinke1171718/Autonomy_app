@@ -37,7 +37,7 @@ document.addEventListener("click", function (event) {
 
 
 function createNewForm() {
-  var formContainer = document.getElementById("ingredient-form-add-container");
+  var ingredient_form = document.getElementById("ingredient_form");
   var newFormCount_view = formCount_view + 1;
   var paddedNewFormCount = newFormCount_view < 10 ? '0' + newFormCount_view : newFormCount_view;
   paddedNewFormCount = paddedNewFormCount.toString().padStart(2, '0');
@@ -45,36 +45,17 @@ function createNewForm() {
   var newFormCount_back = formCount_back + 1;
 
   if (formCount_view < maxFormCount_view) {
-    var newForm =
-      `<div class="custom-ingredient-fields">\
-        <div class ="form-delete_button">\
-          <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down">❌</a>\
-        </div>\
-        <span class="form-number">${paddedNewFormCount}</span>\
-        <input id="ingredient_name[${newFormCount_back}]" autofocus="autofocus" autocomplete="name" placeholder=" 食材名 (上限15文字)" maxlength="15" class="ingredient-name" value="" size="15" type="text" name="menu[ingredients][[${newFormCount_back}]name]">\
-        <input type="text" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][[${newFormCount_back}]quantity]" autofocus="true" autocomplete="quantity" placeholder=" 数量" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" class="ingredient-quantity">\
-        <select id="menu_ingredients_[${newFormCount_back}]unit" name="menu[ingredients][[${newFormCount_back}]unit]" class="ingredient-unit">\
-          <option value="" selected>単位</option>\
-          <option value="g">g</option>\
-          <option value="kg">kg</option>\
-          <option value="ml">ml</option>\
-          <option value="L">L</option>\
-          <option value="個">個</option>\
-          <option value="枚">枚</option>\
-          <option value="匹">匹</option>\
-          <option value="切れ">切れ</option>\
-          <option value="杯">杯</option>\
-          <option value="缶">缶</option>\
-          <option value="本">本</option>\
-          <option value="袋">袋</option>\
-          <option value="束">束</option>\
-          <option value="合">合</option>\
-          <option value="大さじ">大さじ</option>\
-          <option value="小さじ">小さじ</option>\
-        </select>\
+    var newForm = `
+      <div class="custom-ingredient-fields">
+        <div class="form-delete_button">
+          <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down[${newFormCount_back}]">❌</a>
+        </div>
+        <span class="form-number">${paddedNewFormCount}</span>
+        <input id="ingredient_name[${newFormCount_back}]" class="ingredient-name" placeholder="食材名を選択" type="text" name="menu[ingredients][${newFormCount_back}][name]">
+        <input type="text" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][quantity]" autocomplete="quantity" placeholder="数量" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" class="ingredient-quantity">
       </div>`;
 
-    formContainer.insertAdjacentHTML("beforeend", newForm);
+    ingredient_form.insertAdjacentHTML("beforeend", newForm);
     formCount_view++;
     formCount_back++;
   }
@@ -83,7 +64,6 @@ function createNewForm() {
 function updateFormNumbers() {
   var formContainers = document.querySelectorAll(".custom-ingredient-fields");
   formContainers.forEach(function (container, index) {
-    // 各フォームの番号を更新
     var formNumber = container.querySelector(".form-number");
     if (formNumber) {
       var paddedFormNumber = (index + 1 < 10) ? '0' + (index + 1) : (index + 1);

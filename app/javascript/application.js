@@ -4,5 +4,18 @@ import "controllers"
 import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
-import "./menu_validation";
+import "./ingredient_dropdown";
 import "./addForm";
+
+// フォーム構成を変更するためコメントアウト中
+// import "./menu_validation";
+
+
+
+
+
+
+
+
+
+
