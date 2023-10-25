@@ -10,26 +10,30 @@ class MenusController < ApplicationController
   def new
     @menu = Menu.new
     @menu.ingredients = Ingredient.new
+    @materials_by_category = MaterialUnit.includes(:material).group_by { |mu| mu.material.category }
   end
 
 
   def new_confirm
     @menu = Menu.new(menu_params)
-    new_ingredient_forms(@menu)
 
-    if @menu.valid? && @menu.ingredients.all?(&:valid?) && validate_unique_name(@menu.ingredients)
-      render 'confirm'
-      return
-    else
-      flash[:error] = "誤った入力が検出されました。"
-      redirect_to new_user_menu_path
-    end
+    #フォーム改装のためコメントアウトしています。
+    # new_ingredient_forms(@menu)
+
+    #不フォーム改装のため修正が必要
+    # if @menu.valid? && @menu.ingredients.all?(&:valid?) && validate_unique_name(@menu.ingredients)
+    #   render 'confirm'
+    #   return
+    # else
+    #   flash[:error] = "誤った入力が検出されました。"
+    #   redirect_to new_user_menu_path
+    # end
   end
 
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:name, :quantity, :unit])
+    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:name, :material_unit_id, :quantity])
   end
 
   def new_ingredient_forms(menu)
