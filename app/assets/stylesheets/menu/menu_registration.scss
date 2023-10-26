@@ -123,8 +123,6 @@
     }
   }
 
-  // 献立リストのスタイル
-
   // 献立画面のスタイル
   .ingredient-registration-input{
     width: 100%;
@@ -171,7 +169,7 @@
           padding-right: 10px;
         }
 
-        .form-delete_button{
+        .form-delete-button{
           margin-top: 10px;
         }
 
@@ -185,7 +183,7 @@
         }
       }
 
-      .ingredient_select{
+      .ingredient-select{
         display: none;
         position: absolute;
         left: 34%;
@@ -224,14 +222,13 @@
           border: 1px solid rgba(0, 0, 0, 0.2);
         }
 
-
         .scrollable-section{
           max-height: 500px;
           overflow-y: auto;
         }
 
-        .search_results_title,
-        .drop_down_title{
+        .search-results-title,
+        .drop-down-title{
           text-align:  center;
           font-size: 25px;
         }
@@ -253,29 +250,32 @@
           background-color: rgba(0, 0, 0, 0.1);
         }
 
-        .ingredient-category ul {
-          list-style-type: none;
-          font-size: 20px;
+        .ingredient-category {
+          ul {
+            list-style-type: none;
+            font-size: 20px;
+            li {
+              text-align: left;
+              cursor: pointer;
+
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+              }
+            }
+          }
+
+          .categoryElement {
+            font-size: 20px;
+            padding-left: 50px;
+            text-align: left;
+            cursor: pointer;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+          }
         }
 
-        .ingredient-category .categoryElement {
-          font-size: 20px;
-          padding-left: 50px;
-          text-align: left;
-          cursor: pointer;
-        }
-
-        .ingredient-category .categoryElement:hover,
-        .ingredient-category ul li:hover {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .ingredient-category ul li {
-          text-align: left;
-          cursor: pointer;
-        }
-
-        .search_results_title {
+        .search-results-title {
           display: none;
         }
       }
@@ -296,7 +296,6 @@
   }
   }
 }
-
 
 .dropdown-bg {
   display: none;
