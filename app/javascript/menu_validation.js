@@ -25,7 +25,6 @@ document.addEventListener("turbo:load", function(event) {
     for (var i = minForm; i < maxForm; i++) {
       validateInput("ingredient_name[" + i + "]");
       validateInput("ingredient_quantity[" + i + "]");
-      validateInput("menu_ingredients_[" + i + "]unit");
     }
   });
 

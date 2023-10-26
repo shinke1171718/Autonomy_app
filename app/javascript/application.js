@@ -6,9 +6,7 @@ window.$ = jquery
 import "./nav_menu";
 import "./ingredient_dropdown";
 import "./addForm";
-
-// フォーム構成を変更するためコメントアウト中
-// import "./menu_validation";
+import "./menu_validation";
 
 
 
