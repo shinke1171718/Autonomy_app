@@ -1,8 +1,8 @@
-let searchResultsTitle = document.querySelector(".search_results_title");
+let searchResultsTitle = document.querySelector(".search-results-title");
 let dropdownBg = document.getElementById('dropdownBackground');
 let closeButton = document.querySelector('.close-button');
 const searchResultsContainer = document.getElementById('searchResultsContainer');
-const ingredientList = document.getElementById(`ingredient_select`);
+const ingredientList = document.getElementById(`ingredient-select`);
 
 document.addEventListener("turbo:load", function() {
   let ingredientName = null;

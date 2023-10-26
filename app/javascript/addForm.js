@@ -47,7 +47,7 @@ function createNewForm() {
   if (formCount_view < maxFormCount_view) {
     var newForm = `
       <div class="custom-ingredient-fields">
-        <div class="form-delete_button">
+        <div class="form-delete-button">
           <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down[${newFormCount_back}]">❌</a>
         </div>
         <span class="form-number">${paddedNewFormCount}</span>

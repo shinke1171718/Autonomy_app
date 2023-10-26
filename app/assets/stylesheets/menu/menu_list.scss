@@ -1,4 +1,4 @@
-.menus_container{
+.menus-container{
   text-align: center;
   width: 100%;
   @media screen and (max-width: 600px) {
@@ -6,11 +6,11 @@
   }
 
   .original-menu-heading {
-    @extend .menu_heading;
+    @extend .menu-heading;
   }
 
   .menu-list-heading {
-    @extend .menu_heading;
+    @extend .menu-heading;
   }
 
   .menus_list {
@@ -41,13 +41,13 @@
     }
   }
 
-  .default_menus_list{
+  .default-menus-list{
     @extend .rounded-image;
   }
 }
 
 // テンプレ化しているスタイル
-.menu_heading {
+.menu-heading {
   display: block;
   margin-top: 80px;
   font-size: 30px;
@@ -60,7 +60,7 @@
   }
 }
 
-.menu_heading::after {
+.menu-heading::after {
   content: "";
   position: absolute;
   left: 0;
