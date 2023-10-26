@@ -6,6 +6,7 @@ const ingredientList = document.getElementById(`ingredient_select`);
 
 document.addEventListener("turbo:load", function() {
   let ingredientName = null;
+  let matchedItems = [];
   const ingredient_form = document.getElementById("ingredient_form");
   const ingredientItems = ingredientList.querySelectorAll('li');
   const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
@@ -45,12 +46,46 @@ document.addEventListener("turbo:load", function() {
     }
 
     ingredientItems.forEach(function(item) {
-      const itemText = item.textContent.trim();
-      const katakanaText = hiraganaToKatakana(searchText);
+      const itemHiragana = item.getAttribute('data-hiragana');
+      const itemValue = item.getAttribute('data-value');
 
-      if (normalizeAndCompare(katakanaText, itemText))  {
-        handleSearchResult(itemText);
+      // ひらがな前方一致（例：検索→さや 結果→さやえんどう）
+      if (itemHiragana.startsWith(searchText)) {
+        matchedItems.push(item);
+        return;
       }
+
+      // ひらがな部分一致（例：検索→どう 結果→さやえんどう）
+      if (itemHiragana.includes(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
+
+      // 漢字の前方一致（例：検索→大ば 結果→大場）
+      if (itemValue.startsWith(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
+
+      // 漢字の部分一致（例：検索→魚 結果→秋刀魚）
+      if (itemValue.includes(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
+    });
+
+    // 50音順にソート
+    matchedItems.sort(function(a, b) {
+      const aHiragana = a.getAttribute('data-hiragana');
+      const bHiragana = b.getAttribute('data-hiragana');
+      if (aHiragana < bHiragana) return -1;
+      if (aHiragana > bHiragana) return 1;
+      return 0;
+    });
+
+    // ソートされたアイテムを結果として表示
+    matchedItems.forEach(function(item) {
+      handleSearchResult(item.textContent.trim());
     });
 
     showIngredientList();
@@ -60,6 +95,7 @@ document.addEventListener("turbo:load", function() {
   ingredientList.addEventListener("click", function(e) {
     if (e.target.tagName !== 'LI') return;
 
+    matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
     closeDropdown()
   });
@@ -68,6 +104,7 @@ document.addEventListener("turbo:load", function() {
   searchResultsContainer.addEventListener("click", function(e) {
     if (!searchResultsContainer) return;
 
+    matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
     closeDropdown()
   });
@@ -128,10 +165,18 @@ function normalizeText(text) {
 }
 
 // ひらがなをカタカナに変換する関数
-function hiraganaToKatakana(input) {
-  return input.replace(/[\u3041-\u3096]/g, function(match) {
-    const charCode = match.charCodeAt(0) + 0x60;
-    return String.fromCharCode(charCode);
+function katakanaToHiragana(src) {
+  return src.replace(/[\u30a1-\u30f6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60;
+    return String.fromCharCode(chr);
+  });
+}
+
+// ひらがなをカタカナに変換する関数
+function hiraganaToKatakana(hiragana) {
+  return hiragana.replace(/[\u3041-\u3096]/g, function(match) {
+      const chr = match.charCodeAt(0) + 0x60;
+      return String.fromCharCode(chr);
   });
 }
 

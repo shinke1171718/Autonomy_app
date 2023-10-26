@@ -57,10 +57,10 @@
                       <p id="categoryElement-<%= index %>" class="categoryElement"><%= category.category_name %></p>
 
                       <ul id="ingredients-list-<%= index %>" style="display: none;">
-                        <% materials.each do |material_unit| %>
-                          <% if material_unit.material && material_unit.unit %>
-                            <li data-value="<%= material_unit.material.material_name %>">
-                              <%= material_unit.material.material_name %>
+                        <% materials.each do |material| %>
+                          <% if material.material_name %>
+                            <li data-value="<%= material.material_name %>" data-hiragana="<%= material.hiragana %>">
+                              <%= material.material_name %>
                           <% end %>
                         <% end %>
                       </ul>

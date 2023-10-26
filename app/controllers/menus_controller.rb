@@ -10,7 +10,7 @@ class MenusController < ApplicationController
   def new
     @menu = Menu.new
     @menu.ingredients = Ingredient.new
-    @materials_by_category = MaterialUnit.includes(:material).group_by { |mu| mu.material.category }
+    @materials_by_category = fetch_materials_grouped_by_category
   end
 
 
@@ -59,6 +59,13 @@ class MenusController < ApplicationController
       return false
     end
     return true
+  end
+
+  def fetch_materials_grouped_by_category
+    all_materials = Material.includes(:category).order(:hiragana)
+    materials_grouped_by_category = all_materials.group_by(&:category)
+    sorted_by_category = materials_grouped_by_category.sort_by { |category, _| category.id }.to_h
+    sorted_materials_within_categories = sorted_by_category.transform_values { |materials| materials.sort_by(&:hiragana) }
   end
 
 end
