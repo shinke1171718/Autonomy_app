@@ -49,18 +49,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110904) do
   end
 
   create_table "ingredients", force: :cascade do |t|
-    t.bigint "material_unit_id", null: false
+    t.bigint "material_id", null: false
     t.bigint "unit_id", null: false
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["material_unit_id"], name: "index_ingredients_on_material_unit_id"
+    t.index ["material_id"], name: "index_ingredients_on_material_id"
     t.index ["unit_id"], name: "index_ingredients_on_unit_id"
   end
 
   create_table "material_units", force: :cascade do |t|
     t.bigint "material_id", null: false
     t.bigint "unit_id", null: false
+    t.integer "conversion_factor", null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["material_id"], name: "index_material_units_on_material_id"
@@ -68,16 +69,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110904) do
   end
 
   create_table "materials", force: :cascade do |t|
-    t.string "material_name", default: "", null: false
-    t.integer "conversion_factor", null: false
+    t.string "material_name", null: false
     t.bigint "category_id", null: false
-    t.bigint "unit_id", null: false
-    t.string "default_name", default: "", null: false
-    t.string "hiragana", default: "", null: false
+    t.integer "default_unit_id", null: false
+    t.string "hiragana", null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["category_id"], name: "index_materials_on_category_id"
-    t.index ["unit_id"], name: "index_materials_on_unit_id"
   end
 
   create_table "menu_ingredients", force: :cascade do |t|
