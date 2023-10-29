@@ -10,7 +10,7 @@ class MenusController < ApplicationController
   def new
     @menu = Menu.new
     @menu.ingredients = Ingredient.new
-    @materials_by_category = Material.includes(:category).order('categories.id, hiragana').group_by { |m| m.category.category_name }
+    @materials_by_category = fetch_sorted_materials_by_category
   end
 
 
@@ -28,6 +28,14 @@ class MenusController < ApplicationController
     #   flash[:error] = "誤った入力が検出されました。"
     #   redirect_to new_user_menu_path
     # end
+  end
+
+  def units
+    material = Material.find_by(material_name: params[:material_name])
+    units = material.material_units.map do |material_unit|
+      { id: material_unit.unit_id, name: material_unit.unit.unit_name }
+    end
+    render json: units
   end
 
   private
@@ -59,6 +67,17 @@ class MenusController < ApplicationController
       return false
     end
     return true
+  end
+
+  def fetch_sorted_materials_by_category
+    materials_by_category = {}
+    sorted_materials = Material.includes(:category).order('categories.id', :hiragana)
+    grouped_materials = sorted_materials.group_by { |m| m.category.category_name }
+
+    grouped_materials.each do |category_name, materials|
+      materials_by_category[category_name] = materials.sort_by(&:hiragana)
+    end
+    materials_by_category
   end
 
 end

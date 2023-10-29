@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
 
     post '/users/:user_id/menus/new_confirm', to: 'menus#new_confirm', as: :new_confirm_user_menu
+    post 'users/:user_id/menus/units', to: 'menus#units'
+
 
     resources :users do
       resources :menus do
