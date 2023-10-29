@@ -37,6 +37,7 @@ document.addEventListener("turbo:load", function() {
     }
 
     e.preventDefault();
+    matchedItems = [];
     searchResultsContainer.innerHTML = '';
     const searchText = searchInput.value.trim();
 
@@ -97,7 +98,11 @@ document.addEventListener("turbo:load", function() {
 
     matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
+    let parentElement = ingredientName.parentElement;
+    let selectElement = parentElement.querySelector(".ingredient-unit");
     closeDropdown()
+
+    handleIngredientNameChange(selectElement, ingredientName.value);
   });
 
   // 検索した食材を選んだらフォームに値をセットする
@@ -106,7 +111,11 @@ document.addEventListener("turbo:load", function() {
 
     matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
+    let parentElement = ingredientName.parentElement;
+    let selectElement = parentElement.querySelector(".ingredient-unit");
     closeDropdown()
+
+    handleIngredientNameChange(selectElement, ingredientName.value);
   });
 
   // 食材リストを表示/非表示に切り替える
@@ -197,4 +206,37 @@ function closeDropdown() {
   dropdownBg.style.display = "none";
   ingredientList.style.display = "none";
   clearSearchResults();
+}
+
+// 食材セット時にunitフォームへ専用の単位を設定する
+function handleIngredientNameChange(selectElement, value) {
+  const material_name = value;
+  const userId = document.querySelector('.menu-registration-container').getAttribute('data-user-id');
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+  const url = `/users/${userId}/menus/units`;
+  console.log(userId);
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': token
+    },
+    body: JSON.stringify({ material_name: material_name })
+  })
+  .then(response => response.json())
+  .then(data => {
+
+    while (selectElement.firstChild) {
+      selectElement.removeChild(selectElement.firstChild);
+    }
+
+    data.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.id;
+      option.textContent = item.name;
+      selectElement.appendChild(option);
+    });
+  });
 }

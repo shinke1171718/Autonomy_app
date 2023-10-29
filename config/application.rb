@@ -18,5 +18,13 @@ module AutonomyApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        # resource '/users/:user_id/menus/units', headers: :any, methods: [:post]
+        resource '/autocomplete_ingredients', headers: :any, methods: [:post]
+      end
+    end
   end
 end
