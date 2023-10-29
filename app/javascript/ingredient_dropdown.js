@@ -3,23 +3,26 @@ let dropdownBg = document.getElementById('dropdownBackground');
 let closeButton = document.querySelector('.close-button');
 const searchResultsContainer = document.getElementById('searchResultsContainer');
 const ingredientList = document.getElementById(`ingredient-select`);
+const searchInput = document.getElementById('ingredientSearchInput');
+const ingredient_form = document.getElementById("ingredient_form");
 
 document.addEventListener("turbo:load", function() {
   let ingredientName = null;
   let matchedItems = [];
-  const ingredient_form = document.getElementById("ingredient_form");
+
   const ingredientItems = ingredientList.querySelectorAll('li');
   const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
   const searchResultsDiv = document.createElement('div');
   ingredientList.insertBefore(searchResultsDiv, ingredientList.firstChild);
-  const searchInput = document.getElementById('ingredientSearchInput');
 
-  // フォーカスが発生したときにリストを展開
+
+  // フォームの「食材フォーム」「単位フォーム」をクリックした場合の処理
   ingredient_form.addEventListener("click", function(event) {
     const clickedElement = event.target;
-
-    if (!clickedElement.classList.contains("ingredient-name")) return;
-
+    if (!clickedElement.classList.contains("ingredient-name")) {
+      handleIngredientUnitChange(clickedElement)
+      return;
+    }
     ingredientName = document.getElementById(clickedElement.id);
     if (!ingredientName) return;
 
@@ -73,15 +76,6 @@ document.addEventListener("turbo:load", function() {
         matchedItems.push(item);
         return;
       }
-    });
-
-    // 50音順にソート
-    matchedItems.sort(function(a, b) {
-      const aHiragana = a.getAttribute('data-hiragana');
-      const bHiragana = b.getAttribute('data-hiragana');
-      if (aHiragana < bHiragana) return -1;
-      if (aHiragana > bHiragana) return 1;
-      return 0;
     });
 
     // ソートされたアイテムを結果として表示
@@ -161,34 +155,6 @@ function showIngredientList() {
   ingredientList.style.display = "block";
 }
 
-// 文字列を正規化して比較する関数
-function normalizeAndCompare(searchText, itemText) {
-  const normalizedSearchText = normalizeText(searchText);
-  const normalizedItemText = normalizeText(itemText);
-  return normalizedItemText.includes(normalizedSearchText);
-}
-
-// テキストを正規化する関数
-function normalizeText(text) {
-  return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-// ひらがなをカタカナに変換する関数
-function katakanaToHiragana(src) {
-  return src.replace(/[\u30a1-\u30f6]/g, function(match) {
-    const chr = match.charCodeAt(0) - 0x60;
-    return String.fromCharCode(chr);
-  });
-}
-
-// ひらがなをカタカナに変換する関数
-function hiraganaToKatakana(hiragana) {
-  return hiragana.replace(/[\u3041-\u3096]/g, function(match) {
-      const chr = match.charCodeAt(0) + 0x60;
-      return String.fromCharCode(chr);
-  });
-}
-
 // 全てのingredients-listを表示する
 function openDropdown() {
   const categoryLists = document.querySelectorAll('.ingredient-category ul');
@@ -205,7 +171,25 @@ function openDropdown() {
 function closeDropdown() {
   dropdownBg.style.display = "none";
   ingredientList.style.display = "none";
+  searchInput.value = "";
   clearSearchResults();
+}
+
+// ingredient_quantityに「少々」がセットされた時の処理
+function handleIngredientUnitChange(clickedElement) {
+  if (!clickedElement.matches(".ingredient-unit")) return;
+
+  clickedElement.addEventListener('change', function() {
+    const selectedOptionText = clickedElement.options[clickedElement.selectedIndex].textContent;
+    const inputElement = clickedElement.closest('div').querySelector(".ingredient-quantity");
+    if (selectedOptionText === "少々") {
+        inputElement.value = "1";
+        inputElement.setAttribute("readonly", true);
+    } else {
+      inputElement.value = "";
+        inputElement.removeAttribute("readonly");
+    }
+  });
 }
 
 // 食材セット時にunitフォームへ専用の単位を設定する
@@ -215,7 +199,6 @@ function handleIngredientNameChange(selectElement, value) {
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   const url = `/users/${userId}/menus/units`;
-  console.log(userId);
   fetch(url, {
     method: 'POST',
     headers: {
