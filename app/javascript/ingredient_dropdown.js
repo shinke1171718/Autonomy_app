@@ -5,6 +5,7 @@ const searchResultsContainer = document.getElementById('searchResultsContainer')
 const ingredientList = document.getElementById(`ingredient-select`);
 const searchInput = document.getElementById('ingredientSearchInput');
 const ingredient_form = document.getElementById("ingredient_form");
+let validIngredients = [];
 
 document.addEventListener("turbo:load", function() {
   let ingredientName = null;
@@ -103,6 +104,12 @@ document.addEventListener("turbo:load", function() {
   searchResultsContainer.addEventListener("click", function(e) {
     if (!searchResultsContainer) return;
 
+    // validIngredientsに該当する場合、処理をキャンセル
+    if (validIngredients.includes(e.target.textContent.trim())) {
+      e.preventDefault();
+      return false;
+    }
+
     matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
     let parentElement = ingredientName.parentElement;
@@ -147,11 +154,18 @@ function handleSearchResult(itemText) {
   const resultDiv = document.createElement('div');
   resultDiv.textContent = itemText;
   resultDiv.classList.add('search-result-item');
+
+  // validIngredientsの中に該当する値があるかチェック
+  if (validIngredients.includes(itemText)) {
+    resultDiv.style.opacity = '0.5';
+  }
+
   searchResultsContainer.appendChild(resultDiv);
 }
 
 // リストをnoneからblockへ変更
 function showIngredientList() {
+  getAllIngredientTexts()
   ingredientList.style.display = "block";
 }
 
@@ -172,6 +186,7 @@ function closeDropdown() {
   dropdownBg.style.display = "none";
   ingredientList.style.display = "none";
   searchInput.value = "";
+  getAllIngredientTexts()
   clearSearchResults();
 }
 
@@ -188,6 +203,31 @@ function handleIngredientUnitChange(clickedElement) {
     } else {
       inputElement.value = "";
         inputElement.removeAttribute("readonly");
+    }
+  });
+}
+
+// 全てのingredientNameフォームのテキストデータを更新する関数
+function getAllIngredientTexts() {
+  let elements = document.querySelectorAll('.ingredient-name');
+  let values = Array.from(elements).map(element => element.value);
+  validIngredients = values.filter(value => value !== '');
+
+  refreshIngredientList();
+  return validIngredients;
+}
+
+// セットした値を再度入力できないように設定
+function refreshIngredientList() {
+  let ingredients = document.querySelectorAll('[data-value]');
+
+  ingredients.forEach(ingredient => {
+    if (validIngredients.includes(ingredient.getAttribute('data-value'))) {
+        ingredient.style.opacity = '0.5';
+        ingredient.style.pointerEvents = 'none';
+    } else {
+        ingredient.style.color = 'black';
+        ingredient.style.pointerEvents = 'auto';
     }
   });
 }
