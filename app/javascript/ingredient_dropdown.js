@@ -35,9 +35,11 @@ document.addEventListener("turbo:load", function() {
   closeButton.addEventListener("click", closeDropdown);
 
   // フォーム入力で値を検索し、ヒットしたら表示する
-  searchInput.addEventListener("keydown", function(e) {
-    if (e.key !== "Enter") {
-      return;
+  let searchTimer;
+  searchInput.addEventListener("input", function(e) {
+    // タイマーが既に設定されている場合はクリア
+    if (searchTimer) {
+        clearTimeout(searchTimer);
     }
 
     e.preventDefault();
@@ -46,46 +48,52 @@ document.addEventListener("turbo:load", function() {
     const searchText = searchInput.value.trim();
 
     if (searchText === '') {
-      clearSearchResults();
-      return;
+        clearSearchResults();
+        return;
     }
 
     ingredientItems.forEach(function(item) {
-      const itemHiragana = item.getAttribute('data-hiragana');
-      const itemValue = item.getAttribute('data-value');
+        const itemHiragana = item.getAttribute('data-hiragana');
+        const itemValue = item.getAttribute('data-value');
 
-      // ひらがな前方一致（例：検索→さや 結果→さやえんどう）
-      if (itemHiragana.startsWith(searchText)) {
-        matchedItems.push(item);
-        return;
-      }
+        // ひらがな前方一致
+        if (itemHiragana.startsWith(searchText)) {
+            matchedItems.push(item);
+            return;
+        }
 
-      // ひらがな部分一致（例：検索→どう 結果→さやえんどう）
-      if (itemHiragana.includes(searchText)) {
-        matchedItems.push(item);
-        return;
-      }
+        // ひらがな部分一致
+        if (itemHiragana.includes(searchText)) {
+            matchedItems.push(item);
+            return;
+        }
 
-      // 漢字の前方一致（例：検索→大ば 結果→大場）
-      if (itemValue.startsWith(searchText)) {
-        matchedItems.push(item);
-        return;
-      }
+        // 漢字の前方一致
+        if (itemValue.startsWith(searchText)) {
+            matchedItems.push(item);
+            return;
+        }
 
-      // 漢字の部分一致（例：検索→魚 結果→秋刀魚）
-      if (itemValue.includes(searchText)) {
-        matchedItems.push(item);
-        return;
-      }
+        // 漢字の部分一致
+        if (itemValue.includes(searchText)) {
+            matchedItems.push(item);
+            return;
+        }
     });
 
     // ソートされたアイテムを結果として表示
     matchedItems.forEach(function(item) {
-      handleSearchResult(item.textContent.trim());
+        handleSearchResult(item.textContent.trim());
     });
 
     showIngredientList();
+
+    // 3秒後に処理を終了
+    searchTimer = setTimeout(() => {
+        clearSearchResults();
+    }, 3000);
   });
+
 
   // 食材を選んだらフォームに値をセットする
   ingredientList.addEventListener("click", function(e) {
