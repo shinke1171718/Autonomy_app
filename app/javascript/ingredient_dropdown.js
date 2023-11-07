@@ -5,28 +5,30 @@ const searchResultsContainer = document.getElementById('searchResultsContainer')
 const ingredientList = document.getElementById(`ingredient-select`);
 const searchInput = document.getElementById('ingredientSearchInput');
 const ingredient_form = document.getElementById("ingredient_form");
-let validIngredients = [];
+let selectedUnits = [];
+let ingredientUnitMapping = {};
 
 document.addEventListener("turbo:load", function() {
   let ingredientName = null;
   let matchedItems = [];
-
   const ingredientItems = ingredientList.querySelectorAll('li');
   const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
   const searchResultsDiv = document.createElement('div');
+  const ingredientForm = document.querySelector('#ingredient_form');
   ingredientList.insertBefore(searchResultsDiv, ingredientList.firstChild);
-
 
   // フォームの「食材フォーム」「単位フォーム」をクリックした場合の処理
   ingredient_form.addEventListener("click", function(event) {
     const clickedElement = event.target;
+
+    // 食材名以外の要素がクリックされた場合、単位変更ハンドラーを呼び出します。
     if (!clickedElement.classList.contains("ingredient-name")) {
-      handleIngredientUnitChange(clickedElement)
+      handleIngredientUnitChange(clickedElement);
       return;
     }
+
     ingredientName = document.getElementById(clickedElement.id);
     if (!ingredientName) return;
-
     openDropdown();
     event.stopPropagation();
   });
@@ -39,7 +41,7 @@ document.addEventListener("turbo:load", function() {
   searchInput.addEventListener("input", function(e) {
     // タイマーが既に設定されている場合はクリア
     if (searchTimer) {
-        clearTimeout(searchTimer);
+      clearTimeout(searchTimer);
     }
 
     e.preventDefault();
@@ -48,52 +50,56 @@ document.addEventListener("turbo:load", function() {
     const searchText = searchInput.value.trim();
 
     if (searchText === '') {
-        clearSearchResults();
-        return;
+      clearSearchResults();
+      return;
     }
 
     ingredientItems.forEach(function(item) {
-        const itemHiragana = item.getAttribute('data-hiragana');
-        const itemValue = item.getAttribute('data-value');
+      const itemHiragana = item.getAttribute('data-hiragana');
+      const itemValue = item.getAttribute('data-value');
 
-        // ひらがな前方一致
-        if (itemHiragana.startsWith(searchText)) {
-            matchedItems.push(item);
-            return;
-        }
+      // ひらがな前方一致
+      if (itemHiragana.startsWith(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
 
-        // ひらがな部分一致
-        if (itemHiragana.includes(searchText)) {
-            matchedItems.push(item);
-            return;
-        }
+      // ひらがな部分一致
+      if (itemHiragana.includes(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
 
-        // 漢字の前方一致
-        if (itemValue.startsWith(searchText)) {
-            matchedItems.push(item);
-            return;
-        }
+      // 漢字の前方一致
+      if (itemValue.startsWith(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
 
-        // 漢字の部分一致
-        if (itemValue.includes(searchText)) {
-            matchedItems.push(item);
-            return;
-        }
+      // 漢字の部分一致
+      if (itemValue.includes(searchText)) {
+        matchedItems.push(item);
+        return;
+      }
     });
 
     // ソートされたアイテムを結果として表示
     matchedItems.forEach(function(item) {
-        handleSearchResult(item.textContent.trim());
+      const itemText = item.textContent.trim();
+      searchResultsTitle.style.display = "block";
+      const resultDiv = document.createElement('div');
+      resultDiv.textContent = itemText;
+      resultDiv.classList.add('search-result-item');
+      searchResultsContainer.appendChild(resultDiv);
     });
 
-    showIngredientList();
+    ingredientList.style.display = "block";
 
     // 3秒後に処理を終了
     searchTimer = setTimeout(() => {
-        clearSearchResults();
+      clearSearchResults();
     }, 3000);
   });
-
 
   // 食材を選んだらフォームに値をセットする
   ingredientList.addEventListener("click", function(e) {
@@ -111,12 +117,6 @@ document.addEventListener("turbo:load", function() {
   // 検索した食材を選んだらフォームに値をセットする
   searchResultsContainer.addEventListener("click", function(e) {
     if (!searchResultsContainer) return;
-
-    // validIngredientsに該当する場合、処理をキャンセル
-    if (validIngredients.includes(e.target.textContent.trim())) {
-      e.preventDefault();
-      return false;
-    }
 
     matchedItems = [];
     ingredientName.value = e.target.textContent.trim();
@@ -139,14 +139,6 @@ document.addEventListener("turbo:load", function() {
       }
     });
   });
-
-  // ドロップダウンリストの各項目とフォームの内容を比較して一致するものがあるか確認
-  ingredientName.addEventListener('blur', function() {
-    const matchFound = Array.from(ingredientItems).some(item => item.textContent.trim() === ingredientName.value.trim());
-    if (!matchFound) {
-        ingredientName.value = '';
-    }
-  });
 });
 
 
@@ -154,27 +146,6 @@ document.addEventListener("turbo:load", function() {
 function clearSearchResults() {
   searchResultsContainer.innerHTML = '';
   searchResultsTitle.style.display = "none";
-}
-
-// 検索結果を表示する
-function handleSearchResult(itemText) {
-  searchResultsTitle.style.display = "block";
-  const resultDiv = document.createElement('div');
-  resultDiv.textContent = itemText;
-  resultDiv.classList.add('search-result-item');
-
-  // validIngredientsの中に該当する値があるかチェック
-  if (validIngredients.includes(itemText)) {
-    resultDiv.style.opacity = '0.5';
-  }
-
-  searchResultsContainer.appendChild(resultDiv);
-}
-
-// リストをnoneからblockへ変更
-function showIngredientList() {
-  getAllIngredientTexts()
-  ingredientList.style.display = "block";
 }
 
 // 全てのingredients-listを表示する
@@ -194,49 +165,29 @@ function closeDropdown() {
   dropdownBg.style.display = "none";
   ingredientList.style.display = "none";
   searchInput.value = "";
-  getAllIngredientTexts()
   clearSearchResults();
 }
 
 // ingredient_quantityに「少々」がセットされた時の処理
 function handleIngredientUnitChange(clickedElement) {
-  if (!clickedElement.matches(".ingredient-unit")) return;
-
   clickedElement.addEventListener('change', function() {
     const selectedOptionText = clickedElement.options[clickedElement.selectedIndex].textContent;
     const inputElement = clickedElement.closest('div').querySelector(".ingredient-quantity");
     if (selectedOptionText === "少々") {
-        inputElement.value = "1";
-        inputElement.setAttribute("readonly", true);
+      inputElement.style.backgroundColor = "#e0e0e0";
+      inputElement.style.pointerEvents = "none";
+      inputElement.setAttribute("readonly", true);
+      inputElement.setAttribute("tabindex", "-1");
+      inputElement.placeholder = "";
     } else {
-      inputElement.value = "";
-        inputElement.removeAttribute("readonly");
+      inputElement.style.backgroundColor = "";
+      inputElement.style.pointerEvents = "";
+      inputElement.removeAttribute("readonly");
+      inputElement.removeAttribute("tabindex");
+      inputElement.placeholder = "数量";
     }
-  });
-}
 
-// 全てのingredientNameフォームのテキストデータを更新する関数
-function getAllIngredientTexts() {
-  let elements = document.querySelectorAll('.ingredient-name');
-  let values = Array.from(elements).map(element => element.value);
-  validIngredients = values.filter(value => value !== '');
-
-  refreshIngredientList();
-  return validIngredients;
-}
-
-// セットした値を再度入力できないように設定
-function refreshIngredientList() {
-  let ingredients = document.querySelectorAll('[data-value]');
-
-  ingredients.forEach(ingredient => {
-    if (validIngredients.includes(ingredient.getAttribute('data-value'))) {
-        ingredient.style.opacity = '0.5';
-        ingredient.style.pointerEvents = 'none';
-    } else {
-        ingredient.style.color = 'black';
-        ingredient.style.pointerEvents = 'auto';
-    }
+    updateAndRerunProcesses()
   });
 }
 
@@ -268,6 +219,59 @@ function handleIngredientNameChange(selectElement, value) {
       option.value = item.id;
       option.textContent = item.name;
       selectElement.appendChild(option);
+      selectElement.style.pointerEvents = 'auto';
+      selectElement.removeAttribute('tabindex');
+      updateAndRerunProcesses()
+    });
+  });
+}
+
+// 該当するunitを使用不可にする
+function disableOption(optionElems, selectedUnit) {
+  for (let optionElem of optionElems) {
+    if (optionElem.value === selectedUnit) {
+      optionElem.disabled = true;
+      optionElem.style.opacity = "0.5";
+      return true;
+    }
+  }
+  return false;
+}
+
+// すべてのユニットオプションをリセットし、各食材名に対してユニットオプションを更新する
+function updateAndRerunProcesses() {
+  const ingredientNames = document.querySelectorAll('.ingredient-name');
+
+  // すべてのユニットオプションをリセットする
+  document.querySelectorAll('.ingredient-unit option').forEach(option => {
+    option.disabled = false;
+    option.style.opacity = "1";
+  });
+
+  // 各食材名に対してユニットオプションを更新する
+  ingredientNames.forEach(ingredientElement => {
+    // 食材名が空の場合は処理を終了
+    if (ingredientElement.value.trim() === "") return;
+
+    const selectedIngredient = ingredientElement.value;
+    const unitElement = ingredientElement.nextElementSibling.nextElementSibling; // 該当のunit要素を取得
+    const selectedUnit = unitElement.value; // 該当のunit要素のIDを取得
+
+    // 同じ食材名を持つ要素を取得
+    const matchingIngredients = Array.from(ingredientNames).filter(elem => elem !== ingredientElement && elem.value === selectedIngredient);
+
+    // 対応するユニットオプションを無効にし、必要に応じて値をリセットする
+    matchingIngredients.forEach(matchingIngredient => {
+      const unitSelectElem = matchingIngredient.nextElementSibling.nextElementSibling;
+      const optionElems = Array.from(unitSelectElem.querySelectorAll('option'));
+
+      optionElems.forEach(option => {
+        if (option.value !== selectedUnit) return;
+        option.disabled = true;
+        option.style.opacity = "0.5";
+        if (unitSelectElem.value !== selectedUnit) return;
+        unitSelectElem.value = "";
+      });
     });
   });
 }
