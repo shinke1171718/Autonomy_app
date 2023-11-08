@@ -21,14 +21,17 @@ document.addEventListener("turbo:load", function(event) {
 
     // ingredientモデルのバリデーション
     for (let i = minForm; i < maxForm; i++) {
-      const EXCEPTIONAL_UNIT_IDS = ["17"];
+      const EXCEPTIONAL_UNIT_IDS = ["17"]; // 17は「少々」という単位のunit_idです。
       const ingredientNameInput = document.getElementById("ingredient_name[" + i + "]");
+
+      if (!ingredientNameInput || ingredientNameInput.value.trim() === "") continue;
+
       const ingredientUnitInput = document.getElementById("menu_ingredients_unit[" + i + "]");
       const selectedUnitId = ingredientUnitInput.value;
 
-      // 「少々」の場合にはバリデーションを行わない
-      if (EXCEPTIONAL_UNIT_IDS.includes(selectedUnitId)) return;
-      if (ingredientNameInput.value.trim() === "") return;
+      // EXCEPTIONAL_UNIT_IDSに設定」されているIDはバリデーションを行わない
+      if (EXCEPTIONAL_UNIT_IDS.includes(selectedUnitId)) continue;
+
       validateInput("ingredient_quantity[" + i + "]");
     }
   });
