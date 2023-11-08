@@ -1,62 +1,45 @@
 document.addEventListener("turbo:load", function(event) {
-  var form = document.getElementById("menu_form");
-  var minForm = 0;
-  var maxForm = 14;
+  let form = document.getElementById("menu_form");
+  let minForm = 0;
+  let maxForm = 14;
 
   form.addEventListener('submit', function(event) {
-    var menu_name = form.elements["menu_name"];
-    var menu_contents = form.elements["menu_contents"];
-    var contents = form.elements["contents"];
-    var errorMessage_name = document.getElementById("menu-error_name");
-    var errorMessage_contents = document.getElementById("menu-error-contents-1");
-    var errorMessage_contents_2 = document.getElementById("menu-error-contents-2");
-    var inputName = document.querySelector(".name-registration-field input");
-    var inputContent = document.querySelector(".menu-registration-field input");
-    var inputText = document.querySelector("textarea");
+    let menu_name = form.elements["menu_name"];
+    let menu_contents = form.elements["menu_contents"];
+    let contents = form.elements["contents"];
+    let errorMessage_name = document.getElementById("menu-error_name");
+    let errorMessage_contents = document.getElementById("menu-error-contents-1");
+    let errorMessage_contents_2 = document.getElementById("menu-error-contents-2");
+    let inputName = document.querySelector(".name-registration-field input");
+    let inputContent = document.querySelector(".menu-registration-field input");
+    let inputText = document.querySelector("textarea");
 
+    // menuモデルのバリデーション
     validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)
     validateAndHighlightInput(menu_contents, errorMessage_contents, inputContent, event)
     validateAndHighlightInput(contents, errorMessage_contents_2, inputText, event)
-  });
 
+    // ingredientモデルのバリデーション
+    for (let i = minForm; i < maxForm; i++) {
+      const EXCEPTIONAL_UNIT_IDS = ["17"]; // 17は「少々」という単位のunit_idです。
+      const ingredientNameInput = document.getElementById("ingredient_name[" + i + "]");
 
+      if (!ingredientNameInput || ingredientNameInput.value.trim() === "") continue;
 
-  form.addEventListener('submit', function(event) {
-    for (var i = minForm; i < maxForm; i++) {
-      validateInput("ingredient_name[" + i + "]");
+      const ingredientUnitInput = document.getElementById("menu_ingredients_unit[" + i + "]");
+      const selectedUnitId = ingredientUnitInput.value;
+
+      // EXCEPTIONAL_UNIT_IDSに設定」されているIDはバリデーションを行わない
+      if (EXCEPTIONAL_UNIT_IDS.includes(selectedUnitId)) continue;
+
       validateInput("ingredient_quantity[" + i + "]");
-    }
-  });
-
-
-  form.addEventListener('submit', function(event) {
-    var names = [];
-    var duplication_error = document.getElementById("ingredients-name-duplication-error");
-    function isNameValid(name) {
-      return name.trim() !== "" && !names.includes(name);
-    }
-
-    for (var i = minForm; i < maxForm; i++) {
-      var ingredient_name = document.getElementById("ingredient_name[" + i + "]");
-      if (ingredient_name.value.trim() === "") {
-        continue;
-      }
-
-      var name = ingredient_name.value.trim();
-      if (isNameValid(name)) {
-        names.push(name);
-        ingredient_name.style.backgroundColor = '';
-      } else {
-        ingredient_name.style.backgroundColor = "rgb(255, 184, 184)";
-        duplication_error.textContent = "⚠️重複登録された食材があります。";
-      }
     }
   });
 });
 
 
 function validateAndHighlightInput(element ,sub_errorMessage, inputElement, event) {
-  var menu_main_errorMessage = document.getElementById("main-menu-error");
+  let menu_main_errorMessage = document.getElementById("main-menu-error");
   if (element.value === "" ) {
     event.preventDefault();
     menu_main_errorMessage.textContent = "⚠️未入力があります。";
@@ -71,13 +54,13 @@ function validateAndHighlightInput(element ,sub_errorMessage, inputElement, even
 
 
 function validateInput(inputId) {
-  var errorMessage_ingredient = document.getElementById('ingredients-error');
-  var input = document.getElementById(inputId);
+  let errorMessage_ingredient = document.getElementById('ingredients-error');
+  let input = document.getElementById(inputId);
   if (input && input.value === "" ) {
     event.preventDefault();
     input.style.backgroundColor = "rgb(255, 184, 184)";
     errorMessage_ingredient.textContent = "⚠️未入力があります。";
-  } else if (input) {
+  } else {
     input.style.backgroundColor = "";
   }
 }
