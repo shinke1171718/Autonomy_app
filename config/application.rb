@@ -10,6 +10,7 @@ module AutonomyApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.active_storage.variant_processor = :mini_magick
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -22,7 +23,6 @@ module AutonomyApp
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        # resource '/users/:user_id/menus/units', headers: :any, methods: [:post]
         resource '/autocomplete_ingredients', headers: :any, methods: [:post]
       end
     end

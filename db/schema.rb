@@ -91,7 +91,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110904) do
     t.string "menu_name", default: "", null: false
     t.text "menu_contents", default: "", null: false
     t.string "contents", default: "", null: false
-    t.boolean "original_menu", default: false, null: false
     t.text "image_meta_data", default: "", null: false
     t.string "image", default: "", null: false
     t.datetime "created_at", null: false
