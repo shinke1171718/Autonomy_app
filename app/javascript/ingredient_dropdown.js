@@ -177,11 +177,14 @@ function closeDropdown() {
   clearSearchResults();
 }
 
-// ingredient_quantityに「少々」がセットされた時の処理
+// ingredient_unitに値が変更された時の処理
 function handleIngredientUnitChange(clickedElement) {
   clickedElement.addEventListener('change', function() {
+    if (clickedElement.selectedIndex < 0) return;
     const selectedOptionText = clickedElement.options[clickedElement.selectedIndex].textContent;
     const inputElement = clickedElement.closest('div').querySelector(".ingredient-quantity");
+
+    // ingredient_unitに「少々」がセットされた時の処理
     if (selectedOptionText === "少々") {
       inputElement.style.backgroundColor = "#e0e0e0";
       inputElement.style.pointerEvents = "none";
