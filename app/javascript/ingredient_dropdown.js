@@ -21,8 +21,11 @@ document.addEventListener("turbo:load", function() {
   ingredient_form.addEventListener("click", function(event) {
     const clickedElement = event.target;
 
+    if (clickedElement.classList.contains("ingredient-quantity")) return;
+    if (clickedElement.classList.contains("form-count-down")) return;
+
     // 食材名以外の要素がクリックされた場合、単位変更ハンドラーを呼び出します。
-    if (!clickedElement.classList.contains("ingredient-name")) {
+    if (clickedElement.classList.contains("ingredient-unit")) {
       handleIngredientUnitChange(clickedElement);
       return;
     }
