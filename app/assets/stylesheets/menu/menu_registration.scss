@@ -1,38 +1,24 @@
-.menu-container{
-  display: flex;
-  width: 60%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+@import 'shared/menuForm';
 
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  padding: 15px;
-  border-radius: 8px;
-  margin: 0 auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  @media screen and (max-width: 800px) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    width: 100%;
-    margin: 20px auto 60px;
-    margin-bottom: 60px;
-  }
+.menu-container{
+  @include menu-container;
 
   .contents-title{
-    font-size: 20px;
-    padding-top: 10px;
-    text-decoration: underline;
-    text-align:  center;
+    @include contents-title;
   }
 
   .menu-registration-back-button {
-    width: 45%;
+    width: 80%;
     margin: 0 auto;
+    @media screen and (max-width: 1540px) {
+      width: 70%;
+    }
+    @media screen and (max-width: 1300px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 1100px) {
+      width: 90%;
+    }
   }
 
   .back-button{
@@ -108,9 +94,18 @@
     }
 
     .menu-registration-actions {
-      width: 45%;
+      width: 80%;
       margin: 0 auto;
       margin-top: 40px;
+      @media screen and (max-width: 1540px) {
+        width: 70%;
+      }
+      @media screen and (max-width: 1300px) {
+        width: 80%;
+      }
+      @media screen and (max-width: 1100px) {
+        width: 90%;
+      }
     }
 
     .menu-registration-actions input{
@@ -285,7 +280,7 @@
       }
     }
 
-  .count-up-botton{
+  .count-up-button{
     button{
       width: 200px;
       background-color: #f99d68;
