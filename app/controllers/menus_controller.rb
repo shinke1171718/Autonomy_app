@@ -45,6 +45,27 @@ class MenusController < ApplicationController
     render json: units
   end
 
+  def create
+    menu = Menu.new(menu_params.except(:image))
+    new_ingredient_forms(menu, params[:menu][:ingredients])
+
+    if !params[:menu][:encoded_image].nil?
+      image_data = Base64.decode64(params[:menu][:encoded_image])
+      filename = "user_#{current_user.id}の献立の画像"
+      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: menu.image.content_type)
+    end
+
+    menu.save
+    UserMenu.create(menu_id: menu.id, user_id: current_user.id)
+    menu.ingredients.each do |ingredient|
+      if ingredient.save
+        MenuIngredient.create(menu_id: menu.id, ingredient_id: ingredient.id)
+      end
+    end
+
+      redirect_to user_menus_path
+  end
+
   private
 
   def menu_params
