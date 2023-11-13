@@ -1,0 +1,89 @@
+
+<div class="confirm-container">
+  <div class="confirm-form-container">
+    <%= form_with model: [@user, @menu], local: true do |f| %>
+      <div class="menu-confirm-container">
+        <div class="menu-confirm-title">
+          <h1>登録内容の最終確認</h1>
+        </div>
+
+        <div class ="contents-title">
+          <p>　献立名　</p>
+        </div>
+        <div class ="menu-contents">
+          <%= @menu.menu_name %>
+          <%= f.hidden_field :menu_name, value: @menu.menu_name %>
+        </div>
+
+        <div class ="contents-title">
+          <p>　献立内容　</p>
+        </div>
+        <div class ="menu-contents">
+          <%= @menu.menu_contents %>
+          <%= f.hidden_field :menu_contents, value: @menu.menu_contents %>
+        </div>
+
+        <div class ="contents-title">
+          <p>　作り方　</p>
+        </div>
+        <div class ="menu-contents">
+          <%= simple_format(sanitize(@menu.contents)) %>
+          <%= f.hidden_field :contents, value: @menu.contents %>
+        </div>
+
+        <div class ="contents-title">
+          <p>　献立画像　</p>
+        </div>
+        <div class ="menu-contents">
+          <% if @image_data_url.present? %>
+            <img src="<%= @image_data_url %>" width="300" height="200" alt="uploaded image preview" />
+            <%= f.hidden_field :encoded_image, value: @encoded_image %>
+            <%= f.hidden_field :image_content_type, value: @menu.image.content_type %>
+          <% else %>
+            <p>画像なし</p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ingredient-confirm-container">
+        <div class ="contents-title">
+          <p>　食材リスト　</p>
+        </div>
+
+        <div class="ingredients-list">
+          <% if @menu.ingredients.present? %>
+            <% @menu.ingredients.each_with_index do |ingredient, index| %>
+              <div class="ingredient-item">
+                <p class="material-name"><%= ingredient.material.material_name %></p>
+                <div class="quantity-unit">
+                  <p class="quantity"><%= ingredient.quantity %></p>
+                  <p class="unit"><%= ingredient.unit.unit_name %></p>
+                </div>
+
+                <%= f.hidden_field "ingredients[#{index}][material_id]", value: ingredient.material.id %>
+                <%= f.hidden_field "ingredients[#{index}][quantity]", value: ingredient.quantity %>
+                <%= f.hidden_field "ingredients[#{index}][unit_id]", value: ingredient.unit.id %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="no-ingredients">食材はありません</p>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div class="button-confirm-container">
+        <div class="menu-registration-button">
+          <%= f.submit "登録", name: "commit" %>
+        </div>
+        <div class="menu-edit-button">
+          <% if @menu.new_record? %>
+            <%= button_to "戻る", new_user_menu_path(@user, { some_field: @menu }), class: "edit-button" %>
+          <% else %>
+            <%= button_to "戻る", edit_user_menu_path(@user, @menu, { some_field: @menu }), class: "edit-button" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
