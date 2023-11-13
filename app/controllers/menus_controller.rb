@@ -56,10 +56,10 @@ class MenusController < ApplicationController
     end
 
     menu.save
+    UserMenu.create(menu_id: menu.id, user_id: current_user.id)
     menu.ingredients.each do |ingredient|
       if ingredient.save
         MenuIngredient.create(menu_id: menu.id, ingredient_id: ingredient.id)
-        UserMenu.create(menu_id: menu.id, user_id: current_user.id)
       end
     end
 
