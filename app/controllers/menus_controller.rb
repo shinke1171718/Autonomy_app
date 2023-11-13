@@ -3,7 +3,7 @@ class MenusController < ApplicationController
   def index
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
     @original_menus = Menu.where(id: menu_ids)
-    @default_menus = Menu.where(original_menu: false)
+    @default_menus = Menu.where.not(id: UserMenu.pluck(:menu_id))
   end
 
 
@@ -14,20 +14,27 @@ class MenusController < ApplicationController
   end
 
 
-  def new_confirm
+  def confirm
+    @user = current_user
     @menu = Menu.new(menu_params)
+    new_ingredient_forms(@menu, params[:menu][:ingredients])
 
-    #フォーム改装のためコメントアウトしています。
-    # new_ingredient_forms(@menu)
+    if !params[:menu][:image].nil?
+      @image_data_url = generate_data_url(params[:menu][:image])
+      uploaded_file = params[:menu][:image]
+      uploaded_file.rewind
+      image_data = uploaded_file.read
+      @encoded_image = Base64.strict_encode64(image_data)
+    end
 
-    #不フォーム改装のため修正が必要
-    # if @menu.valid? && @menu.ingredients.all?(&:valid?) && validate_unique_name(@menu.ingredients)
-    #   render 'confirm'
-    #   return
-    # else
-    #   flash[:error] = "誤った入力が検出されました。"
-    #   redirect_to new_user_menu_path
-    # end
+    if @menu.valid?
+      render 'confirm', status: :unprocessable_entity
+      return
+    else
+      flash[:error] = "誤った入力が検出されました。"
+      redirect_to new_user_menu_path
+    end
+
   end
 
   def units
@@ -41,25 +48,22 @@ class MenusController < ApplicationController
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:name, :material_unit_id, :quantity])
+    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:name, :material_id, :unit_id, :quantity])
   end
 
-  def new_ingredient_forms(menu)
-    ingredient_forms_data = @menu.ingredients
+  def new_ingredient_forms(menu, ingredients)
+    ingredient_params = ingredients
 
-    ingredient_forms = []
-    ingredient_forms_data.each do |name, form_data|
-      ingredient_form = Ingredient.new(form_data)
-      ingredient_forms << ingredient_form
+    filtered_ingredients = ingredient_params.reject do |key, ingredient|
+      ingredient['material_id'].blank? || ingredient['quantity'].blank?
     end
 
-    ingredient_forms.reject! do |ingredient|
-      ingredient.name.blank? &&
-      ingredient.quantity.blank? &&
-      ingredient.unit.blank?
-    end
+    ingredient_array = filtered_ingredients.values
 
-    @menu.ingredients = ingredient_forms
+    menu.ingredients = ingredient_array.map do |ingredient_data|
+      sanitized_ingredient_data = ingredient_data.except('name')
+      Ingredient.new(sanitized_ingredient_data)
+    end
   end
 
   def validate_unique_name(ingredients)
@@ -78,6 +82,11 @@ class MenusController < ApplicationController
       materials_by_category[category_name] = materials.sort_by(&:hiragana)
     end
     materials_by_category
+  end
+
+  # アップロードされたファイルからデータURLを生成するメソッド
+  def generate_data_url(uploaded_file)
+    "data:#{uploaded_file.content_type};base64,#{Base64.strict_encode64(uploaded_file.read)}"
   end
 
 end

@@ -12,7 +12,7 @@
   <div id="main-menu-error" class="menu-error-message"></div>
 
   <div class="menu-registration-input">
-    <%= form_with model: @menu, url: new_confirm_user_menu_path(current_user.id), method: :post, id: "menu_form" do |f| %>
+    <%= form_with model: @menu, url: confirm_user_menu_path(current_user.id), method: :post, id: "menu_form" do |f| %>
 
       <div id="menu-error_name" class="menu-error"></div>
       <div class="name-registration-field">
@@ -58,7 +58,7 @@
                       <ul id="ingredients-list-<%= index %>" style="display: none;">
                         <% materials.each do |material| %>
                           <% if material.material_name %>
-                            <li data-value="<%= material.material_name %>" data-hiragana="<%= material.hiragana %>">
+                            <li data-value="<%= material.id %>" data-hiragana="<%= material.hiragana %>">
                               <%= material.material_name %>
                           <% end %>
                         <% end %>

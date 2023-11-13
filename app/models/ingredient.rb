@@ -3,9 +3,9 @@ class Ingredient < ApplicationRecord
   belongs_to :material
   belongs_to :unit
 
-  validates :name, presence: true, length: { maximum: 15 }
+  validates :material_id, presence: true, length: { maximum: 15 }
   validates :quantity, presence: true, length: { maximum: 4 }
-  validates :unit, inclusion: { in: ['g', 'kg', 'ml', 'L', '個', '枚', '匹', '切れ', '丁', '杯', '缶', '本', '袋', '束', '合', '大さじ', '小さじ'] }
+  validates :unit_id, presence: true
 
   def validate_unique_name(ingredients)
     if ingredients.map(&:name).uniq.count != ingredients.count
