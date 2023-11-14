@@ -15,7 +15,6 @@ class MenusController < ApplicationController
 
 
   def confirm
-    @user = current_user
     @menu = Menu.new(menu_params)
 
     if params[:menu][:ingredients].present?
