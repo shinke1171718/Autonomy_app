@@ -1,7 +1,9 @@
+let form = document.getElementById("menu_form");
+let minForm = 0;
+let maxForm = 14;
+
 document.addEventListener("turbo:load", function(event) {
-  let form = document.getElementById("menu_form");
-  let minForm = 0;
-  let maxForm = 14;
+  if (!form) return;
 
   form.addEventListener('submit', function(event) {
     let menu_name = form.elements["menu_name"];

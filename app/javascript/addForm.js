@@ -3,6 +3,8 @@ var formCount_back = -1;
 var maxFormCount_view = 15;
 
 document.addEventListener("turbo:load", function(event) {
+  if (!document.getElementById("menu_form")) return;
+
   // 一度数値をリセット
   formCount_view = 0;
   formCount_back = -1;
@@ -15,6 +17,7 @@ document.addEventListener("turbo:load", function(event) {
 });
 
 document.addEventListener("turbo:load", function(event) {
+  if (!document.getElementById("menu_form")) return;
   var count_up_bottom = document.getElementById("form-count-up");
   count_up_bottom.addEventListener("click", function(event) {
     event.preventDefault();
@@ -24,6 +27,7 @@ document.addEventListener("turbo:load", function(event) {
 });
 
 document.addEventListener("click", function (event) {
+  if (!document.getElementById("menu_form")) return;
   if (event.target.classList.contains("form-count-down")) {
     event.preventDefault();
     var container = event.target.closest(".custom-ingredient-fields");
