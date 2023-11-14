@@ -4,17 +4,13 @@ class Ingredient < ApplicationRecord
   belongs_to :unit
 
   validates :material_id, presence: true, length: { maximum: 15 }
-  validates :quantity, presence: true, length: { maximum: 4 }
+  validates :quantity, presence: true, length: { maximum: 4 }, unless: :skip_quantity_validation?
   validates :unit_id, presence: true
 
-  def validate_unique_name(ingredients)
-    if ingredients.map(&:name).uniq.count != ingredients.count
-      Rails.logger.info '名前にかぶりがあったよ'
-      return false
-    end
+  private
 
-    Rails.logger.info '名前にかぶりなかったよ'
-    return true
+  def skip_quantity_validation?
+    unit_id == 17
   end
 
 end
