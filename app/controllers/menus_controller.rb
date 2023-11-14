@@ -56,10 +56,10 @@ class MenusController < ApplicationController
       new_ingredient_forms(menu, params[:menu][:ingredients])
     end
 
-    if params[:menu][:image].present?
+    if params[:menu].values_at(:encoded_image, :image_content_type).all?
       image_data = Base64.decode64(params[:menu][:encoded_image])
       filename = "user_#{current_user.id}の献立の画像"
-      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: menu.image.content_type)
+      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
     begin
@@ -68,19 +68,25 @@ class MenusController < ApplicationController
         UserMenu.create!(menu_id: menu.id, user_id: current_user.id)
       end
     rescue ActiveRecord::RecordInvalid
-      flash[:error] = "誤った入力が検出されました。"
-      redirect_to new_user_menu_path
+      handle_transaction_error
+      return
     end
 
     if menu.ingredients.present?
-      ActiveRecord::Base.transaction do
-        menu.ingredients.each do |ingredient|
-          ingredient.save!
-          MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
+      begin
+        ActiveRecord::Base.transaction do
+          menu.ingredients.each do |ingredient|
+            ingredient.save!
+            MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
+          end
         end
+      rescue ActiveRecord::RecordInvalid
+        handle_transaction_error
+        return
       end
     end
 
+    flash[:notice] = "献立を登録しました。"
     redirect_to user_menus_path
   end
 
@@ -115,6 +121,11 @@ class MenusController < ApplicationController
   # アップロードされたファイルからデータURLを生成するメソッド
   def generate_data_url(uploaded_file)
     "data:#{uploaded_file.content_type};base64,#{Base64.strict_encode64(uploaded_file.read)}"
+  end
+
+  def handle_transaction_error
+    flash[:error] = "登録中に予期せぬエラーが発生しました。"
+    redirect_to user_menus_path
   end
 
 end
