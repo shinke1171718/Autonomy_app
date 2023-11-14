@@ -58,7 +58,7 @@
                       <ul id="ingredients-list-<%= index %>" style="display: none;">
                         <% materials.each do |material| %>
                           <% if material.material_name %>
-                            <li data-value="<%= material.id %>" data-hiragana="<%= material.hiragana %>">
+                            <li data-value="<%= material.id %>" data-hiragana="<%= material.hiragana %>" data-material-name="<%= material.material_name %>">
                               <%= material.material_name %>
                           <% end %>
                         <% end %>
