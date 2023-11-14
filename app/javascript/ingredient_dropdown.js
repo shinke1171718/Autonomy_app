@@ -1,21 +1,21 @@
-let searchResultsTitle = document.querySelector(".search-results-title");
-let dropdownBg = document.getElementById('dropdownBackground');
-let closeButton = document.querySelector('.close-button');
-const searchResultsContainer = document.getElementById('searchResultsContainer');
-const ingredientList = document.getElementById(`ingredient-select`);
-const searchInput = document.getElementById('ingredientSearchInput');
-const ingredient_form = document.getElementById("ingredient_form");
 let selectedUnits = [];
 let ingredientUnitMapping = {};
 
+
 document.addEventListener("turbo:load", function() {
+  if (!document.getElementById("menu_form")) return;
   let ingredientName = null;
   let matchedItems = [];
-  const ingredientItems = ingredientList.querySelectorAll('li');
+  const ingredient_form = document.getElementById("ingredient_form");
+  let ingredientList = document.getElementById(`ingredient-select`);
   const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
   const searchResultsDiv = document.createElement('div');
-  const ingredientForm = document.querySelector('#ingredient_form');
   ingredientList.insertBefore(searchResultsDiv, ingredientList.firstChild);
+  let closeButton = document.querySelector('.close-button');
+  const searchInput = document.getElementById('ingredientSearchInput');
+  const searchResultsContainer = document.getElementById('searchResultsContainer');
+  let dropdownBg = document.getElementById('dropdownBackground');
+  let searchResultsTitle = document.querySelector(".search-results-title");
 
   // フォームの「食材フォーム」「単位フォーム」をクリックした場合の処理
   ingredient_form.addEventListener("click", function(event) {
@@ -32,16 +32,19 @@ document.addEventListener("turbo:load", function() {
 
     ingredientName = document.getElementById(clickedElement.id);
     if (!ingredientName) return;
-    openDropdown();
+    openDropdown(ingredientList, dropdownBg, searchResultsTitle);
     event.stopPropagation();
   });
 
   // クローズボタンでドロップダウンを非表示にする
-  closeButton.addEventListener("click", closeDropdown);
+  closeButton.addEventListener("click", function() {
+    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
+  });
 
   // フォーム入力で値を検索し、ヒットしたら表示する
   let searchTimer;
   searchInput.addEventListener("input", function(e) {
+    const ingredientItems = ingredientList.querySelectorAll('li');
     // タイマーが既に設定されている場合はクリア
     if (searchTimer) {
       clearTimeout(searchTimer);
@@ -53,7 +56,7 @@ document.addEventListener("turbo:load", function() {
     const searchText = searchInput.value.trim();
 
     if (searchText === '') {
-      clearSearchResults();
+      clearSearchResults(searchResultsTitle);
       return;
     }
 
@@ -100,7 +103,7 @@ document.addEventListener("turbo:load", function() {
 
     // 3秒後に処理を終了
     searchTimer = setTimeout(() => {
-      clearSearchResults();
+      clearSearchResults(searchResultsTitle);
     }, 3000);
   });
 
@@ -116,7 +119,7 @@ document.addEventListener("turbo:load", function() {
     hiddenElement.value = e.target.getAttribute('data-value');
 
     let selectElement = parentElement.querySelector(".ingredient-unit");
-    closeDropdown()
+    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle)
     handleIngredientNameChange(selectElement, ingredientName.value);
   });
 
@@ -131,7 +134,7 @@ document.addEventListener("turbo:load", function() {
     hiddenElement.value = e.target.getAttribute('data-value');
 
     let selectElement = parentElement.querySelector(".ingredient-unit");
-    closeDropdown()
+    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle)
 
     handleIngredientNameChange(selectElement, ingredientName.value);
   });
@@ -152,13 +155,13 @@ document.addEventListener("turbo:load", function() {
 
 
 // 検索結果を非表示にする
-function clearSearchResults() {
+function clearSearchResults(searchResultsTitle) {
   searchResultsContainer.innerHTML = '';
   searchResultsTitle.style.display = "none";
 }
 
 // 全てのingredients-listを表示する
-function openDropdown() {
+function openDropdown(ingredientList, dropdownBg, searchResultsTitle) {
   const categoryLists = document.querySelectorAll('.ingredient-category ul');
   categoryLists.forEach(list => {
     list.style.display = 'none';
@@ -166,15 +169,15 @@ function openDropdown() {
 
   dropdownBg.style.display = "block";
   ingredientList.style.display = "block";
-  clearSearchResults();
+  clearSearchResults(searchResultsTitle);
 }
 
 // 全てのingredients-listの表示を非表示にする
-function closeDropdown() {
+function closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle) {
   dropdownBg.style.display = "none";
   ingredientList.style.display = "none";
   searchInput.value = "";
-  clearSearchResults();
+  clearSearchResults(searchResultsTitle);
 }
 
 // ingredient_unitに値が変更された時の処理
