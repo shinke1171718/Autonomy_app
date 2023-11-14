@@ -62,7 +62,7 @@ document.addEventListener("turbo:load", function() {
 
     ingredientItems.forEach(function(item) {
       const itemHiragana = item.getAttribute('data-hiragana');
-      const itemValue = item.getAttribute('data-value');
+      const itemValue = item.getAttribute('data-material-name');
 
       // ひらがな前方一致
       if (itemHiragana.startsWith(searchText)) {
