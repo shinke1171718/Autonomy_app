@@ -14,17 +14,11 @@
       @include contents-title;
     }
     .menu-confirm-container{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      @include flex-center-column;
     }
 
     .ingredient-confirm-container{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      @include flex-center-column;
       @media screen and (max-width: 480px) {
         width: 100%;
       }
@@ -33,15 +27,6 @@
         width: 50%;
         padding-bottom: 30px;
         @media screen and (max-width: 1400px) {
-          width: 90%;
-        }
-        @media screen and (max-width: 1350px) {
-          width: 70%;
-        }
-        @media screen and (max-width: 900px) {
-          width: 80%;
-        }
-        @media screen and (max-width: 600px) {
           width: 95%;
         }
 
@@ -90,45 +75,24 @@
 
       .menu-registration-button,
       .menu-edit-button{
-        width: 50%;
+        width: 60%;
         padding-top: 10px;
         margin: auto;
-        @media screen and (max-width: 1540px) {
-          width: 60%;
-        }
-        @media screen and (max-width: 1300px) {
-          width: 70%;
-        }
-        @media screen and (max-width: 1100px) {
-          width: 80%;
-        }
-        @media screen and (max-width: 1000px) {
-          width: 90%;
-        }
-        @media screen and (max-width: 900px) {
-          width: 95%;
-        }
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 1400px) {
           width: 100%;
         }
       }
 
       .menu-registration-button input{
-        padding: 10px 45%;
-        font-size: 15px;
+        @include default-button-style;
         background-color: #1E9AF4;
         color: white;
-        border-radius: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
       }
 
       .edit-button{
-        padding: 10px 45%;
-        font-size: 15px;
+        @include default-button-style;
         background-color: rgb(0, 0, 0);
         color: rgb(255, 255, 255);
-        border-radius: 20px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
       }
     }
   }
