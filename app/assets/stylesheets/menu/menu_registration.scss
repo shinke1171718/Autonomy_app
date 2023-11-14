@@ -204,21 +204,30 @@
           padding: 0px 10px;
         }
 
-        .close-button {
-          color: #aaaaaa;
-          float: right;
-          font-size: 40px;
-          font-weight: bold;
-        }
+        .search-header {
+          display: flex;
+          flex-direction: column;
+          .close-button {
+            display: block;
+            width: 100%;
+            text-align: right;
+            color: #aaaaaa;
+            font-size: 40px;
+            .close-icon{
+              font-weight: bold;
+              float: right;
+            }
+          }
 
-        .SearchInput{
-          align-items: center;
-          width: 90%;
-          height: 100%;
-          padding: 10px;
-          margin-top: 5px;
-          border-radius: 20px;
-          border: 1px solid rgba(0, 0, 0, 0.2);
+          .SearchInput{
+            align-items: center;
+            width: 90%;
+            height: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+          }
         }
 
         .scrollable-section{

@@ -45,8 +45,10 @@
             <%= f.fields_for :ingredients do |ingredient_form| %>
               <div id="ingredient_form"></div>
               <div id="ingredient-select" class="ingredient-select">
-                <span class="close-button">×</span>
-                <input type="text" id="ingredientSearchInput" class="SearchInput" placeholder="食材名を検索" />
+                <div class="search-header">
+                  <span class="close-button"><span class="close-icon">×</span></span>
+                  <input type="text" id="ingredientSearchInput" class="SearchInput" placeholder="食材名を検索" />
+                </div>
                 <p class="search-results-title">検索結果</p>
                 <div id="searchResultsContainer" class="searchContainer"></div>
                 <p class="drop-down-title">食材一覧</p>

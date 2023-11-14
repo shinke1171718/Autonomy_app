@@ -11,7 +11,7 @@ document.addEventListener("turbo:load", function() {
   const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
   const searchResultsDiv = document.createElement('div');
   ingredientList.insertBefore(searchResultsDiv, ingredientList.firstChild);
-  let closeButton = document.querySelector('.close-button');
+  let closeButton = document.querySelector('.close-icon');
   const searchInput = document.getElementById('ingredientSearchInput');
   const searchResultsContainer = document.getElementById('searchResultsContainer');
   let dropdownBg = document.getElementById('dropdownBackground');
@@ -38,6 +38,11 @@ document.addEventListener("turbo:load", function() {
 
   // クローズボタンでドロップダウンを非表示にする
   closeButton.addEventListener("click", function() {
+    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
+  });
+
+  // クローズボタン以外をクリックするとドロップダウンを非表示にする
+  dropdownBg.addEventListener("click", function() {
     closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
   });
 
