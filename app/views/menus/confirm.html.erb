@@ -1,7 +1,7 @@
 
 <div class="confirm-container">
   <div class="confirm-form-container">
-    <%= form_with model: [@user, @menu], local: true do |f| %>
+    <%= form_with model: [current_user, @menu], local: true do |f| %>
       <div class="menu-confirm-container">
         <div class="menu-confirm-title">
           <h1>登録内容の最終確認</h1>
@@ -78,9 +78,9 @@
         </div>
         <div class="menu-edit-button">
           <% if @menu.new_record? %>
-            <%= button_to "戻る", new_user_menu_path(@user, { some_field: @menu }), class: "edit-button" %>
+            <%= button_to "戻る", new_user_menu_path(current_user, { some_field: @menu }), class: "edit-button" %>
           <% else %>
-            <%= button_to "戻る", edit_user_menu_path(@user, @menu, { some_field: @menu }), class: "edit-button" %>
+            <%= button_to "戻る", edit_user_menu_path(current_user, @menu, { some_field: @menu }), class: "edit-button" %>
           <% end %>
         </div>
       </div>
