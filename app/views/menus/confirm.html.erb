@@ -51,22 +51,24 @@
         </div>
 
         <div class="ingredients-list">
-          <% if @menu.ingredients.present? %>
-            <% @menu.ingredients.each_with_index do |ingredient, index| %>
+          <% if @aggregated_ingredients.present? %>
+            <% @aggregated_ingredients.each do |aggregated_ingredient| %>
               <div class="ingredient-item">
-                <p class="material-name"><%= ingredient.material.material_name %></p>
+                <p class="material-name"><%= aggregated_ingredient.material.material_name %></p>
                 <div class="quantity-unit">
-                  <p class="quantity"><%= ingredient.quantity %></p>
-                  <p class="unit"><%= ingredient.unit.unit_name %></p>
+                  <p class="quantity"><%= aggregated_ingredient.quantity %></p>
+                  <p class="unit"><%= aggregated_ingredient.unit.unit_name %></p>
                 </div>
-
-                <%= f.hidden_field "ingredients[#{index}][material_id]", value: ingredient.material.id %>
-                <%= f.hidden_field "ingredients[#{index}][quantity]", value: ingredient.quantity %>
-                <%= f.hidden_field "ingredients[#{index}][unit_id]", value: ingredient.unit.id %>
               </div>
             <% end %>
           <% else %>
             <p class="no-ingredients">食材はありません</p>
+          <% end %>
+
+          <% @menu.ingredients.each_with_index do |ingredient, index| %>
+            <%= f.hidden_field "ingredients[#{index}][material_id]", value: ingredient.material.id %>
+            <%= f.hidden_field "ingredients[#{index}][quantity]", value: ingredient.quantity %>
+            <%= f.hidden_field "ingredients[#{index}][unit_id]", value: ingredient.unit.id %>
           <% end %>
         </div>
       </div>

@@ -21,6 +21,8 @@ class MenusController < ApplicationController
       new_ingredient_forms(@menu, params[:menu][:ingredients])
     end
 
+    @aggregated_ingredients = aggregate_ingredients(new_ingredient_forms(@menu, params[:menu][:ingredients]))
+
     uploaded_file = params[:menu][:image]
 
     if uploaded_file.present?
@@ -125,6 +127,48 @@ class MenusController < ApplicationController
   def handle_transaction_error
     flash[:error] = "登録中に予期せぬエラーが発生しました。"
     redirect_to user_menus_path
+  end
+
+  def aggregate_ingredients(ingredient_list)
+    aggregated_ingredients = []
+
+    grouped_ingredients = ingredient_list.group_by(&:material_id)
+
+    grouped_ingredients.each do |material_id, ingredients_group|
+      if ingredients_group.length > 1
+        total_quantity = aggregate_quantities(ingredients_group)
+        default_unit_id = ingredients_group.first.material.default_unit_id
+
+        aggregated_ingredient = Ingredient.new(
+          material_id: material_id,
+          quantity: total_quantity,
+          unit_id: default_unit_id
+        )
+
+        aggregated_ingredients << aggregated_ingredient
+      else
+        aggregated_ingredients << ingredients_group.first
+      end
+    end
+
+    aggregated_ingredients
+  end
+
+  def aggregate_quantities(grouped_ingredients)
+    total_quantity = 0
+    default_unit_id = grouped_ingredients.first.material.default_unit_id
+    same_unit = grouped_ingredients.all? { |ingredient| ingredient.unit_id == default_unit_id }
+
+    if same_unit
+      total_quantity = grouped_ingredients.sum(&:quantity)
+    else
+      grouped_ingredients.each do |ingredient|
+        material_unit = MaterialUnit.find_by(material_id: ingredient.material_id, unit_id: ingredient.unit_id)
+        total_quantity += ingredient.quantity * material_unit.conversion_factor
+      end
+    end
+
+    total_quantity
   end
 
 end
