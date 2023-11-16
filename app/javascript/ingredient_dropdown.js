@@ -206,8 +206,6 @@ function handleIngredientUnitChange(clickedElement) {
       inputElement.removeAttribute("tabindex");
       inputElement.placeholder = "数量";
     }
-
-    updateAndRerunProcesses()
   });
 }
 
@@ -241,45 +239,6 @@ function handleIngredientNameChange(selectElement, value) {
       selectElement.appendChild(option);
       selectElement.style.pointerEvents = 'auto';
       selectElement.removeAttribute('tabindex');
-      updateAndRerunProcesses()
-    });
-  });
-}
-
-// すべてのユニットオプションをリセットし、各食材名に対してユニットオプションを更新する
-function updateAndRerunProcesses() {
-  const ingredientNames = document.querySelectorAll('.ingredient-name');
-
-  // すべてのユニットオプションをリセットする
-  document.querySelectorAll('.ingredient-unit option').forEach(option => {
-    option.disabled = false;
-    option.style.opacity = "1";
-  });
-
-  // 各食材名に対してユニットオプションを更新する
-  ingredientNames.forEach(ingredientElement => {
-    if (ingredientElement.value.trim() === "") return;
-
-    let parentElement = ingredientElement.parentElement;
-    const selectedIngredient = ingredientElement.value;
-    const unitElement = parentElement.querySelector(".ingredient-unit");
-    const selectedUnit = unitElement.value;
-
-    // 同じ食材名を持つ要素を取得
-    const matchingIngredients = Array.from(ingredientNames).filter(elem => elem !== ingredientElement && elem.value === selectedIngredient);
-    // 対応するユニットオプションを無効にし、必要に応じて値をリセットする
-    matchingIngredients.forEach(matchingIngredient => {
-      const parentElement = matchingIngredient.parentElement;
-      const unitElement = parentElement.querySelector(".ingredient-unit");
-      const optionElems = Array.from(unitElement.querySelectorAll('option'));
-
-      optionElems.forEach(option => {
-        if (option.value !== selectedUnit) return;
-        option.disabled = true;
-        option.style.opacity = "0.5";
-        if (unitElement.value !== selectedUnit) return;
-        unitElement.value = "";
-      });
     });
   });
 }
