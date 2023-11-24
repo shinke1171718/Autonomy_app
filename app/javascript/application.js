@@ -4,16 +4,3 @@ import "controllers"
 import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
-import "./ingredient_dropdown";
-import "./addForm";
-import "./menu_validation";
-
-
-
-
-
-
-
-
-
-

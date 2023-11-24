@@ -1,42 +1,46 @@
-let form = document.getElementById("menu_form");
-let minForm = 0;
-let maxForm = 14;
+document.addEventListener('submit', function(event) {
 
-document.addEventListener("turbo:load", function(event) {
-  if (!form) return;
+  // フォーム送信時に、アクティブな要素が back-button なら何もしない
+  if (document.activeElement.classList.contains('back-button')) {
+    return;
+  }
 
-  form.addEventListener('submit', function(event) {
-    let menu_name = form.elements["menu_name"];
-    let menu_contents = form.elements["menu_contents"];
-    let contents = form.elements["contents"];
-    let errorMessage_name = document.getElementById("menu-error_name");
-    let errorMessage_contents = document.getElementById("menu-error-contents-1");
-    let errorMessage_contents_2 = document.getElementById("menu-error-contents-2");
-    let inputName = document.querySelector(".name-registration-field input");
-    let inputContent = document.querySelector(".menu-registration-field input");
-    let inputText = document.querySelector("textarea");
+  if (document.activeElement.classList.contains('edit-button')) {
+    return;
+  }
 
-    // menuモデルのバリデーション
-    validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)
-    validateAndHighlightInput(menu_contents, errorMessage_contents, inputContent, event)
-    validateAndHighlightInput(contents, errorMessage_contents_2, inputText, event)
+  let minForm = 0;
+  let maxForm = 14;
+  let menu_name = document.getElementById("menu_name");
+  let menu_contents = document.getElementById("menu_contents");
+  let contents = document.getElementById("contents");
+  let errorMessage_name = document.getElementById("menu-error_name");
+  let errorMessage_contents = document.getElementById("menu-error-contents-1");
+  let errorMessage_contents_2 = document.getElementById("menu-error-contents-2");
+  let inputName = document.querySelector(".name-registration-field input");
+  let inputContent = document.querySelector(".menu-registration-field input");
+  let inputText = document.querySelector("textarea");
 
-    // ingredientモデルのバリデーション
-    for (let i = minForm; i < maxForm; i++) {
-      const EXCEPTIONAL_UNIT_IDS = ["17"]; // 17は「少々」という単位のunit_idです。
-      const ingredientNameInput = document.getElementById("ingredient_name[" + i + "]");
+  // menuモデルのバリデーション
+  validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)
+  validateAndHighlightInput(menu_contents, errorMessage_contents, inputContent, event)
+  validateAndHighlightInput(contents, errorMessage_contents_2, inputText, event)
 
-      if (!ingredientNameInput || ingredientNameInput.value.trim() === "") continue;
+  // ingredientモデルのバリデーション
+  for (let i = minForm; i < maxForm; i++) {
+    const EXCEPTIONAL_UNIT_IDS = ["17"]; // 17は「少々」という単位のunit_idです。
+    const ingredientNameInput = document.getElementById("ingredient_name[" + i + "]");
 
-      const ingredientUnitInput = document.getElementById("menu_ingredients_unit[" + i + "]");
-      const selectedUnitId = ingredientUnitInput.value;
+    if (!ingredientNameInput || ingredientNameInput.value.trim() === "") continue;
 
-      // EXCEPTIONAL_UNIT_IDSに設定」されているIDはバリデーションを行わない
-      if (EXCEPTIONAL_UNIT_IDS.includes(selectedUnitId)) continue;
+    const ingredientUnitInput = document.getElementById("menu_ingredients_unit[" + i + "]");
+    const selectedUnitId = ingredientUnitInput.value;
 
-      validateInput("ingredient_quantity[" + i + "]");
-    }
-  });
+    // EXCEPTIONAL_UNIT_IDSに設定」されているIDはバリデーションを行わない
+    if (EXCEPTIONAL_UNIT_IDS.includes(selectedUnitId)) continue;
+
+    validateInput("ingredient_quantity[" + i + "]");
+  }
 });
 
 
@@ -53,7 +57,6 @@ function validateAndHighlightInput(element ,sub_errorMessage, inputElement, even
     inputElement.style.backgroundColor = "";
   }
 }
-
 
 function validateInput(inputId) {
   let errorMessage_ingredient = document.getElementById('ingredients-error');
