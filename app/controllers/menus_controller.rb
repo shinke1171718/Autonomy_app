@@ -163,14 +163,17 @@ class MenusController < ApplicationController
     end
   end
 
-  # Material オブジェクトをカテゴリー別にグループ化し、
-  # それらをカテゴリーIDとひらがなでソートした結果を返すメソッド
+  # Material オブジェクトをカテゴリー別にグループ化し、それらをカテゴリーIDとひらがなでソートした結果を返すメソッド
   def fetch_sorted_materials_by_category
     materials_by_category = {}
+    # Material オブジェクトの取得とソート
     sorted_materials = Material.includes(:category).order('categories.id', :hiragana)
+    # カテゴリー名でグループ化
     grouped_materials = sorted_materials.group_by { |m| m.category.category_name }
 
+    # カテゴリー名でグループ化かつ50音順に並び替える
     grouped_materials.each do |category_name, materials|
+      # カテゴリー内でさらにひらがな順にソート
       materials_by_category[category_name] = materials.sort_by(&:hiragana)
     end
     materials_by_category
@@ -205,6 +208,7 @@ class MenusController < ApplicationController
       total_quantity = aggregate_quantities(ingredients_group)
       default_unit_id = ingredients_group.first.material.default_unit_id
 
+      # 「material_id」、合算した「数量」、「デフォルト単位」を１つのインスタンスとして再構成
       aggregated_ingredient = Ingredient.new(
         material_id: material_id,
         quantity: total_quantity,
@@ -220,15 +224,23 @@ class MenusController < ApplicationController
   # 食材が重複した場合、「MaterialUnit」にある"変換率"をかけて合算し、
   # 「Material」にある"デフォルトのunit_id"を単位に設定する
   def aggregate_quantities(grouped_ingredients)
+
+    # 複数の食材の合算数値
     total_quantity = 0
+    # 合算時に使用する単位を取得
     default_unit_id = grouped_ingredients.first.material.default_unit_id
+    # 取得した食材の単位が全て合算用の単位と同じならsame_unitに代入
     same_unit = grouped_ingredients.all? { |ingredient| ingredient.unit_id == default_unit_id }
 
+    # 取得した食材の単位が全て合算用の単位と同じ場合の処理
     total_quantity = if same_unit
       grouped_ingredients.sum(&:quantity)
     else
+      # 取得した食材の単位がバラバラの場合、合算されたデータがsumに蓄積され戻り値としてtotal_quantityに格納
       grouped_ingredients.reduce(0) do |sum, ingredient|
+        # MaterialUnitから変換率（conversion_factor）を取得
         material_unit = MaterialUnit.find_by(material_id: ingredient.material_id, unit_id: ingredient.unit_id)
+        # 登録された数値と変換率（conversion_factor）を掛け、sumに蓄積する
         sum + ingredient.quantity * material_unit.conversion_factor
       end
     end
