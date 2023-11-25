@@ -1,7 +1,7 @@
 createPreview()
 
 function createPreview() {
-  var imageInput = document.getElementById('menu_image');
+  let imageInput = document.getElementById('menu_image');
 
   if (!imageInput) return;
 
