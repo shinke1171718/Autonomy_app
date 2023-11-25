@@ -63,6 +63,13 @@
         color: rgb(250, 43, 43);
         text-align: center;
       }
+
+      .image-preview-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
     }
 
     .name-registration-field input,
@@ -289,19 +296,19 @@
       }
     }
 
-  .count-up-button{
-    button{
-      width: 200px;
-      background-color: #f99d68;
-      border: #2c2c2c;
-      padding: 2%;
-      font-size: 15px;
-      color: #000000;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      cursor: pointer;
+    .count-up-button{
+      button{
+        width: 200px;
+        background-color: #f99d68;
+        border: #2c2c2c;
+        padding: 2%;
+        font-size: 15px;
+        color: #000000;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
     }
-  }
   }
 }
 

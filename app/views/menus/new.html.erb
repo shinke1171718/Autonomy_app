@@ -31,11 +31,14 @@
         </div>
 
         <div class="image-registration-field">
-          <%= f.file_field :image, autofocus: true, autocomplete: "image", placeholder: "献立の写真" %>
+          <%= f.file_field :image, autofocus: true, autocomplete: "image", placeholder: "献立の写真", id: "menu_image" %>
+        </div>
+
+        <div class="image-preview-container">
+          <img id="image-preview" src="<%= @image_data_url if @image_data_url.present? %>" width="300" height="200" alt="uploaded image preview" style="<%= 'display: none;' unless @image_data_url.present? %>" />
         </div>
 
         <% if @image_data_url.present? %>
-          <img src="<%= @image_data_url %>" width="300" height="200" alt="uploaded image preview" />
           <%= f.hidden_field :encoded_image, value: @encoded_image %>
           <%= f.hidden_field :image_content_type, value: params[:menu][:image_content_type] %>
           <%= f.hidden_field :image_data_url, value: @image_data_url %>
@@ -105,3 +108,4 @@
   <%= javascript_include_tag 'addForm' %>
   <%= javascript_include_tag 'ingredient_dropdown' %>
   <%= javascript_include_tag 'menu_validation' %>
+  <%= javascript_include_tag 'image_preview' %>
