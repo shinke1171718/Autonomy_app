@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function createNewForm() {
-  let ingredient_form = document.getElementById("ingredient_form");
+  var ingredient_form = document.getElementById("ingredient_form");
   var newFormCount_view = formCount_view + 1;
   var paddedNewFormCount = newFormCount_view < 10 ? '0' + newFormCount_view : newFormCount_view;
   paddedNewFormCount = paddedNewFormCount.toString().padStart(2, '0');
@@ -81,12 +81,12 @@ function createNewForms(defaultMaxCount, Data){
     createNewForm();
 
     if (!Data || !Data[i]) continue;
-    let currentData = Data[i];
-    let currentForm = document.querySelectorAll('.custom-ingredient-fields')[i];
+    var currentData = Data[i];
+    var currentForm = document.querySelectorAll('.custom-ingredient-fields')[i];
 
-    let ingredientNameField = currentForm.querySelector(`#ingredient_name\\[${i}\\]`);
-    let ingredientIdField = currentForm.querySelector(`#ingredient_id\\[${i}\\]`);
-    let ingredientQuantityField = currentForm.querySelector(`#ingredient_quantity\\[${i}\\]`);
+    var ingredientNameField = currentForm.querySelector(`#ingredient_name\\[${i}\\]`);
+    var ingredientIdField = currentForm.querySelector(`#ingredient_id\\[${i}\\]`);
+    var ingredientQuantityField = currentForm.querySelector(`#ingredient_quantity\\[${i}\\]`);
 
     // // 材料名、数量、単位IDを設定
     if (ingredientNameField) {
@@ -101,7 +101,7 @@ function createNewForms(defaultMaxCount, Data){
     if (ingredientIdField) ingredientIdField.value = currentData.material_id || '';
     if (ingredientQuantityField) ingredientQuantityField.value = currentData.quantity || '';
 
-    let ingredientUnitSelect = currentForm.querySelector(`#menu_ingredients_unit\\[${i}\\]`);
+    var ingredientUnitSelect = currentForm.querySelector(`#menu_ingredients_unit\\[${i}\\]`);
     if (ingredientUnitSelect) {
       // 単位のセットアップ（ingredient_dropdown.jsにコードあります。）
       handleIngredientNameChange(ingredientUnitSelect, currentData.material_name);
