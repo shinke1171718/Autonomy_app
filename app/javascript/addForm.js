@@ -1,10 +1,10 @@
-var formCount_view = 0;
-var formCount_back = -1;
-var maxFormCount_view = 15;
+let formCount_view = 0;
+let formCount_back = -1;
+let maxFormCount_view = 15;
 
 updateForm()
 
-var count_up_bottom = document.getElementById("form-count-up");
+let count_up_bottom = document.getElementById("form-count-up");
 if (count_up_bottom) {
   count_up_bottom.addEventListener("click", function(event) {
     event.preventDefault();
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     event.preventDefault();
 
-    var container = event.target.closest(".custom-ingredient-fields");
+    let container = event.target.closest(".custom-ingredient-fields");
     if (!container) return;
 
     container.remove();
@@ -33,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function createNewForm() {
   let ingredient_form = document.getElementById("ingredient_form");
-  var newFormCount_view = formCount_view + 1;
-  var paddedNewFormCount = newFormCount_view < 10 ? '0' + newFormCount_view : newFormCount_view;
+  let newFormCount_view = formCount_view + 1;
+  let paddedNewFormCount = newFormCount_view < 10 ? '0' + newFormCount_view : newFormCount_view;
   paddedNewFormCount = paddedNewFormCount.toString().padStart(2, '0');
 
-  var newFormCount_back = formCount_back + 1;
+  let newFormCount_back = formCount_back + 1;
 
   if (formCount_view < maxFormCount_view) {
-    var newForm = `
+    let newForm = `
       <div class="custom-ingredient-fields">
         <div class="form-delete-button">
           <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down[${newFormCount_back}]">❌</a>
@@ -60,24 +60,24 @@ function createNewForm() {
 }
 
 function updateFormNumbers() {
-  var formContainers = document.querySelectorAll(".custom-ingredient-fields");
+  let formContainers = document.querySelectorAll(".custom-ingredient-fields");
   formContainers.forEach(function (container, index) {
-    var formNumber = container.querySelector(".form-number");
+    let formNumber = container.querySelector(".form-number");
     if (formNumber) {
-      var paddedFormNumber = (index + 1 < 10) ? '0' + (index + 1) : (index + 1);
+      let paddedFormNumber = (index + 1 < 10) ? '0' + (index + 1) : (index + 1);
       formNumber.textContent = paddedFormNumber;
     }
   });
 }
 
 function updateMaxCountText(formCount_view, maxFormCount_view) {
-  var formCountLimit = document.getElementById("formCountLimit");
-  var countLimit = maxFormCount_view - formCount_view;
+  let formCountLimit = document.getElementById("formCountLimit");
+  let countLimit = maxFormCount_view - formCount_view;
   formCountLimit.textContent = "+作成あと(" + countLimit + "個)";
 }
 
 function createNewForms(defaultMaxCount, Data){
-  for (var i = 0; i < defaultMaxCount ; i++) {
+  for (let i = 0; i < defaultMaxCount ; i++) {
     createNewForm();
 
     if (!Data || !Data[i]) continue;
@@ -116,13 +116,13 @@ function createNewForms(defaultMaxCount, Data){
 }
 
 function updateForm(){
-  var ingredientsDate = document.getElementById('ingredientsDate');
+  let ingredientsDate = document.getElementById('ingredientsDate');
   // data-ingredients 属性の値を取得
-  var dataAttr = ingredientsDate.getAttribute('data-ingredients');
+  let dataAttr = ingredientsDate.getAttribute('data-ingredients');
   // JSON文字列をオブジェクトに変換
-  var parsedIngredients = JSON.parse(dataAttr);
+  let parsedIngredients = JSON.parse(dataAttr);
   // オブジェクトのすべての値を取得し、null値をフィルタリング
-  var formCount = Object.values(parsedIngredients).filter(value => value !== null).length;
+  let formCount = Object.values(parsedIngredients).filter(value => value !== null).length;
 
   if (formCount >= 1) {
     const maxCount = formCount
