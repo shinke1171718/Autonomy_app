@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110904) do
   end
 
   create_table "ingredients", force: :cascade do |t|
+    t.string "material_name", null: false
     t.bigint "material_id", null: false
     t.bigint "unit_id", null: false
     t.integer "quantity"

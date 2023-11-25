@@ -1,53 +1,31 @@
-let selectedUnits = [];
-let ingredientUnitMapping = {};
-
-
-document.addEventListener("turbo:load", function() {
-  if (!document.getElementById("menu_form")) return;
-  let ingredientName = null;
-  let matchedItems = [];
-  const ingredient_form = document.getElementById("ingredient_form");
+ingredient_form.addEventListener("click", function(event) {
   let ingredientList = document.getElementById(`ingredient-select`);
-  const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
-  const searchResultsDiv = document.createElement('div');
-  ingredientList.insertBefore(searchResultsDiv, ingredientList.firstChild);
-  let closeButton = document.querySelector('.close-icon');
-  const searchInput = document.getElementById('ingredientSearchInput');
-  const searchResultsContainer = document.getElementById('searchResultsContainer');
   let dropdownBg = document.getElementById('dropdownBackground');
   let searchResultsTitle = document.querySelector(".search-results-title");
+  const clickedElement = event.target;
 
-  // フォームの「食材フォーム」「単位フォーム」をクリックした場合の処理
-  ingredient_form.addEventListener("click", function(event) {
-    const clickedElement = event.target;
+  if (clickedElement.classList.contains("ingredient-quantity")) return;
+  if (clickedElement.classList.contains("form-count-down")) return;
 
-    if (clickedElement.classList.contains("ingredient-quantity")) return;
-    if (clickedElement.classList.contains("form-count-down")) return;
+  if (clickedElement.classList.contains("ingredient-unit")) {
+    handleIngredientUnitChange(clickedElement);
+    return;
+  }
 
-    // 食材名以外の要素がクリックされた場合、単位変更ハンドラーを呼び出します。
-    if (clickedElement.classList.contains("ingredient-unit")) {
-      handleIngredientUnitChange(clickedElement);
-      return;
-    }
+  ingredientName = document.getElementById(clickedElement.id);
+  if (!ingredientName) return;
+  openDropdown(ingredientList, dropdownBg, searchResultsTitle);
+  event.stopPropagation();
 
-    ingredientName = document.getElementById(clickedElement.id);
-    if (!ingredientName) return;
-    openDropdown(ingredientList, dropdownBg, searchResultsTitle);
-    event.stopPropagation();
-  });
-
-  // クローズボタンでドロップダウンを非表示にする
-  closeButton.addEventListener("click", function() {
-    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
-  });
-
-  // クローズボタン以外をクリックするとドロップダウンを非表示にする
-  dropdownBg.addEventListener("click", function() {
-    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
-  });
-
-  // フォーム入力で値を検索し、ヒットしたら表示する
   let searchTimer;
+  const searchInput = document.getElementById('ingredientSearchInput');
+
+  searchInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+    }
+  });
+
   searchInput.addEventListener("input", function(e) {
     const ingredientItems = ingredientList.querySelectorAll('li');
     // タイマーが既に設定されている場合はクリア
@@ -143,29 +121,29 @@ document.addEventListener("turbo:load", function() {
 
     handleIngredientNameChange(selectElement, ingredientName.value);
   });
-
-  // 食材リストを表示/非表示に切り替える
-  categoryElements.forEach((categoryElement, index) => {
-    categoryElement.addEventListener("click", function() {
-      const ulElement = document.getElementById(`ingredients-list-${index}`);
-
-      if (ulElement.style.display === "none") {
-        ulElement.style.display = "block";
-      } else {
-        ulElement.style.display = "none";
-      }
-    });
-  });
 });
 
+document.body.addEventListener("click", function(event) {
+  let ingredientList = document.getElementById('ingredient-select');
+  const searchInput = document.getElementById('ingredientSearchInput');
+  let dropdownBg = document.getElementById('dropdownBackground');
+  let searchResultsTitle = document.querySelector(".search-results-title");
 
-// 検索結果を非表示にする
+  // クローズボタンまたは背景がクリックされたか確認
+  if (event.target.matches('.close-icon') || event.target === dropdownBg) {
+    closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle);
+  }
+});
+
+selectCategory()
+
+
 function clearSearchResults(searchResultsTitle) {
   searchResultsContainer.innerHTML = '';
   searchResultsTitle.style.display = "none";
 }
 
-// 全てのingredients-listを表示する
+// // 全てのingredients-listを表示する
 function openDropdown(ingredientList, dropdownBg, searchResultsTitle) {
   const categoryLists = document.querySelectorAll('.ingredient-category ul');
   categoryLists.forEach(list => {
@@ -209,7 +187,7 @@ function handleIngredientUnitChange(clickedElement) {
   });
 }
 
-// 食材セット時にunitフォームへ専用の単位を設定する
+// 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
 function handleIngredientNameChange(selectElement, value) {
   const material_name = value;
   const userId = document.querySelector('.menu-registration-container').getAttribute('data-user-id');
@@ -239,6 +217,23 @@ function handleIngredientNameChange(selectElement, value) {
       selectElement.appendChild(option);
       selectElement.style.pointerEvents = 'auto';
       selectElement.removeAttribute('tabindex');
+    });
+  });
+}
+
+// 食材リストを表示/非表示に切り替える
+function selectCategory(){
+  let ingredientList = document.getElementById('ingredient-select');
+  const categoryElements = ingredientList.querySelectorAll('.ingredient-category p');
+  categoryElements.forEach((categoryElement, index) => {
+    categoryElement.addEventListener("click", function() {
+      const ulElement = document.getElementById(`ingredients-list-${index}`);
+
+      if (ulElement.style.display === "none") {
+        ulElement.style.display = "block";
+      } else {
+        ulElement.style.display = "none";
+      }
     });
   });
 }
