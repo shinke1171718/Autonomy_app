@@ -1,0 +1,310 @@
+@import 'shared/menuForm';
+
+.menu-container{
+  @include menu-container;
+
+  .contents-title{
+    @include contents-title;
+  }
+
+  .menu-registration-back-button {
+    width: 80%;
+    margin: 0 auto;
+    @media screen and (max-width: 1100px) {
+      width: 90%;
+    }
+  }
+
+  .back-button{
+    margin-top: 10px;
+    padding: 10px 40%;
+    font-size: 15px;
+    background-color: #000000;
+    color: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    @media screen and (max-width: 400px) {
+      padding: 10px 40%;
+    }
+  }
+
+  .menu-registration-container{
+    text-align: center;
+    width: 60%;
+    @media screen and (max-width: 500px) {
+      width: 100%;
+    }
+
+    .menu-error-message{
+      font-size: 17px;
+      color: rgb(250, 43, 43);
+    }
+
+    .menu-registration-input{
+      .menu-error{
+        font-size: 15px;
+        color: rgb(250, 43, 43);
+        text-align: left;
+        margin-left: 20px;
+      }
+
+      .ingredients-error-message{
+        font-size: 17px;
+        color: rgb(250, 43, 43);
+        text-align: center;
+      }
+
+      .image-preview-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    }
+
+    .name-registration-field input,
+    .menu-registration-field input,
+    textarea{
+      width: 100%;
+      padding-top: 13px;
+      padding-bottom: 13px;
+      padding-left: 8px;
+      margin-top: 7px;
+      font-size: 13px;
+      margin-bottom: 7px;
+      margin-right: 7px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    textarea {
+      height: 200px;
+      opacity: 0.8;
+    }
+
+    .image-registration-field input{
+      width: 90%;
+      padding: 10px 4%;
+      font-size: 13px;
+      margin-bottom: 13px;
+      margin-right: 13px;
+    }
+
+    .menu-registration-actions {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 40px;
+      @media screen and (max-width: 1100px) {
+        width: 90%;
+      }
+    }
+
+    .menu-registration-actions input{
+      padding: 10px 40%;
+      font-size: 15px;
+      background-color: #1E9AF4;
+      color: white;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  // 献立画面のスタイル
+  .ingredient-registration-input{
+    width: 100%;
+    .ingredient-registration-field{
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+      @media screen and (max-width: 400px) {
+        display: block;
+        border: none;
+      }
+
+      .custom-ingredient-fields{
+        display: flex;
+        margin-top: 2px;
+
+        .ingredient-name,
+        .ingredient-quantity,
+        .ingredient-unit{
+          display: block;
+          border: none;
+          padding: 10px;
+          border: 1px solid #ccc;
+          @media screen and (max-width: 400px) {
+            width: 90%;
+            border-bottom: 1px solid #ccc;
+            border-right: none;
+          }
+        }
+
+        .ingredient-name{
+          width: 380px;
+        }
+
+        .ingredient-quantity{
+          width: 60px;
+        }
+
+        .ingredient-unit{
+          width: 110px;
+          pointer-events: none;
+        }
+
+        a {
+          text-decoration: none;
+          font-size: 15px;
+          padding-top: 11px;
+          padding-right: 10px;
+        }
+
+        .form-delete-button{
+          margin-top: 10px;
+        }
+
+        .form-number{
+          padding: 10px;
+          background-color: #f99d68;
+          border: 1px solid #ccc;
+          @media screen and (max-width: 700px) {
+            display: none;
+          }
+        }
+      }
+
+      .ingredient-select{
+        display: none;
+        position: absolute;
+        left: 34%;
+        top: 30%;
+        width: 30%;
+        z-index: 10;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+        padding: 5px 20px;
+        border-radius: 8px;
+        @media screen and (max-width: 1000px) {
+          left: 25%;
+          width: 45%;
+        }
+        @media screen and (max-width: 700px) {
+          left: 6%;
+          width: 80%;
+          padding: 0px 10px;
+        }
+
+        .search-header {
+          display: flex;
+          flex-direction: column;
+          .close-button {
+            display: block;
+            width: 100%;
+            text-align: right;
+            color: #aaaaaa;
+            font-size: 40px;
+            .close-icon{
+              font-weight: bold;
+              float: right;
+            }
+          }
+
+          .SearchInput{
+            align-items: center;
+            width: 90%;
+            height: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        .scrollable-section{
+          max-height: 500px;
+          overflow-y: auto;
+        }
+
+        .search-results-title,
+        .drop-down-title{
+          text-align:  center;
+          font-size: 25px;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .searchContainer{
+          font-size: 20px;
+          text-align: left;
+          padding-left: 40px;
+        }
+
+        .search-result-item:hover{
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .ingredient-category {
+          ul {
+            list-style-type: none;
+            font-size: 20px;
+            li {
+              text-align: left;
+              cursor: pointer;
+
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+              }
+            }
+          }
+
+          .categoryElement {
+            font-size: 20px;
+            padding-left: 50px;
+            text-align: left;
+            cursor: pointer;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+          }
+        }
+
+        .search-results-title {
+          display: none;
+        }
+      }
+    }
+
+    .count-up-button{
+      button{
+        width: 200px;
+        background-color: #f99d68;
+        border: #2c2c2c;
+        padding: 2%;
+        font-size: 15px;
+        color: #000000;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.dropdown-bg {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
