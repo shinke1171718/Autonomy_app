@@ -95,6 +95,11 @@ ingredient_form.addEventListener("click", function(event) {
       const resultDiv = document.createElement('div');
       resultDiv.textContent = itemText;
       resultDiv.classList.add('search-result-item');
+
+      // material_idを取得してdate要素として追加
+      const dataValue = item.getAttribute('data-value');
+      resultDiv.setAttribute('data-value', dataValue);
+
       // 作成したdivを検索結果コンテナに追加
       searchResultsContainer.appendChild(resultDiv);
     });
@@ -122,6 +127,7 @@ ingredient_form.addEventListener("click", function(event) {
   // 検索した食材を選んだらフォームに値をセットする
   searchResultsContainer.addEventListener("click", function(e) {
     if (!searchResultsContainer) return;
+
     matchedItems = [];
     let parentElement = ingredientName.parentElement;
     ingredientName.value = e.target.textContent.trim();
@@ -131,7 +137,6 @@ ingredient_form.addEventListener("click", function(event) {
 
     let selectElement = parentElement.querySelector(".ingredient-unit");
     closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTitle)
-
     handleIngredientNameChange(selectElement, ingredientName.value);
   });
 });
