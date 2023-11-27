@@ -97,8 +97,7 @@
       box-shadow: 0px 0px 2px #333;
     }
 
-    .pagination-item.active,
-    .page-link {
+    .pagination-item.active .page-link {
       background-color: #333;
       color: white;
       border-color: #333;
