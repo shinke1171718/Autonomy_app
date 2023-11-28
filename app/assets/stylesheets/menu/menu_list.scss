@@ -38,7 +38,7 @@
     }
 
     .original_menus_list,
-    .default-menus-list{
+    .sample-menus-list{
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
@@ -111,11 +111,32 @@
     }
 
   }
+
+  /* 戻るボタンのスタイル */
+  .back-button {
+    display: block;
+    margin: 50px auto;
+    padding: 15px 0;
+    width: 30%;
+    font-size: 18px;
+    text-align: center;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    @media screen and (max-width: 800px) {
+      width: 80%;
+  }
+  }
+
+
 }
 
 .menu-heading {
   display: block;
-  margin-top: 80px;
+  margin-top: 50px;
   font-size: 30px;
   position: relative;
   display: inline-block;

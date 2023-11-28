@@ -1,8 +1,13 @@
 class MenusController < ApplicationController
 
-  def index
+  def custom_menus
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
     @original_menus = Menu.where(id: menu_ids).page(params[:page]).per(10)
+  end
+
+
+  def sample_menus
+    menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
     @default_menus = Menu.where.not(id: UserMenu.pluck(:menu_id)).page(params[:page]).per(10)
   end
 
