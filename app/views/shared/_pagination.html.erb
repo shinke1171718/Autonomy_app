@@ -1,0 +1,19 @@
+<div class="pagination-container">
+  <% total_pages = (total_menus_count.to_f / items_per_page).ceil %>
+  <% current_page = params[:page].to_i %>
+  <% current_page = first_page if current_page < first_page %>
+
+  <% if current_page > 1 %>
+    <%= link_to "<<", pagination_path.call(1), data: { turbo_frame: 'original_menus_frame' } %>
+    <%= link_to "<", pagination_path.call(current_page - 1), data: { turbo_frame: 'original_menus_frame' } %>
+  <% end %>
+
+  <% 1.upto(total_pages) do |page| %>
+    <%= link_to page, pagination_path.call(page), class: ("active" if page == current_page), data: { turbo_frame: 'original_menus_frame' } %>
+  <% end %>
+
+  <% if current_page < total_pages %>
+    <%= link_to ">", pagination_path.call(current_page + 1), data: { turbo_frame: 'original_menus_frame' } %>
+    <%= link_to ">>", pagination_path.call(total_pages), data: { turbo_frame: 'original_menus_frame' } %>
+  <% end %>
+</div>
