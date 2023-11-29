@@ -1,25 +1,28 @@
 <%= render 'shared/menu' %>
 
 <div class="menus-container">
-
   <h3 class="menu-list-heading">サンプル献立</h3>
 
-  <div class ="menus_list">
+  <div class="menus_list">
     <% if @default_menus.any? %>
-      <div class ="sample-menus-list">
-        <% @default_menus.each do |menu| %>
-          <div class="menu-item">
-            <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
-            <div class="menu-item-title"><%= menu.menu_name %></div>
-          </div>
-        <% end %>
+      <%= turbo_frame_tag 'default_menus_frame' do %>
+        <div class="sample-menus-list">
+          <% @default_menus.each do |menu| %>
+            <%= link_to user_menu_path(current_user, menu), class: "menu-item-link", data: { turbo: false } do %>
+              <div class="menu-item">
+                <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
+                <div class="menu-item-title"><%= menu.menu_name %></div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="pagination-container">
+          <%= paginate @default_menus, data: { turbo_frame: 'default_menus_frame' } %>
+        </div>
       <% end %>
-    </div>
-
-    <div class="pagination-container">
-      <%= paginate @default_menus %>
-    </div>
-
-    <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+    <% end %>
   </div>
+
+  <%= button_to "戻る", root_path, class: "back-button", method: :get %>
 </div>
