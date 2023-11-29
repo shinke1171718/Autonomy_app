@@ -8,8 +8,8 @@
     <%= button_to "オリジナル献立作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get %>
 
     <div class="original_menus_list">
-      <% if @original_menus.any? %>
-        <% @original_menus.each do |menu| %>
+      <% @original_menus.each do |menu| %>
+        <%= link_to user_menu_path(current_user, menu), class: "menu-item-link" do %>
           <div class="menu-item">
             <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
             <div class="menu-item-title"><%= menu.menu_name %></div>

@@ -151,6 +151,16 @@ class MenusController < ApplicationController
     redirect_to user_menus_path
   end
 
+
+  def show
+    @menu = Menu.find(params[:id])
+
+    # 重複した献立を基準の単位に変換し、合算する
+    menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
+    ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
+    @aggregated_ingredients = aggregate_ingredients(ingredients)
+  end
+
   private
 
   def menu_params
