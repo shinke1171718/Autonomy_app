@@ -12,12 +12,12 @@
     @media screen and (max-width: 600px) {
       width: 100%;
     }
+
     .menu-show-list{
       @include flex-center-column;
       .show-contents-title{
         @include contents-title;
       }
-
     }
 
     .ingredient-show-container{

@@ -2,13 +2,30 @@ class MenusController < ApplicationController
 
   def custom_menus
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
-    @original_menus = Menu.where(id: menu_ids).page(params[:page]).per(10)
+    @original_menus = paginate(Menu.where(id: menu_ids))
+    @total_menus_count = Menu.where(id: menu_ids).count
+
+    # items_per_page変数は、1ページに表示するアイテムの数を設定するために使用されます。
+    # この値はページネーションロジックで使用され、クエリから取得するレコード数を制限する際に使います。
+    @items_per_page = 10
+
+    # ページネーションの最初のページ番号を設定します。
+    # この値は、ユーザーがページネーションで指定されたページ番号より小さい値をリクエストした場合、
+    # ビューが表示するページ番号をこの値（1）にリセットするために使用されます。
+    @first_page = 1
   end
 
 
   def sample_menus
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
-    @default_menus = Menu.where.not(id: UserMenu.pluck(:menu_id)).page(params[:page]).per(10)
+    @default_menus = paginate(Menu.where.not(id: menu_ids))
+    @total_menus_count = Menu.where.not(id: menu_ids).count
+
+    # custom_menusと設定理由は同じ
+    @items_per_page = 10
+
+    # custom_menusと設定理由は同じ
+    @first_page = 1
   end
 
 
@@ -148,7 +165,7 @@ class MenusController < ApplicationController
     end
 
     flash[:notice] = "献立を登録しました。"
-    redirect_to user_menus_path
+    redirect_to user_custom_menus_path
   end
 
 
@@ -261,6 +278,22 @@ class MenusController < ApplicationController
     end
 
     total_quantity
+  end
+
+
+  def paginate(query, items_per_page: 10)
+    # パラメータからページ番号を取得し、1以上の整数に変換（デフォルトは1ページ目）
+    page = [params[:page].to_i, 1].max
+
+    # 定数 FIRST_PAGE はページネーションで使用される最初のページ番号を定義します。
+    # 通常、ページ番号は1から始まります。
+    first_page = 1
+
+    # どれだけのレコードをスキップしてからデータを取り出すかを指定する数値
+    offset = (page - first_page) * items_per_page
+
+    # items_per_page分のレコードをoffset分スキップしてレコードを取得する
+    query.limit(items_per_page).offset(offset)
   end
 
 end

@@ -17,9 +17,9 @@
           <% end %>
         </div>
 
-        <div class="pagination-container">
-          <%= paginate @default_menus, data: { turbo_frame: 'default_menus_frame' } %>
-        </div>
+        <%= render 'shared/pagination', total_menus_count: @total_menus_count, items_per_page: @items_per_page,
+        first_page: @first_page, pagination_path: ->(page) { sample_menus_path(page: page) } %>
+
       <% end %>
     <% end %>
   </div>
