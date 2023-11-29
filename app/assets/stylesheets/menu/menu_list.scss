@@ -1,3 +1,5 @@
+@import 'shared/styles';
+
 .menus-container{
   text-align: center;
   width: 100%;
@@ -65,8 +67,14 @@
         cursor: pointer;
       }
 
+      .menu-item-link, .menu-item-link:visited, .menu-item-link:hover, .menu-item-link:active {
+        text-decoration: none;
+      }
+
       .menu-item-title {
         margin-top: 10px;
+        color: black;
+        text-decoration: none;
       }
 
       .rounded-image {
@@ -115,24 +123,8 @@
 
   /* 戻るボタンのスタイル */
   .back-button {
-    display: block;
-    margin: 50px auto;
-    padding: 15px 0;
-    width: 30%;
-    font-size: 18px;
-    text-align: center;
-    background-color: #000;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    @media screen and (max-width: 800px) {
-      width: 80%;
+    @include back-button;
   }
-  }
-
-
 }
 
 .menu-heading {
