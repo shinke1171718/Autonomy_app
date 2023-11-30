@@ -24,7 +24,7 @@ class MenusController < ApplicationController
     @materials_by_category = fetch_sorted_materials_by_category
 
     # 初期登録時の処理
-    unless params[:menu].present?
+    if params[:menu].blank?
       @menu = Menu.new
       @menu.ingredients = Ingredient.new
       return
@@ -32,26 +32,14 @@ class MenusController < ApplicationController
 
     # 確認画面一度経由した場合の処理
     if params[:menu][:encoded_image].present?
-      # Base64エンコードされた画像データをデコードする
-      decoded_image = Base64.decode64(params[:menu][:encoded_image])
-
-      # 一時ファイルを作成する
-      tempfile = Tempfile.new(['upload', '.jpg'])
-      tempfile.binmode
-      tempfile.write(decoded_image)
-      tempfile.rewind
-
-      #`ActionDispatch::Http::UploadedFile`オブジェクトを作成する
-      uploaded_file = ActionDispatch::Http::UploadedFile.new(
-        filename: params[:menu][:filename],
-        type: params[:menu][:image_content_type],
-        tempfile: tempfile
+      result = decode_and_prepare_image(
+        params[:menu][:encoded_image],
+        params[:menu][:filename],
+        params[:menu][:image_content_type]
       )
 
-      # viewに表示する画像URL
-      @image_data_url = generate_data_url(uploaded_file)
-      # hiddenに設定するバイナリデーター
-      @encoded_image = params[:menu][:encoded_image]
+      @image_data_url = result[:image_data_url]
+      @encoded_image = result[:encoded_image]
     end
 
     # 受け取ったmenuデータを再度インスタンス化
@@ -75,11 +63,14 @@ class MenusController < ApplicationController
 
     # 食材データを「@menu.ingredients」に格納
     if params[:menu][:ingredients].present?
-      new_ingredient_forms(@menu, params[:menu][:ingredients])
+      # フィルタリングされた食材データを取得
+      filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
+      # インスタンス化して@menuに関連付ける
+      create_ingredient_instances(@menu, filtered_ingredients)
     end
 
     # 重複した献立を基準の単位に変換し、合算する
-    @aggregated_ingredients = aggregate_ingredients(new_ingredient_forms(@menu, params[:menu][:ingredients]))
+    @aggregated_ingredients = aggregate_ingredients(@menu.ingredients)
 
     # 画像か新規アップロードされた場合、uploaded_fileを作成
     if params[:menu][:image].present?
@@ -125,7 +116,10 @@ class MenusController < ApplicationController
     menu = Menu.new(menu_params.except(:image))
 
     if params[:menu][:ingredients].present?
-      new_ingredient_forms(menu, params[:menu][:ingredients])
+      # フィルタリングされた食材データを取得
+      filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
+      # インスタンス化して@menuに関連付ける
+      create_ingredient_instances(menu, filtered_ingredients)
     end
 
     # 画像データがある場合の処理
@@ -172,13 +166,26 @@ class MenusController < ApplicationController
     params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:material_name, :material_id, :unit_id, :quantity])
   end
 
-  # メニューに関連する新しいIngredient オブジェクトを作成するためのメソッド
-  def new_ingredient_forms(menu_instance, ingredients_params)
-    filtered_ingredients = ingredients_params.reject do |key, ingredient|
-      ingredient['material_id'].blank? || ingredient['quantity'].blank? && ingredient['unit_id'] != '17'|| ingredient['unit_id'].blank?
-    end
+  def filter_ingredients(ingredients_params)
+    # 設定から特定のunit_idを取得
+    no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
 
-    menu_instance.ingredients = filtered_ingredients.values.map do |ingredient_data|
+    # material_idが空である要素を排除
+    ingredient_data = ingredients_params.reject { |key, ingredient| ingredient['material_id'].blank? }
+    # unit_idが特定の値の要素を選択
+    unit_specific_ingredients = ingredient_data.select { |key, ingredient| ingredient['unit_id'] == no_quantity_unit_id }
+    # quantityが空でない要素を選択
+    quantity_present_ingredients = ingredient_data.reject { |key, ingredient| ingredient['quantity'].blank? }
+
+    # 両方の条件を満たす要素を結合
+    usable_ingredients = (unit_specific_ingredients.values + quantity_present_ingredients.values).uniq
+
+    usable_ingredients
+  end
+
+  # メニューインスタンスに関連付ける食材インスタンスを作成するメソッド
+  def create_ingredient_instances(menu_instance, filtered_ingredients)
+    menu_instance.ingredients = filtered_ingredients.map do |ingredient_data|
       Ingredient.new(ingredient_data)
     end
   end
@@ -196,6 +203,7 @@ class MenusController < ApplicationController
       # カテゴリー内でさらにひらがな順にソート
       materials_by_category[category_name] = materials.sort_by(&:hiragana)
     end
+
     materials_by_category
   end
 
@@ -273,7 +281,6 @@ class MenusController < ApplicationController
     @settings = YAML.load_file(Rails.root.join('config', 'settings.yml'))
   end
 
-
   def paginate(query)
     # 定数 FIRST_PAGE はページネーションで使用される最初のページ番号を定義します。
     # 通常、ページ番号は1から始まります。
@@ -289,6 +296,32 @@ class MenusController < ApplicationController
 
     # items_per_page分のレコードをoffset分スキップしてレコードを取得する
     query.limit(items_per_page).offset(offset)
+  end
+
+  def decode_and_prepare_image(encoded_image, filename, image_content_type)
+    return nil unless encoded_image.present?
+
+    # Base64エンコードされた画像データをデコードする
+    decoded_image = Base64.decode64(encoded_image)
+
+    # 一時ファイルを作成する
+    tempfile = Tempfile.new(['upload', '.jpg'])
+    tempfile.binmode
+    tempfile.write(decoded_image)
+    tempfile.rewind
+
+    # `ActionDispatch::Http::UploadedFile`オブジェクトを作成する
+    uploaded_file = ActionDispatch::Http::UploadedFile.new(
+      filename: filename,
+      type: image_content_type,
+      tempfile: tempfile
+    )
+
+    # 必要な情報を返す
+    {
+      image_data_url: generate_data_url(uploaded_file),
+      encoded_image: encoded_image
+    }
   end
 
 end
