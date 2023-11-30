@@ -1,37 +1,25 @@
 class MenusController < ApplicationController
+  before_action :load_settings
 
   def custom_menus
+    # 現在ログインしているユーザーのIDに関連付けられたすべてのメニューIDを取得
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
+    # menu_ids を使って Menu モデルから該当するレコードを取得
     @original_menus = paginate(Menu.where(id: menu_ids))
+    # menu_ids を使って Menu モデルから該当するレコードの総数を取得
     @total_menus_count = Menu.where(id: menu_ids).count
-
-    # items_per_page変数は、1ページに表示するアイテムの数を設定するために使用されます。
-    # この値はページネーションロジックで使用され、クエリから取得するレコード数を制限する際に使います。
-    @items_per_page = 10
-
-    # ページネーションの最初のページ番号を設定します。
-    # この値は、ユーザーがページネーションで指定されたページ番号より小さい値をリクエストした場合、
-    # ビューが表示するページ番号をこの値（1）にリセットするために使用されます。
-    @first_page = 1
   end
 
 
   def sample_menus
     menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
     @default_menus = paginate(Menu.where.not(id: menu_ids))
+    # ユーザーに紐づいていないメニュー項目の総数を取得
     @total_menus_count = Menu.where.not(id: menu_ids).count
-
-    # custom_menusと設定理由は同じ
-    @items_per_page = 10
-
-    # custom_menusと設定理由は同じ
-    @first_page = 1
   end
 
 
   def new
-    # 動的フォームを作成する個数
-    @formCount = 5
     # ドロップダウンリストを作成に必要なデータを格納
     @materials_by_category = fetch_sorted_materials_by_category
 
@@ -280,14 +268,21 @@ class MenusController < ApplicationController
     total_quantity
   end
 
+  # 各アクション内で必要な設定値を @settings 変数に格納
+  def load_settings
+    @settings = YAML.load_file(Rails.root.join('config', 'settings.yml'))
+  end
 
-  def paginate(query, items_per_page: 10)
-    # パラメータからページ番号を取得し、1以上の整数に変換（デフォルトは1ページ目）
-    page = [params[:page].to_i, 1].max
 
+  def paginate(query)
     # 定数 FIRST_PAGE はページネーションで使用される最初のページ番号を定義します。
     # 通常、ページ番号は1から始まります。
-    first_page = 1
+    first_page = @settings.dig('pagination', 'first_page')
+
+    # パラメータからページ番号を取得し、1以上の整数に変換（デフォルトは1ページ目）
+    page = [params[:page].to_i, first_page].max
+
+    items_per_page = @settings.dig('pagination', 'items_per_page')
 
     # どれだけのレコードをスキップしてからデータを取り出すかを指定する数値
     offset = (page - first_page) * items_per_page

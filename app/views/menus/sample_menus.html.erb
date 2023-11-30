@@ -17,8 +17,8 @@
           <% end %>
         </div>
 
-        <%= render 'shared/pagination', total_menus_count: @total_menus_count, items_per_page: @items_per_page,
-        first_page: @first_page, pagination_path: ->(page) { sample_menus_path(page: page) } %>
+        <%= render 'shared/pagination', total_menus_count: @total_menus_count, items_per_page: @settings.dig('pagination', 'items_per_page'),
+        first_page: @settings.dig('pagination', 'first_page'), pagination_path: ->(page) { sample_menus_path(page: page) } %>
 
       <% end %>
     <% end %>
