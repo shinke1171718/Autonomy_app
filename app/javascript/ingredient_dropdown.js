@@ -208,7 +208,7 @@ function handleIngredientUnitChange(clickedElement) {
 // 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
 function handleIngredientNameChange(selectElement, value) {
   const material_name = value;
-  const userId = document.querySelector('.menu-registration-container').getAttribute('data-user-id');
+  const userId = document.querySelector('.menu-form-container').getAttribute('data-user-id');
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   const url = `/users/${userId}/menus/units`;

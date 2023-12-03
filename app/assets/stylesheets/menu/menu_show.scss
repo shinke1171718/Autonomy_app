@@ -69,8 +69,36 @@
     }
   }
 
-  .back-button{
-    @include back-button;
-    width: 45%;
+  .menu-button-container {
+    width: 100%;
+    .select-button {
+      @include button;
+      width: 45%;
+      background-color: #555;
+      margin-bottom: 10px;
+      height: 80px;
+
+      &:hover {
+        background-color: lighten(#7d7d7d, 10%);
+      }
+    }
+
+    .edit-button {
+      @include button;
+      width: 45%;
+      background-color: #777;
+      margin-top: 30px;
+      margin-bottom: 10px;
+
+      &:hover {
+        background-color: lighten(#7d7d7d, 10%);
+      }
+    }
+
+    .back-button {
+      @include button;
+      width: 45%;
+      margin-top: 10px;
+    }
   }
 }

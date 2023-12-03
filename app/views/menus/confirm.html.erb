@@ -1,4 +1,3 @@
-
 <div class="confirm-container">
   <div class="confirm-form-container">
     <%= form_with model: [current_user, @menu], local: true do |f| %>
@@ -43,6 +42,14 @@
             <p>画像なし</p>
           <% end %>
         </div>
+
+        <% if @menu.persisted? %>
+          <p>データあり</p>
+          <%= f.hidden_field :id, value: @menu.id %>
+        <% else %>
+          <p>なし</p>
+        <% end %>
+
       </div>
 
       <div class="ingredient-confirm-container">

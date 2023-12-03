@@ -22,22 +22,10 @@ if (count_up_bottom) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  document.addEventListener("click", function(event) {
-    if (!event.target.classList.contains("form-count-down")) return;
-
-    event.preventDefault();
-
-    // クリックされた要素の最も近い ".custom-ingredient-fields" 要素を取得
-    var container = event.target.closest(".custom-ingredient-fields");
-    if (!container) return;
-
-    container.remove(); // 該当する要素を削除
-    formCount_view--; // 表示中のフォーム数をデクリメント
-    formCount_back--; // バックエンド用のフォーム数をデクリメント
-    updateFormNumbers(); // フォーム番号を更新
-    updateMaxCountText(formCount_view, maxFormCount_view) // 最大フォーム数テキストを更新
-  });
+document.addEventListener("click", function(event) {
+  if (event.target.classList.contains("form-count-down")) {
+      handleCountDownClick(event);
+  }
 });
 
 
@@ -159,7 +147,7 @@ function createNewForms(defaultMaxCount, Data){
 }
 
 function updateForm(){
-  var ingredientsDate = document.getElementById('ingredientsDate');
+  var ingredientsDate = document.getElementById('ingredients-date');
   // data-ingredients 属性の値を取得
   var dataAttr = ingredientsDate.getAttribute('data-ingredients');
   // JSON文字列をオブジェクトに変換
@@ -192,4 +180,54 @@ function updateForm(){
     const maxCount = 5
     createNewForms(maxCount, parsedIngredients)
   }
+}
+
+// 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
+function handleIngredientNameChange(selectElement, value) {
+  const material_name = value;
+  const userId = document.querySelector('.menu-form-container').getAttribute('data-user-id');
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+  const url = `/users/${userId}/menus/units`;
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': token
+    },
+    body: JSON.stringify({ material_name: material_name })
+  })
+  .then(response => response.json())
+  .then(data => {
+
+    while (selectElement.firstChild) {
+      selectElement.removeChild(selectElement.firstChild);
+    }
+
+    data.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.id;
+      option.textContent = item.name;
+      selectElement.appendChild(option);
+      selectElement.style.pointerEvents = 'auto';
+      selectElement.removeAttribute('tabindex');
+    });
+  });
+}
+
+function handleCountDownClick(event) {
+  event.preventDefault();
+
+  console.log("処理きました");
+
+  // クリックされた要素の最も近い ".custom-ingredient-fields" 要素を取得
+  var container = event.target.closest(".custom-ingredient-fields");
+  if (!container) return;
+
+  container.remove(); // 該当する要素を削除
+  formCount_view--; // 表示中のフォーム数をデクリメント
+  formCount_back--; // バックエンド用のフォーム数をデクリメント
+  updateFormNumbers(); // フォーム番号を更新
+  updateMaxCountText(formCount_view, maxFormCount_view) // 最大フォーム数テキストを更新
 }

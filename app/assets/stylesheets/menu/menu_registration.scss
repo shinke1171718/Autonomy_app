@@ -7,7 +7,7 @@
     @include contents-title;
   }
 
-  .menu-registration-back-button {
+  .menu-form-back-button {
     width: 80%;
     margin: 0 auto;
     @media screen and (max-width: 1100px) {
@@ -29,7 +29,7 @@
     }
   }
 
-  .menu-registration-container{
+  .menu-form-container{
     text-align: center;
     width: 60%;
     @media screen and (max-width: 500px) {
@@ -41,7 +41,7 @@
       color: rgb(250, 43, 43);
     }
 
-    .menu-registration-input{
+    .menu-form-input{
       .menu-error{
         font-size: 15px;
         color: rgb(250, 43, 43);
@@ -63,8 +63,8 @@
 
     }
 
-    .name-registration-field input,
-    .menu-registration-field input,
+    .name-form-field input,
+    .menu-contents-field input,
     textarea{
       width: 100%;
       padding-top: 13px;
@@ -83,7 +83,7 @@
       opacity: 0.8;
     }
 
-    .image-registration-field input{
+    .image-field input{
       width: 90%;
       padding: 10px 4%;
       font-size: 13px;
@@ -91,7 +91,7 @@
       margin-right: 13px;
     }
 
-    .menu-registration-actions {
+    .menu-form-actions {
       width: 80%;
       margin: 0 auto;
       margin-top: 40px;
@@ -100,7 +100,7 @@
       }
     }
 
-    .menu-registration-actions input{
+    .menu-form-actions input{
       padding: 10px 40%;
       font-size: 15px;
       background-color: #1E9AF4;
@@ -111,9 +111,9 @@
   }
 
   // 献立画面のスタイル
-  .ingredient-registration-input{
+  .ingredient-form-input{
     width: 100%;
-    .ingredient-registration-field{
+    .ingredient-form-field{
       justify-content: space-between;
       align-items: center;
       border-radius: 5px;

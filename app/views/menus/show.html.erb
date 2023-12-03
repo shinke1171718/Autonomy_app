@@ -60,6 +60,13 @@
     </div>
   </div>
 
+  <div class="menu-button-container">
+    <%= button_to '献立を選択', '#', method: :get, class: 'select-button', id: 'select_button' %>
 
-  <button onclick="history.back()" class="back-button">戻る</button>
+    <% if UserMenu.exists?(menu_id: @menu.id, user_id: current_user.id) %>
+      <%= button_to '編集', edit_user_menu_path(@menu), method: :get, class: 'edit-button', id: 'edit_button' %>
+    <% end %>
+
+    <%= button_to '戻る', user_custom_menus_path(current_user), method: :get, class: 'back-button', id: 'back_button' %>
+  </div>
 </div>
