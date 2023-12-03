@@ -15,16 +15,16 @@ document.addEventListener('submit', function(event) {
   let menu_contents = document.getElementById("menu_contents");
   let contents = document.getElementById("contents");
   let errorMessage_name = document.getElementById("menu-error_name");
-  let errorMessage_contents = document.getElementById("menu-error-contents-1");
-  let errorMessage_contents_2 = document.getElementById("menu-error-contents-2");
-  let inputName = document.querySelector(".name-registration-field input");
-  let inputContent = document.querySelector(".menu-registration-field input");
+  let errorMessage_menu_contents = document.getElementById("menu-error-menu-contents");
+  let errorMessage_contents = document.getElementById("menu-error-contents");
+  let inputName = document.querySelector(".name-form-field input");
+  let inputContent = document.querySelector(".menu-contents-field input");
   let inputText = document.querySelector("textarea");
 
   // menuモデルのバリデーション
   validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)
-  validateAndHighlightInput(menu_contents, errorMessage_contents, inputContent, event)
-  validateAndHighlightInput(contents, errorMessage_contents_2, inputText, event)
+  validateAndHighlightInput(menu_contents, errorMessage_menu_contents, inputContent, event)
+  validateAndHighlightInput(contents, errorMessage_contents, inputText, event)
 
   // ingredientモデルのバリデーション
   for (let i = minForm; i < maxForm; i++) {

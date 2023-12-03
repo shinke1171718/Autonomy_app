@@ -160,6 +160,81 @@ class MenusController < ApplicationController
     @aggregated_ingredients = aggregate_ingredients(ingredients)
   end
 
+  def edit
+    @menu = Menu.find(params[:id])
+    @materials_by_category = fetch_sorted_materials_by_category
+
+    # MenuIngredient モデルを使用して ingredient_id のリストを取得
+    ingredient_ids = MenuIngredient.where(menu_id: @menu.id).pluck(:ingredient_id)
+    ingredients = Ingredient.where(id: ingredient_ids)
+
+    # @menu.ingredients にデータを設定。このデータはフロントエンドの動的フォームにおいて
+    # JavaScriptを介して利用される。各食材の詳細情報をインデックスに基づいたハッシュマップとして構築。
+    @menu.ingredients = ingredients.each_with_index.inject({}) do |hash, (ingredient, index)|
+      hash[index.to_s] = {
+        'material_name' => ingredient.material_name,
+        'material_id'   => ingredient.material_id.to_s,
+        'quantity'      => ingredient.quantity.to_s,
+        'unit_id'       => ingredient.unit_id.to_s
+      }
+      hash
+    end
+
+    if @menu.image.attached?
+      @image_data_url = url_for(@menu.image)
+    end
+  end
+
+
+  def update
+    menu = Menu.find(params[:id])
+
+    # 画像データがある場合の処理
+    if params[:menu].values_at(:encoded_image, :image_content_type).all?
+      image_data = Base64.decode64(params[:menu][:encoded_image])
+      filename = "user_#{current_user.id}の献立の画像"
+      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
+    end
+
+    if params[:menu][:ingredients].present?
+      # フィルタリングされた食材データを取得
+      filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
+      # インスタンス化して@menuに関連付ける
+      ingredient_data = create_ingredient_instances(menu, filtered_ingredients)
+    end
+
+    begin
+      ActiveRecord::Base.transaction do
+        # MenuIngredient モデルを使用して ingredient_id のリストを取得
+        ingredient_ids = MenuIngredient.where(menu_id: menu.id).pluck(:ingredient_id)
+        ingredients = Ingredient.where(id: ingredient_ids)
+
+        # 既存の食材データを削除する
+        ingredients.destroy_all
+        # 関連する MenuIngredient レコードを削除
+        MenuIngredient.where(menu_id: menu.id).destroy_all
+
+        # メニューデータを更新
+        menu.update!(menu_params)
+
+        # 新しい食材データを保存
+        if ingredient_data.present?
+          ingredient_data.each do |ingredient|
+            puts "食材を保存中: #{ingredient.inspect}"
+            ingredient.save!
+            MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
+          end
+        end
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      handle_general_error
+      return
+    end
+
+    flash[:notice] = "献立が更新されました。"
+    redirect_to user_menu_path(user_id: current_user.id, menu_id: menu.id)
+  end
+
   private
 
   def menu_params
@@ -178,9 +253,7 @@ class MenusController < ApplicationController
     quantity_present_ingredients = ingredient_data.reject { |key, ingredient| ingredient['quantity'].blank? }
 
     # 両方の条件を満たす要素を結合
-    usable_ingredients = (unit_specific_ingredients.values + quantity_present_ingredients.values).uniq
-
-    usable_ingredients
+    usable_ingredients = (unit_specific_ingredients.values + quantity_present_ingredients.values)
   end
 
   # メニューインスタンスに関連付ける食材インスタンスを作成するメソッド

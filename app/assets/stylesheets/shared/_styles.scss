@@ -91,7 +91,7 @@
   }
 }
 
-@mixin back-button {
+@mixin button {
   display: block;
   margin: 50px auto;
   padding: 15px 0;
@@ -104,6 +104,7 @@
   border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   @media screen and (max-width: 800px) {
     width: 80%;
   }
