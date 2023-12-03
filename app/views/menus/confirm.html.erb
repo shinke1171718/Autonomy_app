@@ -43,13 +43,6 @@
           <% end %>
         </div>
 
-        <% if @menu.persisted? %>
-          <p>データあり</p>
-          <%= f.hidden_field :id, value: @menu.id %>
-        <% else %>
-          <p>なし</p>
-        <% end %>
-
       </div>
 
       <div class="ingredient-confirm-container">
@@ -91,42 +84,22 @@
 
     <div class="button-confirm-container">
       <div class="menu-edit-button">
-        <% if @menu.new_record? %>
-          <%= form_with model: @menu, url: new_user_menu_path(current_user), method: :post, local: true do |f| %>
-            <%= f.hidden_field :menu_name, value: @menu.menu_name %>
-            <%= f.hidden_field :menu_contents, value: @menu.menu_contents %>
-            <%= f.hidden_field :contents, value: @menu.contents %>
-            <%= f.hidden_field :encoded_image, value: @encoded_image %>
-            <%= f.hidden_field :filename, value: @menu.image.filename.to_s %>
-            <%= f.hidden_field :image_content_type, value: @menu.image.content_type %>
+        <%= form_with model: @menu, url: new_user_menu_path(current_user), method: :post, local: true do |f| %>
+          <%= f.hidden_field :menu_name, value: @menu.menu_name %>
+          <%= f.hidden_field :menu_contents, value: @menu.menu_contents %>
+          <%= f.hidden_field :contents, value: @menu.contents %>
+          <%= f.hidden_field :encoded_image, value: @encoded_image %>
+          <%= f.hidden_field :filename, value: @menu.image.filename.to_s %>
+          <%= f.hidden_field :image_content_type, value: @menu.image.content_type %>
 
-            <% @menu.ingredients.each_with_index do |ingredient, index| %>
-              <%= f.hidden_field "ingredients_attributes[#{index}][material_name]", value: ingredient.material_name %>
-              <%= f.hidden_field "ingredients_attributes[#{index}][material_id]", value: ingredient.material.id %>
-              <%= f.hidden_field "ingredients_attributes[#{index}][quantity]", value: ingredient.quantity %>
-              <%= f.hidden_field "ingredients_attributes[#{index}][unit_id]", value: ingredient.unit.id %>
-            <% end %>
-
-            <%= f.submit "編集", class: "edit-button" %>
+          <% @menu.ingredients.each_with_index do |ingredient, index| %>
+            <%= f.hidden_field "ingredients_attributes[#{index}][material_name]", value: ingredient.material_name %>
+            <%= f.hidden_field "ingredients_attributes[#{index}][material_id]", value: ingredient.material.id %>
+            <%= f.hidden_field "ingredients_attributes[#{index}][quantity]", value: ingredient.quantity %>
+            <%= f.hidden_field "ingredients_attributes[#{index}][unit_id]", value: ingredient.unit.id %>
           <% end %>
-        <% else %>
-          <%= form_with url: edit_user_menu_path(current_user, @menu), method: :post, local: true do |f| %>
-            <%= f.hidden_field :menu_name, value: @menu.menu_name %>
-            <%= f.hidden_field :menu_contents, value: @menu.menu_contents %>
-            <%= f.hidden_field :contents, value: @menu.contents %>
-            <%= f.hidden_field :encoded_image, value: @encoded_image %>
-            <%= f.hidden_field :filename, value: params[:menu][:image].original_filename %>
-            <%= f.hidden_field :image_content_type, value: @menu.image.content_type %>
 
-            <% @menu.ingredients.each_with_index do |ingredient, index| %>
-              <%= f.hidden_field "ingredients[#{index}][material_name]", value: ingredient.material_name %>
-              <%= f.hidden_field "ingredients[#{index}][material_id]", value: ingredient.material.id %>
-              <%= f.hidden_field "ingredients[#{index}][quantity]", value: ingredient.quantity %>
-              <%= f.hidden_field "ingredients[#{index}][unit_id]", value: ingredient.unit.id %>
-            <% end %>
-
-            <%= f.submit "編集", class: "edit-button" %>
-          <% end %>
+          <%= f.submit "編集", class: "edit-button" %>
         <% end %>
       </div>
     </div>
