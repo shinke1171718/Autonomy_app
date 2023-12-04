@@ -3,6 +3,7 @@ class Menu < ApplicationRecord
   has_many :users, through: :menu_users
   has_one_attached :image
   has_many :ingredients, through: :menu_ingredients, autosave: false
+  has_many :cart_items
 
   validates :menu_name, presence: true, length: { maximum: 15 }
   validates :menu_contents, presence: true, length: { maximum: 20 }

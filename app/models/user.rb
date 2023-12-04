@@ -7,4 +7,5 @@ class User < ApplicationRecord
 
   has_many :menu_users
   has_many :menus, through: :menu_users
+  has_one :cart
 end
