@@ -71,15 +71,75 @@
 
   .menu-button-container {
     width: 100%;
-    .select-button {
-      @include button;
-      width: 45%;
-      background-color: #555;
-      margin-bottom: 10px;
-      height: 80px;
 
-      &:hover {
-        background-color: lighten(#7d7d7d, 10%);
+    .item-selection-container{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .quantity-selector{
+        display: flex;
+        margin-right: 0px;
+        .quantity-input {
+          width: 3em;
+          text-align: center;
+        }
+
+        button,
+        .quantity-input {
+          border: 1px solid #ccc;
+          vertical-align: middle;
+          margin: 0;
+        }
+
+        button {
+          background-color: #fff;
+          line-height: 1;
+          border-radius: 0;
+          padding: 0 15px;
+          cursor: pointer;
+          &:first-child {
+            border-right: none;
+          }
+          &:last-child {
+            border-left: none;
+          }
+          &:hover {
+            background-color: #969696;
+          }
+        }
+
+        .decrease-quantity{
+          font-size: 20px
+        }
+
+        .increase-quantity{
+          font-size: 20px
+        }
+      }
+
+      .select-button {
+        @include button;
+        border-radius: 0%;
+        width: 15%;
+        background-color: #555;
+        margin-bottom: 10px;
+        height: 60px;
+        margin: 0;
+        @media screen and (max-width: 800px) {
+          width: 50%;
+        }
+
+        &:hover {
+          background-color: lighten(#7d7d7d, 10%);
+        }
+      }
+
+      .quantity-input {
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        padding: 5px 10px;
       }
     }
 
