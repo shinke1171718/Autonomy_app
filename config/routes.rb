@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   get 'users/:user_id/custom_menus', to: 'menus#custom_menus', as: :user_custom_menus
   # 標準献立用のルーティング
   get 'sample_menus', to: 'menus#sample_menus', as: :sample_menus
-
+  # CartItem#createへのルーティング
+  resources :cart_items, only: [:create, :destroy]
 
   devise_for :users
   devise_scope :user do

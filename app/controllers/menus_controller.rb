@@ -1,5 +1,4 @@
 class MenusController < ApplicationController
-  before_action :load_settings
 
   def custom_menus
     # 現在ログインしているユーザーのIDに関連付けられたすべてのメニューIDを取得
@@ -347,11 +346,6 @@ class MenusController < ApplicationController
     end
 
     total_quantity
-  end
-
-  # 各アクション内で必要な設定値を @settings 変数に格納
-  def load_settings
-    @settings = YAML.load_file(Rails.root.join('config', 'settings.yml'))
   end
 
   def paginate(query)
