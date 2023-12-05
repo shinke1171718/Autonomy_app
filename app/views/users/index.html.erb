@@ -9,7 +9,6 @@
   <% if @cart_items.present? %>
     <div class="menus_list">
       <% @cart_items.each do |cart_item| %>
-
         <div class="menu-item">
           <div class="delete-button">
             <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
@@ -19,7 +18,11 @@
           <div class="menu-item-title"><%= cart_item.menu.menu_name %></div>
 
           <div class="menu-item-count">
-            <div class="menu-item-quantity">数量: <%= cart_item.item_count %></div>
+            <%= button_to '▲', cart_item_increment_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "increment-button" %>
+            <%= turbo_frame_tag "menu_item_quantity_#{cart_item.id}" do %>
+              <div class="menu-item-quantity"><%= cart_item.item_count %></div>
+            <% end %>
+            <%= button_to '▼', cart_item_decrement_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "decrement-button" %>
           </div>
         </div>
       <% end %>
@@ -27,6 +30,8 @@
   <% else %>
     <p class="empty-cart-message">カートに献立がありません。</p>
   <% end %>
+
+
 
 
   <div class="button-set-container">

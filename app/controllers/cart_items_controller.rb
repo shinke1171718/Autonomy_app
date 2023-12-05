@@ -27,4 +27,18 @@ class CartItemsController < ApplicationController
 
     redirect_back(fallback_location: root_path)
   end
+
+
+  def increment
+    cart_item = CartItem.find_by(id: params[:id])
+    cart_item.increment!(:item_count)
+    redirect_back(fallback_location: root_path)
+  end
+
+
+  def decrement
+    cart_item = CartItem.find_by(id: params[:id])
+    cart_item.decrement!(:item_count) if cart_item.item_count > 1
+    redirect_back(fallback_location: root_path)
+  end
 end

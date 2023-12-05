@@ -8,7 +8,7 @@
   .menu-heading {
     display: block;
     margin-top: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     font-size: 30px;
     position: relative;
     display: inline-block;
@@ -36,7 +36,7 @@
     .menu-item{
       position: relative;
       width: 250px;
-      height: 270px;
+      height: 300px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -73,6 +73,37 @@
         align-items: center;
         justify-content: center;
         padding: 5px;
+      }
+    }
+
+    .menu-item-count {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+
+      .decrement-button,
+      .increment-button {
+        font-size: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background-color: #e6e6e6;
+        }
+      }
+
+      .menu-item-quantity {
+        font-size: 16px;
+        text-align: center;
+        width: 40px;
+        padding: 5px 10px;
       }
     }
   }
