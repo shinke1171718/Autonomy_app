@@ -1,7 +1,37 @@
 <%= render 'shared/menu' %>
 
-<div class="button-set-container">
-  <%= button_to "オリジナル献立リスト", user_custom_menus_path(current_user), class: "button-style bg-custom-menu", method: :get %>
-  <%= button_to "サンプル献立リスト", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
-  <%= button_to "買い出しに行く", root_path, class: "button-style bg-shopping-list", method: :get %>
+<div class="menu-index-container">
+
+  <div class="menu-heading">
+    <h3>選択された献立</h3>
+  </div>
+
+  <% if @cart_items.present? %>
+    <div class="menus_list">
+      <% @cart_items.each do |cart_item| %>
+
+        <div class="menu-item">
+          <div class="delete-button">
+            <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
+          </div>
+
+          <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
+          <div class="menu-item-title"><%= cart_item.menu.menu_name %></div>
+
+          <div class="menu-item-count">
+            <div class="menu-item-quantity">数量: <%= cart_item.item_count %></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-cart-message">カートに献立がありません。</p>
+  <% end %>
+
+
+  <div class="button-set-container">
+    <%= button_to "オリジナル献立リスト", user_custom_menus_path(current_user), class: "button-style bg-custom-menu", method: :get %>
+    <%= button_to "サンプル献立リスト", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
+    <%= button_to "買い出しに行く", root_path, class: "button-style bg-shopping-list", method: :get %>
+  </div>
 </div>
