@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :users do
       resources :menus do
         post 'new', on: :collection, to: 'menus#new', as: :new_user_menu
+        post 'edit', on: :collection, to: 'menus#edit', as: :edit_confirm
         resources :ingredients
       end
     end
