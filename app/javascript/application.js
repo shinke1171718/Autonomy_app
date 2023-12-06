@@ -4,4 +4,3 @@ import "controllers"
 import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
-import "./quantity_selector";

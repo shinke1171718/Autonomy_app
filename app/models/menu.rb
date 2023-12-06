@@ -11,7 +11,7 @@ class Menu < ApplicationRecord
   before_validation :set_default_image
 
   # 複数のingredientデータを格納するために設定しています。
-  attr_accessor :ingredients
+  attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url
 
   private
 

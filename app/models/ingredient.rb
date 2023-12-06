@@ -1,4 +1,5 @@
 class Ingredient < ApplicationRecord
+  has_many :menu_ingredients
   has_many :menus, through: :menu_ingredients
   belongs_to :material
   belongs_to :unit
@@ -11,7 +12,8 @@ class Ingredient < ApplicationRecord
   private
 
   def skip_quantity_validation?
-    unit_id == 17
+    settings = YAML.load_file(Rails.root.join('config', 'settings.yml'))
+    unit_id == settings.dig('ingredient', 'no_quantity_unit_id')
   end
 
 end

@@ -66,17 +66,12 @@
 
       <div class="item-selection-container">
         <div class="quantity-selector">
-          <%= button_tag '▲', type: 'button', class: 'increase-quantity', 'data-action': 'increase' %>
           <%= form.number_field :item_count, value: 1, min: 1, class: 'quantity-input', 'aria-label': "Item count" %>
-          <%= button_tag '▼', type: 'button', class: 'decrease-quantity', 'data-action': 'decrease' %>
         </div>
 
         <%= form.submit '選択', class: 'select-button', id: 'select_button' %>
       </div>
     <% end %>
-
-
-
 
     <% if UserMenu.exists?(menu_id: @menu.id, user_id: current_user.id) %>
       <%= button_to '編集', edit_user_menu_path(@menu), method: :get, class: 'edit-button', id: 'edit_button' %>

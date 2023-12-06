@@ -39,6 +39,7 @@ class MenusController < ApplicationController
 
       @image_data_url = result[:image_data_url]
       @encoded_image = result[:encoded_image]
+      @image_content_type = result[:image_content_type]
     end
 
     # 受け取ったmenuデータを再度インスタンス化
@@ -59,6 +60,13 @@ class MenusController < ApplicationController
 
   def confirm
     @menu = Menu.new(menu_params)
+
+    # editフォームから送信された場合、params に menu_id が含まれる。
+    # この menu_id を @menu_id に設定して、既存の menu が編集対象であることを識別する。
+    # これにより、確認画面からのリダイレクト先を、新規作成フォームか編集フォームかを適切に決定できる。
+    if params[:menu][:menu_id].present?
+      @menu_id = params[:menu][:menu_id]
+    end
 
     # 食材データを「@menu.ingredients」に格納
     if params[:menu][:ingredients].present?
@@ -159,29 +167,54 @@ class MenusController < ApplicationController
     @aggregated_ingredients = aggregate_ingredients(ingredients)
   end
 
+
   def edit
     @menu = Menu.find(params[:id])
     @materials_by_category = fetch_sorted_materials_by_category
 
+    # 確認画面一度経由した場合の処理
+    if params[:menu].present?
+      result = decode_and_prepare_image(
+        params[:menu][:encoded_image],
+        params[:menu][:filename],
+        params[:menu][:image_content_type]
+      )
+
+      @image_data_url = result[:image_data_url]
+      @encoded_image = result[:encoded_image]
+      @image_content_type = result[:image_content_type]
+    end
+
+    if params[:menu].present?
+      @menu_id = params[:id]
+      @menu.menu_name = params[:menu][:menu_name]
+      @menu.menu_contents = params[:menu][:menu_contents]
+      @menu.contents = params[:menu][:contents]
+      @menu.ingredients = params[:menu][:ingredients_attributes]
+
+      render 'edit', status: :unprocessable_entity
+    end
+
     # MenuIngredient モデルを使用して ingredient_id のリストを取得
-    ingredient_ids = MenuIngredient.where(menu_id: @menu.id).pluck(:ingredient_id)
-    ingredients = Ingredient.where(id: ingredient_ids)
+    ingredients = Ingredient.joins(:menu_ingredients).where(menu_ingredients: { menu_id: @menu.id })
 
     # @menu.ingredients にデータを設定。このデータはフロントエンドの動的フォームにおいて
     # JavaScriptを介して利用される。各食材の詳細情報をインデックスに基づいたハッシュマップとして構築。
     @menu.ingredients = ingredients.each_with_index.inject({}) do |hash, (ingredient, index)|
       hash[index.to_s] = {
-        'material_name' => ingredient.material_name,
-        'material_id'   => ingredient.material_id.to_s,
-        'quantity'      => ingredient.quantity.to_s,
-        'unit_id'       => ingredient.unit_id.to_s
+        material_name: ingredient.material_name,
+        material_id:   ingredient.material_id.to_s,
+        quantity:      ingredient.quantity.to_s,
+        unit_id:       ingredient.unit_id.to_s
       }
       hash
     end
 
     if @menu.image.attached?
       @image_data_url = url_for(@menu.image)
+      @encoded_image = Base64.encode64(@menu.image.download)
     end
+
   end
 
 
@@ -237,8 +270,9 @@ class MenusController < ApplicationController
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :image, :image_meta_data, ingredients: [:material_name, :material_id, :unit_id, :quantity])
+    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :encoded_image, :filename, :image_content_type, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
   end
+
 
   def filter_ingredients(ingredients_params)
     # 設定から特定のunit_idを取得
@@ -365,8 +399,8 @@ class MenusController < ApplicationController
     query.limit(items_per_page).offset(offset)
   end
 
+  # Base64エンコードされた画像をデコードし、一時ファイルに保存後、画像のデータURLとエンコードされたデータを返す。
   def decode_and_prepare_image(encoded_image, filename, image_content_type)
-    return nil unless encoded_image.present?
 
     # Base64エンコードされた画像データをデコードする
     decoded_image = Base64.decode64(encoded_image)
@@ -387,7 +421,8 @@ class MenusController < ApplicationController
     # 必要な情報を返す
     {
       image_data_url: generate_data_url(uploaded_file),
-      encoded_image: encoded_image
+      encoded_image: encoded_image,
+      image_content_type: image_content_type
     }
   end
 
