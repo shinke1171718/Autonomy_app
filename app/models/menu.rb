@@ -1,9 +1,10 @@
 class Menu < ApplicationRecord
-  has_many :menu_users
+  has_many :menu_users, dependent: :destroy
   has_many :users, through: :menu_users
   has_one_attached :image
+  has_many :menu_ingredients, dependent: :destroy
   has_many :ingredients, through: :menu_ingredients, autosave: false
-  has_many :cart_items
+  has_many :cart_items, dependent: :destroy
 
   validates :menu_name, presence: true, length: { maximum: 15 }
   validates :menu_contents, presence: true, length: { maximum: 20 }

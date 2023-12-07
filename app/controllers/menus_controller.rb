@@ -243,8 +243,6 @@ class MenusController < ApplicationController
 
         # 既存の食材データを削除する
         ingredients.destroy_all
-        # 関連する MenuIngredient レコードを削除
-        MenuIngredient.where(menu_id: menu.id).destroy_all
 
         # メニューデータを更新
         menu.update!(menu_params)
@@ -252,7 +250,6 @@ class MenusController < ApplicationController
         # 新しい食材データを保存
         if ingredient_data.present?
           ingredient_data.each do |ingredient|
-            puts "食材を保存中: #{ingredient.inspect}"
             ingredient.save!
             MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
           end
