@@ -1,5 +1,5 @@
 class Ingredient < ApplicationRecord
-  has_many :menu_ingredients
+  has_many :menu_ingredients, dependent: :destroy
   has_many :menus, through: :menu_ingredients
   belongs_to :material
   belongs_to :unit
