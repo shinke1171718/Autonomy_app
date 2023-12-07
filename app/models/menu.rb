@@ -7,7 +7,7 @@ class Menu < ApplicationRecord
 
   validates :menu_name, presence: true, length: { maximum: 15 }
   validates :menu_contents, presence: true, length: { maximum: 20 }
-  validates :contents, presence: true, length: { maximum: 700 }
+  validates :contents, presence: true, length: { maximum: 1500 }
   before_validation :set_default_image
 
   # 複数のingredientデータを格納するために設定しています。
