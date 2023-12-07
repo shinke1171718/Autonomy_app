@@ -48,7 +48,7 @@
             <div class="ingredient-show-item">
               <p class="material-name"><%= aggregated_ingredient.material.material_name %></p>
               <div class="quantity-unit">
-                <p class="quantity"><%= aggregated_ingredient.quantity %></p>
+                <p class="quantity"><%= display_quantity(aggregated_ingredient.quantity) %></p>
                 <p class="unit"><%= aggregated_ingredient.unit.unit_name %></p>
               </div>
             </div>

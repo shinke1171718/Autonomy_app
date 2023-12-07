@@ -58,7 +58,7 @@ function createNewForm() {
         <span class="form-number">${paddedNewFormCount}</span>
         <input id="ingredient_name[${newFormCount_back}]" class="ingredient-name" placeholder="食材名を選択" type="text" name="menu[ingredients][${newFormCount_back}][material_name]" readonly>
         <input type="hidden" id="ingredient_id[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][material_id]", class="hidden-ingredient-id">
-        <input type="text" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][quantity]" autocomplete="quantity" placeholder="数量" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" class="ingredient-quantity">
+        <input type="number" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][quantity]" autocomplete="quantity" placeholder="数量" maxlength="4" step="0.1" class="ingredient-quantity">
         <select id="menu_ingredients_unit[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][unit_id]" class="ingredient-unit" tabindex="-1">
         </select>
       </div>`;
@@ -126,11 +126,15 @@ function createNewForms(defaultMaxCount, Data){
     }
 
     if (ingredientIdField) ingredientIdField.value = currentData.material_id || '';
-    if (ingredientQuantityField) ingredientQuantityField.value = currentData.quantity || '';
+
+    if (ingredientQuantityField) {
+      // formatQuantity関数を使用して数量を整形してから設定
+      ingredientQuantityField.value = formatQuantity(currentData.quantity) || '';
+    }
 
     var ingredientUnitSelect = currentForm.querySelector(`#menu_ingredients_unit\\[${i}\\]`);
     if (ingredientUnitSelect) {
-      // 単位のセットアップ（ingredient_dropdown.jsにコードあります。）
+      // 単位のセットアップ
       handleIngredientNameChange(ingredientUnitSelect, currentData.material_name);
 
       // 選択された単位IDを適用するための遅延。DOMの更新後に単位を設定するために必要。
@@ -230,4 +234,13 @@ function handleCountDownClick(event) {
   formCount_back--; // バックエンド用のフォーム数をデクリメント
   updateFormNumbers(); // フォーム番号を更新
   updateMaxCountText(formCount_view, maxFormCount_view) // 最大フォーム数テキストを更新
+}
+
+function formatQuantity(quantity) {
+  // 10進数を意味する基数を定数として定義
+  const decimalBase = 10;
+  // quantityを数値に変換
+  var numQuantity = parseFloat(quantity);
+  // 数値が整数かどうかをチェックし、整数の場合は小数点以下を削除
+  return numQuantity == parseInt(numQuantity, decimalBase) ? parseInt(numQuantity, decimalBase) : numQuantity;
 }

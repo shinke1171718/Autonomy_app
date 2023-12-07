@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_04_041549) do
     t.string "material_name", null: false
     t.bigint "material_id", null: false
     t.bigint "unit_id", null: false
-    t.integer "quantity"
+    t.decimal "quantity", precision: 4, scale: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["material_id"], name: "index_ingredients_on_material_id"

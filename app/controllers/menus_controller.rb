@@ -320,7 +320,7 @@ class MenusController < ApplicationController
 
   def handle_general_error
     flash[:error] = "登録中に予期せぬエラーが発生しました。"
-    redirect_to user_menus_path
+    redirect_to root_path
   end
 
   #食材データを受け取り、それをmaterial_idに基づいてグループ化し、各グループの食材を集約する
