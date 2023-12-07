@@ -5,7 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   attr_accessor :current_password
 
-  has_many :menu_users
+  has_many :menu_users, dependent: :destroy
   has_many :menus, through: :menu_users
-  has_one :cart
+  has_one :cart, dependent: :destroy
+  has_many :completed_menus, dependent: :destroy
+  has_many :shopping_lists, dependent: :destroy
 end
