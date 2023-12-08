@@ -5,8 +5,6 @@ class Menu < ApplicationRecord
   has_many :menu_ingredients, dependent: :destroy
   has_many :ingredients, through: :menu_ingredients, autosave: false
   has_many :cart_items, dependent: :destroy
-  has_many :completed_menu_items, dependent: :destroy
-  has_many :completed_menus, through: :completed_menu_items
 
   validates :menu_name, presence: true, length: { maximum: 15 }
   validates :menu_contents, presence: true, length: { maximum: 20 }
