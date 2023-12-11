@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_07_143617) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -132,6 +132,30 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_07_143617) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shopping_list_items", force: :cascade do |t|
+    t.bigint "shopping_list_id", null: false
+    t.bigint "material_id", null: false
+    t.decimal "quantity"
+    t.bigint "unit_id", null: false
+    t.bigint "category_id", null: false
+    t.boolean "is_checked"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_shopping_list_items_on_category_id"
+    t.index ["material_id"], name: "index_shopping_list_items_on_material_id"
+    t.index ["shopping_list_id"], name: "index_shopping_list_items_on_shopping_list_id"
+    t.index ["unit_id"], name: "index_shopping_list_items_on_unit_id"
+  end
+
+  create_table "shopping_list_menus", force: :cascade do |t|
+    t.bigint "shopping_list_id", null: false
+    t.bigint "menu_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_shopping_list_menus_on_menu_id"
+    t.index ["shopping_list_id"], name: "index_shopping_list_menus_on_shopping_list_id"
+  end
+
   create_table "shopping_lists", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.datetime "created_at", null: false
@@ -175,5 +199,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_07_143617) do
   add_foreign_key "completed_menu_items", "completed_menus"
   add_foreign_key "completed_menu_items", "menus"
   add_foreign_key "completed_menus", "users"
+  add_foreign_key "shopping_list_items", "categories"
+  add_foreign_key "shopping_list_items", "materials"
+  add_foreign_key "shopping_list_items", "shopping_lists"
+  add_foreign_key "shopping_list_items", "units"
+  add_foreign_key "shopping_list_menus", "menus"
+  add_foreign_key "shopping_list_menus", "shopping_lists"
   add_foreign_key "shopping_lists", "carts"
 end

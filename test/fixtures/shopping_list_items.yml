@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shopping_list: one
+  material: one
+  quantity: 9.99
+  unit: one
+  category: one
+  is_checked: false
+
+two:
+  shopping_list: two
+  material: two
+  quantity: 9.99
+  unit: two
+  category: two
+  is_checked: false
