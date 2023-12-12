@@ -21,4 +21,9 @@ class ApplicationController < ActionController::Base
     cart = current_user.cart
     @cart_items = cart.cart_items.includes(:menu) if cart
   end
+
+  def handle_general_error
+    flash[:error] = "登録中に予期せぬエラーが発生しました。"
+    redirect_to root_path
+  end
 end

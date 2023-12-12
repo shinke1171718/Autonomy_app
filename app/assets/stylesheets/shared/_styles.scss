@@ -110,7 +110,6 @@
   }
 }
 
-
 @mixin menus_list {
   display: flex;
   flex-wrap: wrap;
@@ -147,4 +146,43 @@
 
 @mixin rounded-image {
   border-radius: 20px;
+}
+
+@mixin menu-heading {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 30px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  @media screen and (max-width: 460px) {
+    display: inline-block;
+    font-size: 20px;
+  }
+}
+
+@mixin menu-heading{
+  display: block;
+  margin-top: 50px;
+  font-size: 30px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  @media screen and (max-width: 460px) {
+    display: inline-block;
+    font-size: 20px;
+  }
+}
+
+@mixin menu-heading-after {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000000;
+  }
 }

@@ -316,11 +316,6 @@ class MenusController < ApplicationController
     "data:#{uploaded_file.content_type};base64,#{Base64.strict_encode64(uploaded_file.read)}"
   end
 
-  def handle_general_error
-    flash[:error] = "登録中に予期せぬエラーが発生しました。"
-    redirect_to root_path
-  end
-
   def paginate(query)
     # 定数 FIRST_PAGE はページネーションで使用される最初のページ番号を定義します。
     # 通常、ページ番号は1から始まります。

@@ -2,10 +2,19 @@ class ShoppingListsController < ApplicationController
   include IngredientsAggregator
 
   def index
-    shopping_list_items = current_user.cart.shopping_list.shopping_list_items
+    shopping_list = current_user.cart.shopping_list
+
+    # ショッピングリストメニューを取得
+    shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
+
+    # メニューデータとカウントを取得
+    @menus = shopping_list_menus.map(&:menu)
+    @menu_item_counts = shopping_list_menus.each_with_object({}) do |slm, counts|
+      counts[slm.menu_id] = slm.menu_count
+    end
 
     # ショッピングリストアイテムをカテゴリIDに基づいてグループ化する
-    shopping_list_items_by_category = shopping_list_items.includes(:material).group_by do |item|
+    shopping_list_items_by_category = shopping_list.shopping_list_items.includes(:material).group_by do |item|
       item.material.category_id
     end
 
@@ -16,9 +25,11 @@ class ShoppingListsController < ApplicationController
     @shopping_lists = shopping_list_items_by_category.sort_by { |category_id, _items| category_id }.to_h
   end
 
+
   def create
     # ユーザーのカートを取得
     cart = current_user.cart
+
     # カートに紐づいたショッピングリストを取得
     shopping_list = current_user.cart.build_shopping_list
 
@@ -63,9 +74,9 @@ class ShoppingListsController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
-        # ShoppingListが新規の場合は保存
-        shopping_list.save! if shopping_list.new_record?
+        shopping_list = current_user.cart.create_shopping_list!
 
+        # 各食材をShoppingListItemとして保存
         aggregated_ingredients.each do |ingredient|
           shopping_list.shopping_list_items.create!(
             material_id: ingredient.material_id,
@@ -76,12 +87,19 @@ class ShoppingListsController < ApplicationController
           )
         end
 
-        redirect_to shopping_lists_path
+        # menu_item_countsを使用してShoppingListMenuのインスタンスを生成し保存
+        menu_item_counts.each do |menu_id, item_count|
+          shopping_list.shopping_list_menus.create!(
+            menu_id: menu_id,
+            menu_count: item_count
+          )
+        end
       end
     rescue ActiveRecord::RecordInvalid
       handle_general_error
       return
     end
 
+    redirect_to shopping_lists_path
   end
 end

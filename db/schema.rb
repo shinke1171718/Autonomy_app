@@ -46,7 +46,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
     t.bigint "cart_id", null: false
     t.bigint "menu_id", null: false
     t.integer "item_count"
-    t.boolean "is_listed", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
@@ -150,6 +149,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
   create_table "shopping_list_menus", force: :cascade do |t|
     t.bigint "shopping_list_id", null: false
     t.bigint "menu_id", null: false
+    t.integer "menu_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_shopping_list_menus_on_menu_id"
