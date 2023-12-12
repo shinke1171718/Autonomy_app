@@ -1,1 +1,74 @@
-<%= @shopping_lists %>
+<div class="shopping-list-container", id: 'shopping-list-container'>
+
+  <div class="list-title">
+    <h3>買い物リスト</h3>
+  </div>
+
+  <div class="cooking-menu-list">
+    <div class="list-contents-title">
+      <p>作る予定の献立</p>
+    </div>
+
+    <div class="shopping-menu-list">
+      <% @menus.each do |menu_date| %>
+        <div class="menu-list">
+          <div class="menu-item">
+
+            <div class="menu-image">
+              <%= image_tag(rails_blob_path(menu_date.image.variant(resize_to_fill: [80, 80])), class: "rounded-image") %>
+            </div>
+
+            <div class="menu-name">
+              <%= truncate(menu_date.menu_name, length: 7, omission: '..') %>
+            </div>
+          </div>
+
+          <div class="menu-item-counts">
+            <p>× <%= @menu_item_counts[menu_date.id] %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="shopping-ingredient-list">
+    <div class="list-contents-title">
+      <p>購入品一覧</p>
+    </div>
+
+    <div class="ingredient-list">
+      <% if @shopping_lists.empty? %>
+        <p>購入する食材はありません。</p>
+      <% else %>
+        <% @shopping_lists.each do |category_id, ingredients| %>
+          <div class="category-list">
+            <p><%= @categories[category_id] %></p>
+          </div>
+          <ul>
+            <% ingredients.each do |ingredient| %>
+              <div class="ingredient-item">
+                <label class="custom-checkbox-label">
+                  <%= check_box_tag "ingredients[#{ingredient.id}]", ingredient.id, false, class: "custom-checkbox" %>
+                  <span class="checkmark"></span>
+                </label>
+                <p class="material-name"><%= ingredient.material.material_name %></p>
+                <div class="quantity-unit">
+                  <p class="quantity"><%= display_quantity(ingredient.quantity) %></p>
+                  <p class="unit"><%= ingredient.unit.unit_name %></p>
+                </div>
+              </div>
+            <% end %>
+          </ul>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="button-container">
+      <div class="shopping-complete-button">
+        <%= button_to '買い物完了', root_path, method: :get, class: 'complete-button', id: 'complete-button' %>
+      </div>
+      <%= button_to '戻る', root_path, method: :get, class: 'back-button', id: 'back_button' %>
+    </div>
+
+  </div>
+</div>
