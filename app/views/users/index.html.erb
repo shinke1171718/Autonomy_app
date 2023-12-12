@@ -1,6 +1,6 @@
 <%= render 'shared/menu' %>
 
-<div class="menu-index-container">
+<div class="menu-index-container" id="menu-index">
 
   <div class="menu-heading">
     <h3>選択された献立</h3>
@@ -37,6 +37,6 @@
   <div class="button-set-container">
     <%= button_to "オリジナル献立リスト", user_custom_menus_path(current_user), class: "button-style bg-custom-menu", method: :get %>
     <%= button_to "サンプル献立リスト", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
-    <%= button_to "買い出しに行く", root_path, class: "button-style bg-shopping-list", method: :get %>
+    <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list" %>
   </div>
 </div>
