@@ -1,4 +1,5 @@
 @import 'shared/menuForm';
+@import 'shared/styles';
 
 .menu-container{
   @include menu-container;
@@ -24,6 +25,8 @@
     border-radius: 20px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     white-space: nowrap;
+    cursor: pointer;
+    @include hover-background;
     @media screen and (max-width: 400px) {
       padding: 10px 40%;
     }
@@ -107,6 +110,8 @@
       color: white;
       border-radius: 20px;
       border: 1px solid rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      @include hover-background(#aae6ff);
     }
   }
 
@@ -292,6 +297,7 @@
         margin-top: 10px;
         margin-bottom: 5px;
         cursor: pointer;
+        @include hover-background(#fac384);
       }
     }
   }

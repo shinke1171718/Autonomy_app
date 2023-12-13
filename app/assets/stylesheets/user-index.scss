@@ -65,6 +65,7 @@
         align-items: center;
         justify-content: center;
         padding: 5px;
+        @include hover-background;
       }
     }
 
@@ -85,10 +86,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
-        &:hover {
-          background-color: #e6e6e6;
-        }
+        @include hover-background(#e6e6e6);
       }
 
       .menu-item-quantity {
@@ -125,10 +123,12 @@
     /* ボタンの背景色クラス */
     .bg-custom-menu {
       background-color: #555;
+      @include hover-background;
     }
 
     .bg-standard-menu {
       background-color: #777;
+      @include hover-background;
     }
 
     .bg-shopping-list {
@@ -147,6 +147,7 @@
   }
 
   .empty-cart-message{
+    margin-top: 60px;
     margin-bottom: 60px;
   }
 }
