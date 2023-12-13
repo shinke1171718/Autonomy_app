@@ -170,7 +170,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
   end
 
   create_table "user_menus", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "menu_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
