@@ -13,7 +13,7 @@
           <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
 
           <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
-          <div class="menu-item-title"><%= cart_item.menu.menu_name %></div>
+          <div class="menu-item-title"><%= truncate(cart_item.menu.menu_name, length: 10, omission: '..') %></div>
 
           <div class="menu-item-count">
             <%= button_to '▲', cart_item_increment_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "increment-button" %>
