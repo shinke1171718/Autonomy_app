@@ -11,9 +11,16 @@ document.addEventListener('turbo:load', function() {
 
   // 'menu-item'クラスを持つ要素があるか確認
   if (menuItems.length > 0) {
-    // ボタンを有効化し、スタイルを適用
     button.disabled = false;
-    button.style.backgroundColor = '#333'; // 背景色を設定
-    button.style.cursor = 'pointer'; // カーソルをポインターに設定
+    button.style.backgroundColor = '#333';
+    button.style.cursor = 'pointer';
+
+    button.addEventListener('mouseover', function() {
+      this.style.backgroundColor = '#a3a3a3';
+    });
+
+    button.addEventListener('mouseout', function() {
+      this.style.backgroundColor = '#333';
+    });
   }
 });

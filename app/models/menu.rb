@@ -8,7 +8,7 @@ class Menu < ApplicationRecord
   has_many :shopping_list_menus, dependent: :restrict_with_exception
   has_many :shopping_lists, through: :shopping_list_menus
 
-  validates :menu_name, presence: true, length: { maximum: 15 }
+  validates :menu_name, presence: true, length: { maximum: 10 }
   validates :menu_contents, presence: true, length: { maximum: 20 }
   validates :contents, presence: true, length: { maximum: 1500 }
   before_validation :set_default_image
