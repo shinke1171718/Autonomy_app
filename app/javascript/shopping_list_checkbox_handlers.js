@@ -5,7 +5,6 @@ setupCheckboxEventListeners()
 function setupCheckboxEventListeners() {
 
   let checkboxes = document.querySelectorAll('.custom-checkbox');
-  console.log(checkboxes);
 
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', (e) => {
@@ -16,7 +15,6 @@ function setupCheckboxEventListeners() {
 
       const url = `/shopping_lists/${listId}/toggle_check`;
 
-      console.log(url);
       fetch(url, {
         method: 'POST',
         headers: {
@@ -26,7 +24,11 @@ function setupCheckboxEventListeners() {
         },
         body: JSON.stringify({ is_checked: isChecked })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      })
     });
   });
 }
