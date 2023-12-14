@@ -67,7 +67,7 @@
       <div class="shopping-complete-button">
         <%= button_to '買い物完了', root_path, method: :get, class: 'complete-button', id: 'complete-button' %>
       </div>
-      <%= button_to '戻る', root_path, method: :get, class: 'back-button', id: 'back_button' %>
+      <%= button_to '戻る', '#', method: :get, class: 'back-button', id: 'back_button', onclick: "history.back(); return false;" %>
     </div>
 
   </div>
