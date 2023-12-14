@@ -27,54 +27,59 @@ class ShoppingListsController < ApplicationController
 
 
   def create
-    # ユーザーのカートを取得
-    cart = current_user.cart
-
-    # カートに紐づいたショッピングリストを取得
-    shopping_list = current_user.cart.build_shopping_list
-
-    # カートの中にあるmenu_idとその個数のデータを取得
-    cart_items = cart.cart_items
-
-    # menu_idとそのitem_countだけをハッシュとして取得
-    menu_item_counts = cart_items.each_with_object({}) do |cart_item, counts|
-      counts[cart_item.menu_id] = cart_item.item_count
-    end
-
-    # menuに関連するingredient_idを取得
-    menu_ingredients = cart_items.flat_map { |cart_item| cart_item.menu.menu_ingredients }
-
-    # 食材のレコードを複製する処理
-    ingredients_duplicated = []
-    menu_ingredients.each do |menu_ingredient|
-      # 対応する献立の数量を取得
-      menu_count = menu_item_counts[menu_ingredient.menu_id]
-
-      # 献立の数量分だけレコードを複製
-      menu_count.times do
-        duplicated_ingredient = menu_ingredient.dup
-        # 必要であれば他の属性もここで設定する
-        ingredients_duplicated << duplicated_ingredient
-      end
-    end
-
-    # ingredient_idに紐づく食材データを取得
-    ingredients = ingredients_duplicated.map(&:ingredient)
-
-    # 食材データを合算する
-    aggregated_ingredients = aggregate_ingredients(ingredients)
-
-    # カテゴリIDを格納するためのハッシュマップを初期化
-    ingredients_with_categories = {}
-    aggregated_ingredients.each do |ingredient|
-      material = Material.find_by(id: ingredient.material_id)
-      # Material に紐づくカテゴリIDをハッシュマップに追加
-      ingredients_with_categories[ingredient.material_id] = material.category_id
-    end
-
     begin
       ActiveRecord::Base.transaction do
-        shopping_list = current_user.cart.create_shopping_list!
+        # ユーザーのカートを取得
+        cart = current_user.cart
+        # カートの中にあるmenu_idとその個数のデータを取得
+        cart_items = cart.cart_items
+
+        shopping_list = cart.shopping_list
+
+        # ショッピングリストのデータがある場合には関連データをリセット
+        if shopping_list.present?
+          # 関連する shopping_list_items と shopping_list_menus を削除します。
+          shopping_list.shopping_list_items.delete_all
+          shopping_list.shopping_list_menus.delete_all
+        else
+          shopping_list = cart.create_shopping_list
+        end
+
+        # menu_idとそのitem_countだけをハッシュとして取得
+        menu_item_counts = cart_items.each_with_object({}) do |cart_item, counts|
+          counts[cart_item.menu_id] = cart_item.item_count
+        end
+
+        # menuに関連するingredient_idを取得
+        menu_ingredients = cart_items.flat_map { |cart_item| cart_item.menu.menu_ingredients }
+
+        # 食材のレコードを複製する処理
+        ingredients_duplicated = []
+        menu_ingredients.each do |menu_ingredient|
+          # 対応する献立の数量を取得
+          menu_count = menu_item_counts[menu_ingredient.menu_id]
+
+          # 献立の数量分だけレコードを複製
+          menu_count.times do
+            duplicated_ingredient = menu_ingredient.dup
+            # 必要であれば他の属性もここで設定する
+            ingredients_duplicated << duplicated_ingredient
+          end
+        end
+
+        # ingredient_idに紐づく食材データを取得
+        ingredients = ingredients_duplicated.map(&:ingredient)
+
+        # 食材データを合算する
+        aggregated_ingredients = aggregate_ingredients(ingredients)
+
+        # カテゴリIDを格納するためのハッシュマップを初期化
+        ingredients_with_categories = {}
+        aggregated_ingredients.each do |ingredient|
+          material = Material.find_by(id: ingredient.material_id)
+          # Material に紐づくカテゴリIDをハッシュマップに追加
+          ingredients_with_categories[ingredient.material_id] = material.category_id
+        end
 
         # 各食材をShoppingListItemとして保存
         aggregated_ingredients.each do |ingredient|
@@ -94,6 +99,8 @@ class ShoppingListsController < ApplicationController
             menu_count: item_count
           )
         end
+
+        cart_items.delete_all
       end
     rescue ActiveRecord::RecordInvalid
       handle_general_error

@@ -1,11 +1,10 @@
 class ApplicationController < ActionController::Base
   include Devise::Controllers::Helpers
   before_action :load_settings
-  before_action :set_cart_items
+  before_action :check_shopping_list_menu_items
 
   private
 
-  #標準設定だとdeviseのデフォルトのview画面に飛ぶためリダイレクト先を再設定します。
   def authenticate_user!
     unless current_user
       redirect_to new_user_custom_session_path
@@ -17,9 +16,14 @@ class ApplicationController < ActionController::Base
     @settings = YAML.load_file(Rails.root.join('config', 'settings.yml'))
   end
 
-  def set_cart_items
+  # 現在のユーザーのカートに紐づくショッピングリストに関連するメニュー項目が存在するかをチェック
+  def check_shopping_list_menu_items
     cart = current_user.cart
-    @cart_items = cart.cart_items.includes(:menu) if cart
+    if cart && cart.shopping_list
+      @has_menu_items = cart.shopping_list.shopping_list_menus.exists?
+    else
+      @has_menu_items = false
+    end
   end
 
   def handle_general_error
