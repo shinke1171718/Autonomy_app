@@ -26,8 +26,8 @@
   <% if @has_menu_items %>
     <%= link_to "買い物リスト", shopping_lists_path, class: "mobile-menu-link" %>
   <% end %>
-  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
   <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "mobile-menu-link" %>
+  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
   <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "mobile-menu-link" %>
 </div>
 
