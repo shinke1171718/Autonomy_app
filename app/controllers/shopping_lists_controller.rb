@@ -23,6 +23,11 @@ class ShoppingListsController < ApplicationController
 
     # カテゴリIDでソートした結果をインスタンス変数に代入
     @shopping_lists = shopping_list_items_by_category.sort_by { |category_id, _items| category_id }.to_h
+
+    # JSで動的にデータ更新するため、各カテゴリ内でアイテムをIDに基づいてソート
+    @shopping_lists.each do |category_id, items|
+      items.sort_by!(&:id)
+    end
   end
 
 
@@ -108,5 +113,10 @@ class ShoppingListsController < ApplicationController
     end
 
     redirect_to shopping_lists_path
+  end
+
+  def toggle_check
+    shopping_list_item = ShoppingListItem.find(params[:id])
+    shopping_list_item.update(is_checked: params[:is_checked])
   end
 end
