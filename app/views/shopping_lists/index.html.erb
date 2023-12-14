@@ -48,7 +48,7 @@
             <% ingredients.each do |ingredient| %>
               <div class="ingredient-item">
                 <label class="custom-checkbox-label">
-                  <%= check_box_tag "ingredients[#{ingredient.id}]", ingredient.id, false, class: "custom-checkbox" %>
+                  <%= check_box_tag "ingredients[#{ingredient.id}]", ingredient.id, ingredient.is_checked, class: "custom-checkbox" %>
                   <span class="checkmark"></span>
                 </label>
                 <p class="material-name"><%= ingredient.material.material_name %></p>
@@ -69,6 +69,7 @@
       </div>
       <%= button_to '戻る', '#', method: :get, class: 'back-button', id: 'back_button', onclick: "history.back(); return false;" %>
     </div>
-
   </div>
 </div>
+
+<%= javascript_include_tag 'shopping_list_checkbox_handlers' %>

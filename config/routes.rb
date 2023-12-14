@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   # カートアイテムの数量を減らす
   post '/cart_items/:id/decrement', to: 'cart_items#decrement', as: 'cart_item_decrement'
 
+  post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
+
   devise_for :users
   devise_scope :user do
     get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration
