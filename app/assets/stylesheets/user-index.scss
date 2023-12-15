@@ -1,9 +1,7 @@
 @import 'shared/styles';
 
 .menu-index-container{
-  text-align: center;
-  width: 100%;
-  justify-content: center;
+  @include menu-index;
 
   .menu-heading {
     @include menu-heading;
@@ -11,44 +9,21 @@
   }
 
   .menu-heading h3 {
-    margin-bottom: 0;
-    padding-bottom: 5px;
-    line-height: 1.2;
+    @include menu-heading-h3;
   }
 
   .menus_list{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 10px;
-    align-items: stretch;
-    justify-content: center;
-    padding-top: 30px;
+    @include menus_list;
 
     .menu-item{
-      position: relative;
-      width: 250px;
-      height: 300px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      border-radius: 20px;
-      margin-right: 10px;
-      margin-bottom: 10px;
+      @include menu_item;
 
       .rounded-image {
-        border-radius: 20px;
+        @include rounded-image;
       }
 
       .menu-item-title {
-        margin-top: 10px;
-        color: black;
-        text-decoration: none;
+        @include menu-item-title;
       }
 
       .delete-button {
@@ -128,7 +103,7 @@
 
     .bg-standard-menu {
       background-color: #777;
-      @include hover-background;
+      @include hover-background(#dadada);
     }
 
     .bg-shopping-list {
