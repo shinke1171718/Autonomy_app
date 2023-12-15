@@ -10,4 +10,5 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :completed_menus, dependent: :destroy
   has_many :shopping_lists, dependent: :destroy
+  has_many :completed_menus, dependent: :destroy
 end
