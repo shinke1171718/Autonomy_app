@@ -1,10 +1,5 @@
 class CompletedMenusController < ApplicationController
 
-  def index
-    # 買い出しが完了した食材データを取得
-    @completed_menus = CompletedMenu.where(user_id: current_user.id)
-  end
-
   def create
     # 現在のユーザーのShoppingListMenuからデータを取得
     shopping_list = current_user.cart.shopping_list
