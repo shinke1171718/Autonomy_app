@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
 
+  resources :completed_menus
+
   devise_for :users
   devise_scope :user do
     get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration

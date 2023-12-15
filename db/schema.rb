@@ -70,7 +70,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_010902) do
     t.bigint "menu_id", null: false
     t.integer "menu_count", null: false
     t.boolean "is_completed", default: false, null: false
-    t.date "date_completed", null: false
+    t.date "date_completed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_completed_menus_on_menu_id"
