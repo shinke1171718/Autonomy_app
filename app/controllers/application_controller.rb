@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Devise::Controllers::Helpers
   before_action :load_settings
   before_action :check_shopping_list_menu_items
+  before_action :check_completed_menus_date
 
   private
 
@@ -24,6 +25,12 @@ class ApplicationController < ActionController::Base
     else
       @has_menu_items = false
     end
+  end
+
+  # 作れる献立がある場合にメニューバーへ「献立を選ぶ」「献立を作る」の選択肢を追加するために設定
+  def check_completed_menus_date
+    completed_menus = CompletedMenu.where(user_id: current_user.id)
+    @completed_menus_date = completed_menus.exists?
   end
 
   def handle_general_error

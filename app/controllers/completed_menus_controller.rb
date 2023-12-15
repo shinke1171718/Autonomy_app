@@ -1,5 +1,14 @@
 class CompletedMenusController < ApplicationController
 
+  def index
+    # 買い出しが完了した食材データを取得
+    @completed_menus = CompletedMenu.where(user_id: current_user.id)
+
+    # 買い物完了したメニューがない場合、献立選択画面にリダイレクト
+    redirect_to root_path if @completed_menus.empty?
+  end
+
+
   def create
     # 現在のユーザーのShoppingListMenuからデータを取得
     shopping_list = current_user.cart.shopping_list
