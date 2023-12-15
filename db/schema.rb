@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_010902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,19 +65,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "completed_menu_items", force: :cascade do |t|
-    t.bigint "completed_menu_id", null: false
-    t.bigint "menu_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["completed_menu_id"], name: "index_completed_menu_items_on_completed_menu_id"
-    t.index ["menu_id"], name: "index_completed_menu_items_on_menu_id"
-  end
-
   create_table "completed_menus", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "menu_id", null: false
+    t.integer "menu_count", null: false
+    t.boolean "is_completed", default: false, null: false
+    t.date "date_completed", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_completed_menus_on_menu_id"
     t.index ["user_id"], name: "index_completed_menus_on_user_id"
   end
 
@@ -196,8 +192,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_081014) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "menus"
   add_foreign_key "carts", "users"
-  add_foreign_key "completed_menu_items", "completed_menus"
-  add_foreign_key "completed_menu_items", "menus"
+  add_foreign_key "completed_menus", "menus"
   add_foreign_key "completed_menus", "users"
   add_foreign_key "shopping_list_items", "categories"
   add_foreign_key "shopping_list_items", "materials"
