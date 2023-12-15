@@ -5,3 +5,6 @@ pagination:
 
 ingredient:
   no_quantity_unit_id: 17
+
+limits:
+  max_total_items: 20
