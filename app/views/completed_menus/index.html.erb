@@ -10,7 +10,7 @@
     <% @completed_menus.each do |item| %>
       <% @completed_menus.each do |item| %>
         <div class="completed-menu-item">
-          <%= link_to completed_menu_path(item, menu_id: item.menu_id, menu_count: item.menu_count) do %>
+          <%= link_to completed_menu_path(item, menu_id: item.menu_id, serving_size: item.menu_count, max_count: item.menu_count) do %>
             <%= image_tag(rails_blob_path(item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
 
             <div class="completed-menu-date">
