@@ -21,7 +21,12 @@ Rails.application.routes.draw do
 
   post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
 
-  resources :completed_menus
+  resources :completed_menus do
+    member do
+      post 'increase_serving', to: 'completed_menus#increase_serving', as: :increase
+      post 'decrease_serving', to: 'completed_menus#decrease_serving', as: :decrease
+    end
+  end
 
   devise_for :users
   devise_scope :user do

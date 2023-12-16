@@ -1,6 +1,30 @@
 
 <div class="menu-show-container">
-  <%= render partial: 'shared/menu_details', locals: { menu: @menu, ingredients: @aggregated_ingredients, serving_size: nil } %>
+  <div class="menu-detail-container">
+    <%= render partial: 'shared/menu_details', locals: { menu: @menu } %>
+
+    <div class="ingredient-show-container">
+      <div class ="show-contents-title">
+        <p>食材リスト</p>
+      </div>
+
+      <div class="ingredients-show-list">
+        <% if @aggregated_ingredients.present? %>
+          <% @aggregated_ingredients.each do |ingredient_date| %>
+            <div class="ingredient-show-item">
+              <p class="material-name"><%= ingredient_date.material.material_name %></p>
+              <div class="quantity-unit">
+                <p class="quantity"><%= display_quantity(ingredient_date.quantity) %></p>
+                <p class="unit"><%= ingredient_date.unit.unit_name %></p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="no-ingredients">食材はありません</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
   <div class="menu-button-container">
     <%= form_with url: cart_items_path, method: :post do |form| %>

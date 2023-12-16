@@ -1,5 +1,7 @@
 class CompletedMenusController < ApplicationController
   include IngredientsAggregator
+  before_action :set_serving_size, only: [:show, :increase_serving, :decrease_serving]
+  before_action :set_max_serving_size, only: [:show, :increase_serving, :decrease_serving]
 
   def index
     # 買い出しが完了した食材データを取得
@@ -51,18 +53,29 @@ class CompletedMenusController < ApplicationController
     menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
     ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
 
-    # menuの個数を格納
-    @serving_size = params[:menu_count].to_i
-
     aggregated_ingredients = aggregate_ingredients(ingredients)
 
     # scale_ingredientsメソッドを呼び出して、quantityを更新
     @scaled_ingredients = scale_ingredients(aggregated_ingredients, @serving_size)
   end
 
+
+  def increase_serving
+    menu_id = params[:id]
+    @serving_size = [@serving_size + 1, @max_serving_size].min
+    redirect_to completed_menu_path(menu_id: menu_id, serving_size: @serving_size, max_count: @max_serving_size)
+  end
+
+  def decrease_serving
+    menu_id = params[:id]
+    min_serving_size = @settings.dig('limits', 'min_serving_size')
+    @serving_size = [@serving_size - 1, min_serving_size].max
+    redirect_to completed_menu_path(menu_id: menu_id, serving_size: @serving_size, max_count: @max_serving_size)
+  end
+
   private
 
-  # ingredientsのquantityをmenu_countの累乗で更新するメソッド
+  # ingredientsのquantityをmenu_countの値分倍増するメソッド
   def scale_ingredients(ingredients, menu_count)
     menu_count = menu_count.to_i
 
@@ -75,6 +88,14 @@ class CompletedMenusController < ApplicationController
 
       new_ingredient
     end
+  end
+
+  def set_serving_size
+    @serving_size = params[:serving_size].to_i
+  end
+
+  def set_max_serving_size
+    @max_serving_size = params[:max_count].to_i
   end
 
 end
