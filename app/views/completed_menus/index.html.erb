@@ -8,20 +8,23 @@
 
   <div class="completed-menus_list">
     <% @completed_menus.each do |item| %>
-      <div class="completed-menu-item">
+      <% @completed_menus.each do |item| %>
+        <div class="completed-menu-item">
+          <%= link_to completed_menu_path(item, menu_id: item.menu_id, menu_count: item.menu_count) do %>
+            <%= image_tag(rails_blob_path(item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
 
-        <%= image_tag(rails_blob_path(item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
+            <div class="completed-menu-date">
+              <p>買出し日：<%= item.created_at.strftime('%Y/%m/%d') %></p>
+            </div>
 
-        <div class="completed-menu-date">
-          <p>買出し日：<%= item.created_at.strftime('%Y/%m/%d') %></p>
+            <div class="completed-menu-item-title"><%= truncate(item.menu.menu_name, length: 10, omission: '..') %></div>
+
+            <div class="completed-menu-count">
+              <div class="menu-item-quantity"><%= item.menu_count %>人分</div>
+            </div>
+          <% end %>
         </div>
-
-        <div class="completed-menu-item-title"><%= truncate(item.menu.menu_name, length: 10, omission: '..') %></div>
-
-        <div class="completed-menu-count">
-          <div class="menu-item-quantity"><%= item.menu_count %>人分</div>
-        </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 

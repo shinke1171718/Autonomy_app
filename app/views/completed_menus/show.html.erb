@@ -1,0 +1,9 @@
+
+<div class="completed-show-container">
+
+  <%= render partial: 'shared/menu_details', locals: { menu: @menu, ingredients: @scaled_ingredients, serving_size: @serving_size } %>
+
+  <div class="button-container">
+    <%= button_to '戻る', completed_menus_path, method: :get, class: 'back-button', id: 'back_button' %>
+  </div>
+</div>

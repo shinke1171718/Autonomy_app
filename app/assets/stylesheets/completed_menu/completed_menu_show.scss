@@ -1,0 +1,18 @@
+@import 'shared/styles';
+@import 'shared/menuForm';
+
+.completed-show-container{
+  @include menu-container;
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
+
+  .button-container{
+    width: 100%;
+    .back-button{
+      @include button;
+      width: 45%;
+    }
+  }
+
+}

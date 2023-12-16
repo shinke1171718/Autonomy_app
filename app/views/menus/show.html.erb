@@ -1,64 +1,6 @@
 
 <div class="menu-show-container">
-  <div class="menu-detail-container">
-    <div class="menu-show-list">
-      <div class="menu-show-title">
-        <h1>献立情報</h1>
-      </div>
-
-      <div class="show-contents-title">
-        <p>　献立名　</p>
-      </div>
-
-      <div class="menu-contents">
-        <%= @menu.menu_name %>
-      </div>
-
-      <div class="show-contents-title">
-        <p>　献立内容　</p>
-      </div>
-      <div class ="menu-contents">
-        <%= @menu.menu_contents %>
-      </div>
-
-      <div class="show-contents-title">
-        <p>　作り方　</p>
-      </div>
-      <div class="menu-contents">
-        <%= simple_format(sanitize(@menu.contents)) %>
-      </div>
-
-      <div class="show-contents-title">
-        <p>　献立画像　</p>
-      </div>
-
-      <div class ="menu-contents">
-        <%= image_tag(rails_blob_path(@menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
-      </div>
-    </div>
-
-    <div class="ingredient-show-container">
-      <div class ="show-contents-title">
-        <p>　食材リスト　</p>
-      </div>
-
-      <div class="ingredients-show-list">
-        <% if @aggregated_ingredients.present? %>
-          <% @aggregated_ingredients.each do |aggregated_ingredient| %>
-            <div class="ingredient-show-item">
-              <p class="material-name"><%= aggregated_ingredient.material.material_name %></p>
-              <div class="quantity-unit">
-                <p class="quantity"><%= display_quantity(aggregated_ingredient.quantity) %></p>
-                <p class="unit"><%= aggregated_ingredient.unit.unit_name %></p>
-              </div>
-            </div>
-          <% end %>
-        <% else %>
-          <p class="no-ingredients">食材はありません</p>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <%= render partial: 'shared/menu_details', locals: { menu: @menu, ingredients: @aggregated_ingredients, serving_size: nil } %>
 
   <div class="menu-button-container">
     <%= form_with url: cart_items_path, method: :post do |form| %>
