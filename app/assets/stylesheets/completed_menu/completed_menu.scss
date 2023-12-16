@@ -17,11 +17,17 @@
     @include menus-list;
     margin-bottom: 40px;
 
+    .completed-menu-item a{
+      text-decoration: none;
+      color: black;
+    }
+
     .completed-menu-item{
       @include menu-item;
       @include hover-background(#e6e6e6);
       height: 320px;
       cursor: pointer;
+      text-decoration: none;
 
       .completed-menu-date {
         font-size: 12px;
@@ -32,6 +38,7 @@
       .completed-menu-date p {
         margin-top: 0px;
         margin-bottom: 0px;
+        text-decoration: none;
       }
 
       .rounded-image{
@@ -41,12 +48,14 @@
       .completed-menu-item-title{
         @include menu-item-title;
         font-size: 20px;
+        text-decoration: none;
       }
 
       .completed-menu-count{
         .menu-item-quantity {
           width: 100%;
           padding-top: 7px;
+          text-decoration: none;
         }
       }
 

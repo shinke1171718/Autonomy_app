@@ -1,4 +1,5 @@
 class CompletedMenusController < ApplicationController
+  include IngredientsAggregator
 
   def index
     # 買い出しが完了した食材データを取得
@@ -40,6 +41,40 @@ class CompletedMenusController < ApplicationController
     end
 
     redirect_to completed_menus_path
+  end
+
+
+  def show
+    @menu = Menu.find(params[:menu_id])
+
+    # 重複した献立を基準の単位に変換し、合算する
+    menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
+    ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
+
+    # menuの個数を格納
+    @serving_size = params[:menu_count].to_i
+
+    aggregated_ingredients = aggregate_ingredients(ingredients)
+
+    # scale_ingredientsメソッドを呼び出して、quantityを更新
+    @scaled_ingredients = scale_ingredients(aggregated_ingredients, @serving_size)
+  end
+
+  private
+
+  # ingredientsのquantityをmenu_countの累乗で更新するメソッド
+  def scale_ingredients(ingredients, menu_count)
+    menu_count = menu_count.to_i
+
+    ingredients.map do |ingredient|
+      # 各ingredientのクローンを作成
+      new_ingredient = ingredient.dup
+
+      # quantityをmenu_countの累乗で更新
+      new_ingredient.quantity *= menu_count
+
+      new_ingredient
+    end
   end
 
 end
