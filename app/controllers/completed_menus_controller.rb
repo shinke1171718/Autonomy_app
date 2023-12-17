@@ -22,14 +22,22 @@ class CompletedMenusController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
 
-        # completed_menusデータを作成
         shopping_list_menus.each do |menu|
-          current_user.completed_menus.create!(
-            user_id: current_user.id,
-            menu_id: menu.menu_id,
-            menu_count: menu.menu_count,
-            is_completed: false,
-          )
+          # 既存のCompletedMenuレコードを検索する
+          # 条件は、現在のユーザー（current_user.id）が持つ、まだ完了していない（is_completed: false）特定のメニュー（menu.menu_id）
+          completed_menu = CompletedMenu.find_by(menu_id: menu.menu_id, user_id: current_user.id, is_completed: false)
+
+          if completed_menu
+            # CompletedMenuモデルに同じ献立がある場合にはmenu_countを更新するように設定
+            completed_menu.update!(menu_count: completed_menu.menu_count + menu.menu_count)
+          else
+            # CompletedMenuモデルに同じデータがない場合は、completed_menusデータを作成
+            current_user.completed_menus.create!(
+              menu_id: menu.menu_id,
+              menu_count: menu.menu_count,
+              is_completed: false,
+            )
+          end
         end
 
         # 買い物リストのデータ削除
