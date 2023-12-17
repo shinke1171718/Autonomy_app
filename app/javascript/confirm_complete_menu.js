@@ -15,7 +15,7 @@ function confirmCompleteCooking() {
     const url = completeCookingButton.getAttribute('data-url');
 
     // 確認ダイアログのメッセージを構築
-    const confirmationMessage = "本当に" + completeCookingButton.textContent.trim() + "を調理完了してよろしいですか？";
+    const confirmationMessage = "本当に" + completeCookingButton.textContent.trim() + "してよろしいですか？";
 
     // 確認ダイアログを表示し、OKが押された場合のみURLに遷移
     if (confirm(confirmationMessage)) {
