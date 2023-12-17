@@ -14,8 +14,6 @@ function confirmCompleteCooking() {
     // ボタンのデータ属性からURLを取得
     const url = completeCookingButton.getAttribute('data-url');
 
-    console.log(url);
-
     // 確認ダイアログのメッセージを構築
     const confirmationMessage = "本当に" + completeCookingButton.textContent.trim() + "を調理完了してよろしいですか？";
 
