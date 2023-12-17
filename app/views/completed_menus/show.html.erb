@@ -12,15 +12,15 @@
       <%= turbo_frame_tag 'ingredients_list' do %>
         <div class="show-contents-container">
           <div class="serving-adjust-button">
-            <%= button_to '◀', decrease_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
+            <%= button_to '◀', change_serving_size_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size, change_type: 'decrease'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
           </div>
 
           <div class="serving-size-display">
-            <p><%= @serving_size.presence || 1 %>人前</p>
+            <p><%= @serving_size %>人前</p>
           </div>
 
           <div class="serving-adjust-button">
-            <%= button_to '▶︎', increase_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
+            <%= button_to '▶︎', change_serving_size_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size, change_type: 'increase'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
           </div>
         </div>
 
@@ -41,7 +41,7 @@
         </div>
 
         <div class="button-container">
-          <%= button_to "#{@serving_size}人前を調理完了", "#", method: :get, class: 'complete-cooking-button', id: 'complete-cooking-button', data: { turbo: false }, "data-url": root_path %>
+          <%= button_to "#{@serving_size}人前を調理完了", "#", class: 'complete-cooking-button', id: 'complete-cooking-button', data: { turbo: false }, "data-url": mark_as_completed_menu_path(menu_id: @menu.id, serving_size: @serving_size) %>
         </div>
 
         <%= javascript_include_tag 'confirm_complete_menu' %>
