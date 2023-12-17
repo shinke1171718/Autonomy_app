@@ -109,7 +109,7 @@ class CompletedMenusController < ApplicationController
       menu_to_update.update!(is_completed: true, date_completed: Time.current)
     end
 
-    flash[:notice] = "献立の調理が完了しました。"
+    flash[:notice] = "献立の調理完了です。お疲れ様でした！"
     redirect_to completed_menus_path
   end
 
