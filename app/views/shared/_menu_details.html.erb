@@ -1,0 +1,36 @@
+
+<div class="menu-show-list">
+  <div class="menu-show-title">
+    <h1>献立情報</h1>
+  </div>
+
+  <div class="show-contents-title">
+    <p>　献立名　</p>
+  </div>
+
+  <div class="menu-contents">
+    <%= menu.menu_name %>
+  </div>
+
+  <div class="show-contents-title">
+    <p>　献立内容　</p>
+  </div>
+  <div class ="menu-contents">
+    <%= menu.menu_contents %>
+  </div>
+
+  <div class="show-contents-title">
+    <p>　作り方　</p>
+  </div>
+  <div class="menu-contents">
+    <%= simple_format(sanitize(menu.contents)) %>
+  </div>
+
+  <div class="show-contents-title">
+    <p>　献立画像　</p>
+  </div>
+
+  <div class ="menu-contents">
+    <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
+  </div>
+</div>

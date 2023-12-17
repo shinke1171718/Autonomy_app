@@ -4,3 +4,5 @@ import "controllers"
 import jquery from "jquery"
 window.$ = jquery
 import "./nav_menu";
+import "./checkbox_button_control";
+import "./menu_button_style_update";

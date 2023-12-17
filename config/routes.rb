@@ -12,11 +12,24 @@ Rails.application.routes.draw do
 
   # CartItem#createへのルーティング
   resources :cart_items, only: [:create, :destroy]
+  resources :shopping_lists
 
   # カートアイテムの数量を増やす
   post '/cart_items/:id/increment', to: 'cart_items#increment', as: 'cart_item_increment'
   # カートアイテムの数量を減らす
   post '/cart_items/:id/decrement', to: 'cart_items#decrement', as: 'cart_item_decrement'
+
+  post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
+
+  resources :completed_menus do
+    member do
+      # completed_menus#showのviewで作る人数を調整する為のアクション
+      post 'change_serving_size', to: 'completed_menus#change_serving_size', as: :change_serving_size
+
+      # 作った献立を調理完了として設定するアクション
+      get 'mark_as_completed', to: 'completed_menus#mark_as_completed', as: :mark_as
+    end
+  end
 
   devise_for :users
   devise_scope :user do

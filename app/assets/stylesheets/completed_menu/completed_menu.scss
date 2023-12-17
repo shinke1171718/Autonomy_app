@@ -1,0 +1,53 @@
+@import 'shared/styles';
+
+.completed-menu-container{
+  @include menu-index;
+
+
+  .completed-menu-heading {
+    @include menu-heading;
+    @include menu-heading-after;
+  }
+
+  .completed-menu-heading h3 {
+    margin-bottom: 0px;
+  }
+
+  .completed-menus_list{
+    @include menus-list;
+    margin-bottom: 40px;
+
+    .completed-menu-item a{
+      text-decoration: none;
+      color: black;
+    }
+
+    .completed-menu-item{
+      @include menu-item;
+      @include hover-background(#e6e6e6);
+      height: 300px;
+      cursor: pointer;
+      text-decoration: none;
+
+      .rounded-image{
+        @include rounded-image;
+      }
+
+      .completed-menu-item-title{
+        @include menu-item-title;
+        font-size: 20px;
+        text-decoration: none;
+      }
+
+      .completed-menu-count{
+        .menu-item-quantity {
+          width: 100%;
+          padding-top: 7px;
+          text-decoration: none;
+        }
+      }
+
+    }
+
+  }
+}

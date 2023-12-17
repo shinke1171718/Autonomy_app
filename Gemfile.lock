@@ -243,6 +243,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-darwin-23
 
 DEPENDENCIES
   action_args

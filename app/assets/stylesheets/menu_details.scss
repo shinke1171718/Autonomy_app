@@ -1,0 +1,8 @@
+@import 'shared/menuForm';
+
+.menu-show-list{
+  @include flex-center-column;
+  .show-contents-title{
+    @include contents-title;
+  }
+}

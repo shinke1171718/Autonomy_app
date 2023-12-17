@@ -5,8 +5,21 @@
   </div>
   <div class="menu-bar-right">
     <div id="menu" class="desktop-menu">
-      <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "menu-link" %>
+
+      <% if @completed_menus_date %>
+        <%= link_to "献立を選ぶ", root_path, class: "menu-link" %>
+      <% end %>
+
+      <% if @has_menu_items %>
+        <%= link_to "買い物リスト", shopping_lists_path, class: "menu-link" %>
+      <% end %>
+
+      <% if @completed_menus_date %>
+        <%= link_to "献立を作る", completed_menus_path, class: "menu-link" %>
+      <% end %>
+
       <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "menu-link" %>
+      <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "menu-link" %>
       <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "menu-link" %>
     </div>
     <div class="mobile-menu-botton">
@@ -20,8 +33,20 @@
 </div>
 
 <div class="mobile-menu-content">
-  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
+  <% if @completed_menus_date %>
+    <%= link_to "献立を選ぶ", root_path, class: "mobile-menu-link" %>
+  <% end %>
+
+  <% if @has_menu_items %>
+    <%= link_to "買い物リスト", shopping_lists_path, class: "mobile-menu-link" %>
+  <% end %>
+
+  <% if @completed_menus_date %>
+    <%= link_to "献立を作る", completed_menus_path, class: "mobile-menu-link" %>
+  <% end %>
+
   <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "mobile-menu-link" %>
+  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
   <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "mobile-menu-link" %>
 </div>
 

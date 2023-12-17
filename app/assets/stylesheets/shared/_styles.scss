@@ -108,8 +108,11 @@
   @media screen and (max-width: 800px) {
     width: 80%;
   }
-}
 
+  &:hover {
+    background-color: #959595;
+  }
+}
 
 @mixin menus_list {
   display: flex;
@@ -146,5 +149,86 @@
 }
 
 @mixin rounded-image {
+  border-radius: 20px;
+}
+
+@mixin menu-heading {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 30px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  @media screen and (max-width: 460px) {
+    display: inline-block;
+    font-size: 20px;
+  }
+}
+
+@mixin menu-heading-after {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000000;
+  }
+}
+
+@mixin hover-background($color: #a3a3a3) {
+  &:hover {
+    background-color: $color;
+  }
+}
+
+@mixin menu-index{
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+@mixin menu-heading-h3{
+  margin-bottom: 0;
+  padding-bottom: 5px;
+  line-height: 1.2;
+}
+
+@mixin menus-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 10px;
+  align-items: stretch;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+@mixin menu-item-title {
+  margin-top: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+@mixin menu-item{
+  position: relative;
+  width: 250px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  border-radius: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+@mixin rounded-image{
   border-radius: 20px;
 }

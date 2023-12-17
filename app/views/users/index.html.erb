@@ -1,6 +1,6 @@
 <%= render 'shared/menu' %>
 
-<div class="menu-index-container">
+<div class="menu-index-container" id="menu-index">
 
   <div class="menu-heading">
     <h3>選択された献立</h3>
@@ -10,12 +10,10 @@
     <div class="menus_list">
       <% @cart_items.each do |cart_item| %>
         <div class="menu-item">
-          <div class="delete-button">
-            <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
-          </div>
+          <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
 
           <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
-          <div class="menu-item-title"><%= cart_item.menu.menu_name %></div>
+          <div class="menu-item-title"><%= truncate(cart_item.menu.menu_name, length: 10, omission: '..') %></div>
 
           <div class="menu-item-count">
             <%= button_to '▲', cart_item_increment_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "increment-button" %>
@@ -28,7 +26,7 @@
       <% end %>
     </div>
   <% else %>
-    <p class="empty-cart-message">カートに献立がありません。</p>
+    <p class="empty-cart-message">献立が選択されていません。</p>
   <% end %>
 
 
@@ -37,6 +35,10 @@
   <div class="button-set-container">
     <%= button_to "オリジナル献立リスト", user_custom_menus_path(current_user), class: "button-style bg-custom-menu", method: :get %>
     <%= button_to "サンプル献立リスト", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
-    <%= button_to "買い出しに行く", root_path, class: "button-style bg-shopping-list", method: :get %>
+    <% if @has_menu_items %>
+      <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list", form: { data: { turbo_confirm: "既存の買い出しリストが上書きされます。本当に宜しいですか？" }} %>
+    <% else %>
+      <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list" %>
+    <% end %>
   </div>
 </div>
