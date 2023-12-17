@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
   # 作れる献立がある場合にメニューバーへ「献立を選ぶ」「献立を作る」の選択肢を追加するために設定
   def check_completed_menus_date
-    completed_menus = CompletedMenu.where(user_id: current_user.id)
+    completed_menus = CompletedMenu.where(user_id: current_user.id, is_completed: false)
     @completed_menus_date = completed_menus.exists?
   end
 

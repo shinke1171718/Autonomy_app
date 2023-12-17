@@ -23,8 +23,11 @@ Rails.application.routes.draw do
 
   resources :completed_menus do
     member do
-      post 'increase_serving', to: 'completed_menus#increase_serving', as: :increase
-      post 'decrease_serving', to: 'completed_menus#decrease_serving', as: :decrease
+      # completed_menus#showのviewで作る人数を調整する為のアクション
+      post 'change_serving_size', to: 'completed_menus#change_serving_size', as: :change_serving_size
+
+      # 作った献立を調理完了として設定するアクション
+      get 'mark_as_completed', to: 'completed_menus#mark_as_completed', as: :mark_as
     end
   end
 
