@@ -10,35 +10,8 @@
       </div>
 
       <%= turbo_frame_tag 'ingredients_list' do %>
-        <div class="show-contents-container">
-          <div class="serving-adjust-button">
-            <%= button_to '◀', change_serving_size_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size, change_type: 'decrease'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
-          </div>
 
-          <div class="serving-size-display">
-            <p><%= @serving_size %>人前</p>
-          </div>
-
-          <div class="serving-adjust-button">
-            <%= button_to '▶︎', change_serving_size_completed_menu_path(@menu, serving_size: @serving_size, max_count: @max_serving_size, change_type: 'increase'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
-          </div>
-        </div>
-
-        <div class="ingredients-show-list">
-          <% if @scaled_ingredients.present? %>
-            <% @scaled_ingredients.each do |ingredient_date| %>
-              <div class="ingredient-show-item">
-                <p class="material-name"><%= ingredient_date.material.material_name %></p>
-                <div class="quantity-unit">
-                  <p class="quantity"><%= display_quantity(ingredient_date.quantity) %></p>
-                  <p class="unit"><%= ingredient_date.unit.unit_name %></p>
-                </div>
-              </div>
-            <% end %>
-          <% else %>
-            <p class="no-ingredients">食材はありません</p>
-          <% end %>
-        </div>
+        <%= render 'shared/ingredients_list', scaled_ingredients: @scaled_ingredients, change_serving_size_path: ->(change_type) { change_serving_size_completed_menu_path(menu_id: @menu.id, serving_size: @serving_size, max_count: @max_serving_size, is_pre_selection: @is_pre_selection, change_type: change_type) } %>
 
         <div class="button-container">
           <%= button_to "#{@serving_size}人前を調理完了", "#", class: 'complete-cooking-button', id: 'complete-cooking-button', data: { turbo: false }, "data-url": mark_as_completed_menu_path(menu_id: @menu.id, serving_size: @serving_size) %>

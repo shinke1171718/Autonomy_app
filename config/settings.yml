@@ -9,3 +9,5 @@ ingredient:
 limits:
   max_total_items: 20
   min_serving_size: 1
+  default_serving_size: 1
+  default_max_serving_size: 35

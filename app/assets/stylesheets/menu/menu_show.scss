@@ -24,6 +24,9 @@
         margin-bottom: 30px;
       }
 
+      #ingredients_list {
+        width: 100%;
+      }
 
       .ingredients-show-list {
         width: 60%;
@@ -66,11 +69,21 @@
         }
       }
 
+      .select-button-container{
+        .select-button{
+          @include button;
+          width: 70%;
+          height: 60px;
+          margin-top: 20px;
+          margin-bottom: 5px;
+          background-color: #555
+        }
+      }
     }
   }
 
   .menu-button-container {
-    width: 100%;
+    width: 70%;
 
     .item-selection-container{
       display: flex;
@@ -113,9 +126,13 @@
       }
     }
 
-    .edit-button {
+    .edit-button,
+    .back-button {
       @include button;
-      width: 45%;
+      width: 70%;
+    }
+
+    .edit-button{
       background-color: #777;
       margin-bottom: 10px;
 
@@ -125,8 +142,6 @@
     }
 
     .back-button {
-      @include button;
-      width: 45%;
       margin-top: 10px;
     }
   }
