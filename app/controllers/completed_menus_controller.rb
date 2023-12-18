@@ -1,6 +1,7 @@
 class CompletedMenusController < ApplicationController
   include IngredientsAggregator
-  before_action :set_serving_sizes, only: [:show, :change_serving_size]
+  include ServingSizeHandler
+  include IngredientScaler
 
   def index
     # 買い出しが完了した食材データを取得
@@ -66,26 +67,6 @@ class CompletedMenusController < ApplicationController
   end
 
 
-  def change_serving_size
-    # increase_servingと同様の理由
-    menu_id = params[:id]
-    # 減少か増加をするかどうかを判断
-    change_type = params[:change_type]
-    # 献立の最低数でこれ以上は現状できない数値
-    min_serving_size = @settings.dig('limits', 'min_serving_size')
-
-    if change_type == 'increase'
-      # 調理する献立の数量を増加
-      @serving_size = [@serving_size + 1, @max_serving_size].min
-    elsif change_type == 'decrease'
-      # 調理する献立の数量を現状
-      @serving_size = [@serving_size - 1, min_serving_size].max
-    end
-
-    redirect_to completed_menu_path(menu_id: menu_id, serving_size: @serving_size, max_count: @max_serving_size)
-  end
-
-
   def mark_as_completed
     # ActiveRecord::Relationオブジェクトのため「first」でデータを取得
     menu_to_update = CompletedMenu.find_by(menu_id: params[:menu_id], user_id: current_user.id, is_completed: false)
@@ -120,33 +101,4 @@ class CompletedMenusController < ApplicationController
     flash[:notice] = "献立の調理完了です。お疲れ様でした！"
     redirect_to completed_menus_path
   end
-
-
-  private
-
-  # ingredientsのquantityをmenu_countの値分倍増するメソッド
-  def scale_ingredients(ingredients, menu_count)
-    menu_count = menu_count.to_i
-
-    ingredients.map do |ingredient|
-      # 各ingredientのクローンを作成
-      new_ingredient = ingredient.dup
-
-      # quantityをmenu_countの累乗で更新
-      new_ingredient.quantity *= menu_count
-
-      new_ingredient
-    end
-  end
-
-
-  # show, increase_serving, decrease_servingアクションで利用。
-  # before_actionで設定され、繰り返しのコードを避けるためにメソッド化。
-  def set_serving_sizes
-    # 調理する献立の数量
-    @serving_size = params[:serving_size].to_i
-    # 調理する献立最大数量
-    @max_serving_size = params[:max_count].to_i
-  end
-
 end

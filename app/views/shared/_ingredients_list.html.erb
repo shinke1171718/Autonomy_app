@@ -1,0 +1,29 @@
+<div class="show-contents-container">
+  <div class="serving-adjust-button">
+    <%= button_to '◀', change_serving_size_path.call('decrease'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
+  </div>
+
+  <div class="serving-size-display">
+    <p><%= @serving_size %>人前</p>
+  </div>
+
+  <div class="serving-adjust-button">
+    <%= button_to '▶︎', change_serving_size_path.call('increase'), method: :post, class: 'serving-adjust-button', data: { turbo_frame: 'ingredients_list' } %>
+  </div>
+</div>
+
+<div class="ingredients-show-list">
+  <% if scaled_ingredients.present? %>
+    <% scaled_ingredients.each do |ingredient_date| %>
+      <div class="ingredient-show-item">
+        <p class="material-name"><%= ingredient_date.material.material_name %></p>
+        <div class="quantity-unit">
+          <p class="quantity"><%= display_quantity(ingredient_date.quantity) %></p>
+          <p class="unit"><%= ingredient_date.unit.unit_name %></p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="no-ingredients">食材はありません</p>
+  <% end %>
+</div>

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get 'sample_menus', to: 'menus#sample_menus', as: :sample_menus
 
   # CartItem#createへのルーティング
-  resources :cart_items, only: [:create, :destroy]
+  resources :cart_items
   resources :shopping_lists
 
   # カートアイテムの数量を増やす
@@ -23,8 +23,8 @@ Rails.application.routes.draw do
 
   resources :completed_menus do
     member do
-      # completed_menus#showのviewで作る人数を調整する為のアクション
-      post 'change_serving_size', to: 'completed_menus#change_serving_size', as: :change_serving_size
+      # 献立のページで、提供する人数を変更するためのアクション
+      post '/completed_menus/:menu_id/change_serving_size', to: 'completed_menus#change_serving_size', as: :change_serving_size
 
       # 作った献立を調理完了として設定するアクション
       get 'mark_as_completed', to: 'completed_menus#mark_as_completed', as: :mark_as
@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       resources :menus do
         post 'new', on: :collection, to: 'menus#new', as: :new_user_menu
         post 'edit', on: :collection, to: 'menus#edit', as: :edit_confirm
+        post :change_serving_size
         resources :ingredients
       end
     end

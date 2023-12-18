@@ -1,5 +1,7 @@
 class MenusController < ApplicationController
   include IngredientsAggregator
+  include ServingSizeHandler
+  include IngredientScaler
 
   def custom_menus
     # 現在ログインしているユーザーのIDに関連付けられたすべてのメニューIDを取得
@@ -121,7 +123,7 @@ class MenusController < ApplicationController
 
 
   def create
-    menu = Menu.new(menu_params.except(:image))
+    menu = Menu.new(menu_params)
 
     if params[:menu][:ingredients].present?
       # フィルタリングされた食材データを取得
@@ -165,7 +167,10 @@ class MenusController < ApplicationController
     # 重複した献立を基準の単位に変換し、合算する
     menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
     ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
-    @aggregated_ingredients = aggregate_ingredients(ingredients)
+    aggregated_ingredients = aggregate_ingredients(ingredients)
+
+    # scale_ingredientsメソッドを呼び出して、quantityを更新
+    @scaled_ingredients = scale_ingredients(aggregated_ingredients, @serving_size)
   end
 
 

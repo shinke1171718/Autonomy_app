@@ -18,12 +18,13 @@ class CartItemsController < ApplicationController
     cart_item = cart.cart_items.find_by(menu_id: params[:menu_id])
 
     if cart_item
-      # 同じmenu_idのアイテムが存在する場合、数量を1増やす
-      cart_item.increment!(:item_count)
+      # 同じmenu_idのアイテムが存在する場合、params[:serving_size]の値だけ数量を増やす
+      additional_count = params[:serving_size].to_i
+      cart_item.increment!(:item_count, additional_count)
     else
       # 新しいカートアイテムの作成、数量はデフォルトで1とする
       item_count = @settings.dig('defaults', 'item_count')
-      cart.cart_items.create(menu_id: params[:menu_id], item_count: params[:item_count])
+      cart.cart_items.create(menu_id: params[:menu_id], item_count: params[:serving_size])
     end
 
     flash[:notice] = "献立を選択しました。"
