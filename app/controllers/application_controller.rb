@@ -19,8 +19,10 @@ class ApplicationController < ActionController::Base
 
   # 現在のユーザーのカートに紐づくショッピングリストに関連するメニュー項目が存在するかをチェック
   def check_shopping_list_menu_items
-    cart = current_user.cart
-    @has_menu_items = cart&.shopping_list&.shopping_list_menus&.exists? || false
+    if current_user
+      cart = current_user.cart
+      @has_menu_items = cart&.shopping_list&.shopping_list_menus&.exists? || false
+    end
   end
 
   # 作れる献立がある場合にメニューバーへ「献立を選ぶ」「献立を作る」の選択肢を追加するために設定
