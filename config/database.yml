@@ -24,6 +24,10 @@ default: &default
 development:
   <<: *default
   database: Autonomy_app_development
+  username: apple
+  password:
+  host: localhost
+  port: 5432
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -81,4 +85,4 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV["MY_APP_DATABASE_URL"] %>
+  url: <%= ENV['DATABASE_URL'] %>
