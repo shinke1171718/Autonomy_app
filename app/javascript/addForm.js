@@ -223,8 +223,6 @@ function handleIngredientNameChange(selectElement, value) {
 function handleCountDownClick(event) {
   event.preventDefault();
 
-  console.log("処理きました");
-
   // クリックされた要素の最も近い ".custom-ingredient-fields" 要素を取得
   var container = event.target.closest(".custom-ingredient-fields");
   if (!container) return;
