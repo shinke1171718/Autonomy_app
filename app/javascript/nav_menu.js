@@ -1,14 +1,20 @@
-import jquery from "jquery"
-window.$ = jquery
 
-$(document).on('turbo:load', function() {
-  $('.mobile-menu-botton').on('click', function () {
-    $(".mobile-menu-content").toggleClass("open");
-    $("#mask").toggleClass("open");
-  });
+document.addEventListener('turbo:load', function() {
+  let mobileMenuButton = document.querySelector('.mobile-menu-button');
+  let mobileMenuContent = document.querySelector('.mobile-menu-content');
+  let mask = document.querySelector('#mask');
 
-  $("#mask").on('click', function () {
-    $(".mobile-menu-content").removeClass("open");
-    $("#mask").removeClass("open");
-  });
+  if (mobileMenuButton) {
+    mobileMenuButton.addEventListener('click', function() {
+      mobileMenuContent.classList.toggle('open');
+      mask.classList.toggle('open');
+    });
+  }
+
+  if (mask) {
+    mask.addEventListener('click', function() {
+      mobileMenuContent.classList.remove('open');
+      mask.classList.remove('open');
+    });
+  }
 });
