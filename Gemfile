@@ -78,3 +78,6 @@ gem 'action_args'
 gem 'sassc'
 gem 'image_processing'
 gem 'rack-cors'
+
+# HerokuにデプロイされたアプリケーションがGoogle Cloud Storageと連携して動作するよう設定
+gem "google-cloud-storage", require: false
