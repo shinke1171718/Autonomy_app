@@ -32,3 +32,9 @@ local:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
+
+google:
+  service: GCS
+  project: "poised-resource-404808"
+  credentials: <%= ENV["GOOGLE_CLOUD_KEYFILE_JSON"] %>
+  bucket: "autonomy-dev-storage"
