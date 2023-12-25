@@ -2,6 +2,7 @@ class MenusController < ApplicationController
   include IngredientsAggregator
   include ServingSizeHandler
   include IngredientScaler
+  before_action :set_and_sort_materials_by_category, only: [:new, :edit]
 
   def custom_menus
     # 現在ログインしているユーザーのIDに関連付けられたすべてのメニューIDを取得
@@ -22,29 +23,14 @@ class MenusController < ApplicationController
 
 
   def new
-    # ドロップダウンリストを作成に必要なデータを格納
-    @materials_by_category = fetch_sorted_materials_by_category
-
-    # 初期登録時の処理
+    # 通常の `new` リクエスト処理
     if params[:menu].blank?
       @menu = Menu.new
       @menu.ingredients = Ingredient.new
       return
     end
 
-    # 確認画面一度経由した場合の処理
-    if params[:menu][:encoded_image].present?
-      result = decode_and_prepare_image(
-        params[:menu][:encoded_image],
-        params[:menu][:filename],
-        params[:menu][:image_content_type]
-      )
-
-      @image_data_url = result[:image_data_url]
-      @encoded_image = result[:encoded_image]
-      @image_content_type = result[:image_content_type]
-    end
-
+    # `confirm` アクションからのリダイレクト時の処理
     # 受け取ったmenuデータを再度インスタンス化
     @menu = Menu.new(
       menu_name: params[:menu][:menu_name],
@@ -52,24 +38,20 @@ class MenusController < ApplicationController
       contents: params[:menu][:contents],
     )
 
-    # 受け取ったingredientデータの処理
+    # ingredientデータの処理
+    # 別途子モデルであるingredientsをmenuに別途割り当てる。
+    # 理由は「accepts_nested_attributes_for」を使用しないためです。
     if params[:menu][:ingredients_attributes]
       @menu.ingredients = params[:menu][:ingredients_attributes]
     end
 
+    # `confirm`からのPOST後のリダイレクトのため `new` へレンダリング
     render 'new', status: :unprocessable_entity
   end
 
 
   def confirm
     @menu = Menu.new(menu_params)
-
-    # editフォームから送信された場合、params に menu_id が含まれる。
-    # この menu_id を @menu_id に設定して、既存の menu が編集対象であることを識別する。
-    # これにより、確認画面からのリダイレクト先を、新規作成フォームか編集フォームかを適切に決定できる。
-    if params[:menu][:menu_id].present?
-      @menu_id = params[:menu][:menu_id]
-    end
 
     # 食材データを「@menu.ingredients」に格納
     if params[:menu][:ingredients].present?
@@ -82,12 +64,12 @@ class MenusController < ApplicationController
     # 重複した献立を基準の単位に変換し、合算する
     @aggregated_ingredients = aggregate_ingredients(@menu.ingredients)
 
-    # 画像か新規アップロードされた場合、uploaded_fileを作成
+    # 画像が新規アップロードされた場合、uploaded_fileを作成
     if params[:menu][:image].present?
       uploaded_file = params[:menu][:image]
     end
 
-    # 編集時に再登録した画像を格納 or 初回登録の内容を格納
+    # 編集時に再登録した画像を格納
     if uploaded_file.present?
       # viewに表示する画像URL設定
       @image_data_url = generate_data_url(uploaded_file)
@@ -97,15 +79,10 @@ class MenusController < ApplicationController
       image_data = uploaded_file.read
       # Base64エンコードに変換
       @encoded_image = Base64.strict_encode64(image_data)
-
-    elsif params[:menu][:image_data_url].present?
-      @image_data_url = params[:menu][:image_data_url]
-      @encoded_image = params[:menu][:encoded_image]
     end
 
     if @menu.valid?
-      render 'confirm', status: :unprocessable_entity
-      return
+      render_confirm_page
     else
       handle_general_error
     end
@@ -175,30 +152,21 @@ class MenusController < ApplicationController
 
 
   def edit
-    @menu = Menu.find(params[:id])
-    @materials_by_category = fetch_sorted_materials_by_category
-
-    # 確認画面一度経由した場合の処理
+    # `confirm` アクションからのリダイレクト時の処理（その場合`menu_id` が `params[:menu]` の中に含まれる）
     if params[:menu].present?
-      result = decode_and_prepare_image(
-        params[:menu][:encoded_image],
-        params[:menu][:filename],
-        params[:menu][:image_content_type]
-      )
-
-      @image_data_url = result[:image_data_url]
-      @encoded_image = result[:encoded_image]
-      @image_content_type = result[:image_content_type]
-    end
-
-    if params[:menu].present?
-      @menu_id = params[:id]
-      @menu.menu_name = params[:menu][:menu_name]
-      @menu.menu_contents = params[:menu][:menu_contents]
-      @menu.contents = params[:menu][:contents]
+      # 既存のメニューを取得
+      @menu = Menu.find(params[:menu][:menu_id])
+      # 取得したメニューにフォームからの新しい属性を割り当てる
+      @menu.assign_attributes(menu_params_from_confirm)
+      # 別途子モデルであるingredientsをmenuに別途割り当てる。
+      # 理由は「accepts_nested_attributes_for」を使用しないためです。
       @menu.ingredients = params[:menu][:ingredients_attributes]
 
+      # `confirm`からのPOST後のリダイレクトのため `edit` へレンダリング
       render 'edit', status: :unprocessable_entity
+    else
+      # 通常の `edit` リクエスト処理
+      @menu = Menu.find(params[:id])
     end
 
     # MenuIngredient モデルを使用して ingredient_id のリストを取得
@@ -215,17 +183,11 @@ class MenusController < ApplicationController
       }
       hash
     end
-
-    if @menu.image.attached?
-      @image_data_url = url_for(@menu.image)
-      @encoded_image = Base64.encode64(@menu.image.download)
-    end
-
   end
 
 
   def update
-    menu = Menu.find(params[:id])
+    menu = Menu.find(params[:menu][:menu_id])
 
     # 画像データがある場合の処理
     if params[:menu].values_at(:encoded_image, :image_content_type).all?
@@ -234,6 +196,7 @@ class MenusController < ApplicationController
       menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
+    # 食材データがある場合の処理
     if params[:menu][:ingredients].present?
       # フィルタリングされた食材データを取得
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
@@ -267,15 +230,21 @@ class MenusController < ApplicationController
     end
 
     flash[:notice] = "献立が更新されました。"
-    redirect_to user_menu_path(user_id: current_user.id, menu_id: menu.id)
+    redirect_to user_menu_path(user_id: current_user.id, id: params[:menu][:menu_id])
   end
 
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :encoded_image, :filename, :image_content_type, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
+    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :encoded_image, :filename, :image_content_type, :image_data_url, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
   end
 
+  # このメソッドでは、`confirm` アクションからのリダイレクト時に、ストロングパラメータを
+  # 使用して、許可された属性（menu_name、menu_contents、contents）をモデルに一括で割り当てる
+  # ために必要なパラメータをフィルタリングします。
+  def menu_params_from_confirm
+    params.require(:menu).permit(:menu_name, :menu_contents, :contents)
+  end
 
   def filter_ingredients(ingredients_params)
     # 設定から特定のunit_idを取得
@@ -300,7 +269,7 @@ class MenusController < ApplicationController
   end
 
   # Material オブジェクトをカテゴリー別にグループ化し、それらをカテゴリーIDとひらがなでソートした結果を返すメソッド
-  def fetch_sorted_materials_by_category
+  def set_and_sort_materials_by_category
     materials_by_category = {}
     # Material オブジェクトの取得とソート
     sorted_materials = Material.includes(:category).order('categories.id', :hiragana)
@@ -313,7 +282,7 @@ class MenusController < ApplicationController
       materials_by_category[category_name] = materials.sort_by(&:hiragana)
     end
 
-    materials_by_category
+    @materials_by_category = materials_by_category
   end
 
   # アップロードされたファイルからデータURLを生成するメソッド
@@ -338,31 +307,12 @@ class MenusController < ApplicationController
     query.limit(items_per_page).offset(offset)
   end
 
-  # Base64エンコードされた画像をデコードし、一時ファイルに保存後、画像のデータURLとエンコードされたデータを返す。
-  def decode_and_prepare_image(encoded_image, filename, image_content_type)
-
-    # Base64エンコードされた画像データをデコードする
-    decoded_image = Base64.decode64(encoded_image)
-
-    # 一時ファイルを作成する
-    tempfile = Tempfile.new(['upload', '.jpg'])
-    tempfile.binmode
-    tempfile.write(decoded_image)
-    tempfile.rewind
-
-    # `ActionDispatch::Http::UploadedFile`オブジェクトを作成する
-    uploaded_file = ActionDispatch::Http::UploadedFile.new(
-      filename: filename,
-      type: image_content_type,
-      tempfile: tempfile
-    )
-
-    # 必要な情報を返す
-    {
-      image_data_url: generate_data_url(uploaded_file),
-      encoded_image: encoded_image,
-      image_content_type: image_content_type
-    }
+  def render_confirm_page
+    if params[:menu][:menu_id].present?
+      render 'edit_confirm', status: :unprocessable_entity
+    else
+      render 'new_confirm', status: :unprocessable_entity
+    end
   end
 
 end

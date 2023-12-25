@@ -1,10 +1,9 @@
 <div class="confirm-container">
   <div class="confirm-form-container">
 
-    <% form_url = @menu_id ? user_menu_path(current_user, id: @menu_id) : user_menus_path(current_user) %>
-    <% form_method = @menu_id ? :patch : :post %>
+    <%= form_with model: @menu, url: user_menu_path(id: current_user.id, menu_id: @menu.id), method: :patch, local: true do |f| %>
+      <%= f.hidden_field :menu_id, value: params[:menu][:menu_id] %>
 
-    <%= form_with model: [current_user, @menu], url: form_url, method: form_method, local: true do |f| %>
       <div class="menu-confirm-container">
         <div class="menu-confirm-title">
           <h1>登録内容の最終確認</h1>
@@ -38,10 +37,14 @@
           <p>　献立画像　</p>
         </div>
         <div class ="menu-contents">
-          <% if @image_data_url.present? %>
-            <img src="<%= @image_data_url %>" width="300" height="200" alt="uploaded image preview" />
-            <%= f.hidden_field :encoded_image, value: @encoded_image %>
-            <%= f.hidden_field :image_content_type, value: @image_content_type %>
+          <% image_data_url = @image_data_url || params.dig(:menu, :image_data_url) %>
+          <% encoded_image = @encoded_image || params.dig(:menu, :encoded_image) %>
+          <% image_content_type = @image_content_type || params.dig(:menu, :image_content_type) %>
+
+          <% if image_data_url.present? %>
+            <img src="<%= image_data_url %>" width="300" height="200" alt="uploaded image preview" />
+            <%= f.hidden_field :encoded_image, value: encoded_image %>
+            <%= f.hidden_field :image_content_type, value: image_content_type %>
           <% else %>
             <p>画像なし</p>
           <% end %>
@@ -80,21 +83,24 @@
 
       <div class="button-confirm-container">
         <div class="menu-registration-button">
-          <%= f.submit @menu_id ? "更新" : "登録", name: "commit" %>
+          <%= f.submit "更新", name: "commit" %>
         </div>
       </div>
     <% end %>
 
     <div class="button-confirm-container">
       <div class="menu-edit-button">
-        <% form_edit_url = @menu_id ? edit_confirm_user_menus_path(current_user, id: @menu_id) : new_user_menu_path(current_user) %>
-        <%= form_with model: @menu, url: form_edit_url, method: :post, local: true do |f| %>
+        <%= form_with model: @menu, url: edit_confirm_user_menus_path(current_user, id: @menu.id), method: :post, local: true do |f| %>
+          <%= f.hidden_field :menu_id, value: params[:menu][:menu_id] %>
           <%= f.hidden_field :menu_name, value: @menu.menu_name %>
           <%= f.hidden_field :menu_contents, value: @menu.menu_contents %>
           <%= f.hidden_field :contents, value: @menu.contents %>
           <%= f.hidden_field :encoded_image, value: @encoded_image %>
           <%= f.hidden_field :filename, value: @menu.image.filename.to_s %>
           <%= f.hidden_field :image_content_type, value: @menu.image.content_type %>
+
+          <% image_data_url = @image_data_url || params.dig(:menu, :image_data_url) %>
+          <%= f.hidden_field :image_data_url, value: image_data_url %>
 
           <% @menu.ingredients.each_with_index do |ingredient, index| %>
             <%= f.hidden_field "ingredients_attributes[#{index}][material_name]", value: ingredient.material_name %>

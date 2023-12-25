@@ -14,14 +14,13 @@
     <div class="menu-form-input">
       <%= form_with model: @menu, url: confirm_user_menu_path(current_user.id), method: :post, id: "menu_form" do |f| %>
         <%= render 'form_fields', f: f %>
-        <%= render 'image_preview', image_data_url: @image_data_url %>
+        <%= render 'image_preview', image_data_url: params.dig(:menu, :image_data_url) %>
 
-        <% if @image_data_url.present? %>
-          <%= f.hidden_field :encoded_image, value: @encoded_image %>
-          <%= f.hidden_field :image_content_type, value: @image_content_type %>
-          <%= f.hidden_field :image_data_url, value: @image_data_url %>
+        <% if params.dig(:menu, :image_data_url).present? %>
+          <%= f.hidden_field :encoded_image, value: params.dig(:menu, :encoded_image) %>
+          <%= f.hidden_field :image_content_type, value: params.dig(:menu, :image_content_type) %>
+          <%= f.hidden_field :image_data_url, value: params.dig(:menu, :image_data_url) %>
         <% end %>
-
 
         <div class ="contents-title">
           <p>２.食材リスト設定</p>
@@ -51,7 +50,7 @@
       <% end %>
 
       <div class="menu-form-back-button">
-        <%= button_to '戻る', user_custom_menus_path(current_user), class: 'back-button', id: 'back_button', method: :get %>
+        <%= button_to '戻る', user_custom_menus_path(current_user), class: 'back-button', id: 'back_button', method: :get, form: { data: { turbo_confirm: "入力内容が破棄されますが、よろしいでしょうか？" }} %>
       </div>
 
     </div>
