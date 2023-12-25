@@ -1,0 +1,5 @@
+@import 'shared/menuForm';
+
+.menu-confirm-container{
+  @include flex-center-column;
+}
