@@ -1,13 +1,4 @@
-document.addEventListener('submit', function(event) {
-
-  // フォーム送信時に、アクティブな要素が back-button なら何もしない
-  if (document.activeElement.classList.contains('back-button')) {
-    return;
-  }
-
-  if (document.activeElement.classList.contains('edit-button')) {
-    return;
-  }
+document.getElementById('next_step_button').addEventListener('submit', function(event) {
 
   let minForm = 0;
   let maxForm = 14;

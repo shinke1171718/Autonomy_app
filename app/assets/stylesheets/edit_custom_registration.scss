@@ -5,6 +5,7 @@
 
   .registration-title {
     @include form-title;
+    margin-bottom: 30px;
   }
 
   .registration-instructions{
@@ -12,9 +13,20 @@
   }
 
   .registration-input{
-    width: 200px;
+    width: 50%;
     @media screen and (max-width: 400px){
-      width: 73%;
+      width: 90%;
+    }
+
+    .registration-back-button{
+      width: 100%;
+
+      .back-button{
+        @include button;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 30px;
+      }
     }
   }
 
@@ -27,7 +39,11 @@
   }
 
   .registration-actions input{
-    @include form-submit-button-input;
+    @include button;
+    background-color: #1E9AF4;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
   }
 
   .back-button{

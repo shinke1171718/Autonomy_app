@@ -83,7 +83,7 @@
   }
 
   .menu-button-container {
-    width: 70%;
+    width: 100%;
 
     .item-selection-container{
       display: flex;
@@ -129,7 +129,7 @@
     .edit-button,
     .back-button {
       @include button;
-      width: 70%;
+      width: 49%;
     }
 
     .edit-button{

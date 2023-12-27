@@ -9,7 +9,7 @@
   </div>
 
   <div class="session-input">
-    <%= form_with url: user_custom_session_path, local: true do |f| %>
+    <%= form_with url: user_custom_session_path, local: true, data: { turbo: false } do |f| %>
       <div class="session-field">
         <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
       </div>
