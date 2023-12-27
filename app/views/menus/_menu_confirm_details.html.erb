@@ -51,13 +51,13 @@
   </div>
 
   <div class="ingredients-list">
-    <% if aggregated_ingredients.present? %>
-      <% aggregated_ingredients.each do |aggregated_ingredient| %>
+    <% if ingredients.present? %>
+      <% ingredients.each do |ingredient| %>
         <div class="ingredient-item">
-          <p class="material-name"><%= aggregated_ingredient.material.material_name %></p>
+          <p class="material-name"><%= ingredient.material.material_name %></p>
           <div class="quantity-unit">
-            <p class="quantity"><%= display_quantity(aggregated_ingredient.quantity) %></p>
-            <p class="unit"><%= aggregated_ingredient.unit.unit_name %></p>
+            <p class="quantity"><%= display_quantity(ingredient.quantity) %></p>
+            <p class="unit"><%= ingredient.unit.unit_name %></p>
           </div>
         </div>
       <% end %>

@@ -61,9 +61,6 @@ class MenusController < ApplicationController
       create_ingredient_instances(@menu, filtered_ingredients)
     end
 
-    # 重複した献立を基準の単位に変換し、合算する
-    @aggregated_ingredients = aggregate_ingredients(@menu.ingredients)
-
     # 画像が新規アップロードされた場合、uploaded_fileを作成
     if params[:menu][:image].present?
       uploaded_file = params[:menu][:image]
