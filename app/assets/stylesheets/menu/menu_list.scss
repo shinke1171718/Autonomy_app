@@ -44,52 +44,6 @@
       }
     }
 
-    .original_menus_list,
-    .sample-menus-list{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      padding-top: 50px;
-      gap: 10px;
-      align-items: stretch;
-      justify-content: center;
-
-      .menu-item {
-        width: 250px;
-        height: 250px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #f8f8f8;
-        border: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        border-radius: 20px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: #e6e6e6;
-        }
-      }
-
-      .menu-item-link, .menu-item-link:visited, .menu-item-link:hover, .menu-item-link:active {
-        text-decoration: none;
-      }
-
-      .menu-item-title {
-        margin-top: 10px;
-        color: black;
-        text-decoration: none;
-      }
-
-      .rounded-image {
-        border-radius: 20px;
-      }
-    }
-
     .pagination-container {
       margin-top: 30px;
     }
