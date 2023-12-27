@@ -7,16 +7,7 @@
     <%= button_to "オリジナル献立作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get %>
 
     <%= turbo_frame_tag 'original_menus_frame' do %>
-      <div class="original_menus_list">
-        <% @original_menus.each do |menu| %>
-          <%= link_to user_menu_path(current_user, menu), class: "menu-item-link", data: { turbo: false } do %>
-            <div class="menu-item">
-              <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
-              <div class="menu-item-title"><%= truncate(menu.menu_name, length: 10, omission: '..') %></div>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
+      <%= render 'menu_list', menu_list: @original_menus, serving_size: @settings.dig('limits', 'min_serving_size') %>
 
       <%= render 'shared/pagination', total_menus_count: @total_menus_count, items_per_page: @settings.dig('pagination', 'items_per_page'),
       first_page: @settings.dig('pagination', 'first_page'), pagination_path: ->(page) { user_custom_menus_path(page: page) } %>

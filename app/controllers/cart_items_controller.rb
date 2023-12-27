@@ -59,7 +59,7 @@ class CartItemsController < ApplicationController
   # およびCartItemモデルからの総アイテム数を計算します。
   def total_items_count(cart)
     # ユーザーに関連するCompletedMenuモデルのアイテム数を計算
-    completed_menus_count = CompletedMenu.where(user_id: current_user.id).count
+    completed_menus_count = CompletedMenu.where(user_id: current_user.id, is_completed: false).count
 
     # ユーザーのカートに関連するShoppingListMenuモデルのアイテム数を計算
     shopping_list_menus_count = ShoppingListMenu.where(shopping_list_id: cart.shopping_list&.id).count
