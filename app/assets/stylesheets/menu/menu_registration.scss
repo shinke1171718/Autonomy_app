@@ -35,7 +35,7 @@
   .menu-form-container{
     text-align: center;
     width: 60%;
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 700px) {
       width: 100%;
     }
 
@@ -69,7 +69,7 @@
     .name-form-field input,
     .menu-contents-field input,
     textarea{
-      width: 100%;
+      width: 95%;
       padding-top: 13px;
       padding-bottom: 13px;
       padding-left: 8px;
@@ -135,11 +135,11 @@
         .ingredient-quantity,
         .ingredient-unit{
           display: block;
-          border: none;
           padding: 10px;
           border: 1px solid #ccc;
           @media screen and (max-width: 400px) {
             width: 90%;
+            border-radius: 0px;
             border-bottom: 1px solid #ccc;
             border-right: none;
           }
@@ -155,6 +155,8 @@
 
         .ingredient-unit{
           width: 110px;
+          border: 1px solid #ccc;
+          background-color:#ffffff;
           pointer-events: none;
         }
 

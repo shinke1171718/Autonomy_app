@@ -2,39 +2,49 @@
 
 .new-session-container{
   @include form-container;
-
-  .session-title{
-    @include form-title;
+  height: 400px;
+  @media screen and (max-width: 1200px) {
+    width: 75%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 100%;
   }
 
-  .session-instructions{
-    @include form-instructions;
-  }
-
-  .session-input{
-    width: 33%;
-    @media screen and (max-width: 390px) {
-      width: 75%;
+    .session-title{
+      @include form-title;
     }
-  }
 
-  .session-field input{
-    @include field-form;
-  }
+    .session-instructions{
+      @include form-instructions;
+    }
 
-  .session-actions{
-    @include form-submit-button;
-  }
+    .session-input{
+      width: 33%;
+      @media screen and (max-width: 700px) {
+        width: 50%;
+      }
+    }
 
-  .session-actions input[type="submit"]{
-    @include form-submit-button-input;
-  }
+    .session-field input{
+      @include field-form;
+      // @media screen and (max-width: 700px) {
+      //   width: 100%;
+      // }
+    }
 
-  .session-link{
-    @include form-link;
-  }
+    .session-actions{
+      @include form-submit-button;
+    }
 
-  .session-link a {
-    text-decoration: none;
-  }
+    .session-actions input[type="submit"]{
+      @include form-submit-button-input;
+    }
+
+    .session-link{
+      @include form-link;
+    }
+
+    .session-link a {
+      text-decoration: none;
+    }
 }
