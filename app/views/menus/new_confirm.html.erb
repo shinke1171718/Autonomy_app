@@ -3,7 +3,7 @@
 
     <%= form_with model: @menu, url: user_menus_path(current_user), method: :post, local: true do |f| %>
       <%= render 'menu_confirm_details', f: f, menu: @menu, image_data_url: @image_data_url, encoded_image: @encoded_image,
-      image_content_type: @image_content_type, aggregated_ingredients: @aggregated_ingredients, button_text: "登録" %>
+      image_content_type: @image_content_type, ingredients: @menu.ingredients, button_text: "登録" %>
     <% end %>
 
 
