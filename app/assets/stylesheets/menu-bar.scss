@@ -4,7 +4,6 @@
   justify-content: space-between;
   padding: 30px;
 
-
   // ロゴのスタイル
   .menu-bar-left {
     display: flex;
@@ -148,4 +147,10 @@
   opacity: 0.8;
   cursor: pointer;
   z-index: 100;
+}
+
+.body-no-scroll {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
