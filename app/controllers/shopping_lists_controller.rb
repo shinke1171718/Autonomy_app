@@ -2,6 +2,7 @@ class ShoppingListsController < ApplicationController
   include IngredientsAggregator
 
   def index
+    binding.pry
     shopping_list = current_user.cart.shopping_list
 
     # ショッピングリストメニューを取得
