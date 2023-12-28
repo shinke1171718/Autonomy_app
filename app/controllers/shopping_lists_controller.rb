@@ -7,6 +7,11 @@ class ShoppingListsController < ApplicationController
     # ショッピングリストメニューを取得
     shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
 
+    # ShoppingListMenuが空の場合はroot_pathへリダイレクト
+    if shopping_list_menus.empty?
+      redirect_to root_path and return
+    end
+
     # メニューデータとカウントを取得
     @menus = shopping_list_menus.map(&:menu)
     @menu_item_counts = shopping_list_menus.each_with_object({}) do |slm, counts|
