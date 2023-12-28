@@ -158,7 +158,11 @@
           border: 1px solid #ccc;
           background-color:#ffffff;
           pointer-events: none;
+          @media screen and (max-width: 400px) {
+            width: 200px;
+          }
         }
+
 
         a {
           text-decoration: none;
