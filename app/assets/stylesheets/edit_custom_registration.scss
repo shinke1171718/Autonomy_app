@@ -14,7 +14,10 @@
 
   .registration-input{
     width: 50%;
-    @media screen and (max-width: 400px){
+    @media screen and (max-width: 1000px){
+      width: 70%;
+    }
+    @media screen and (max-width: 900px){
       width: 90%;
     }
 
@@ -32,6 +35,11 @@
 
   .registration-field input{
     @include field-form
+  }
+
+  .registration-link {
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .registration-actions{

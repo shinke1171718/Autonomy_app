@@ -5,7 +5,7 @@
   </div>
 
   <div class="registration-instructions">
-    <p>※パスワードの入力は必須ではありません。</p>
+    <p>登録内容は管理者および本人以外には公開されません。</p>
   </div>
 
   <div class="registration-input">
@@ -18,16 +18,8 @@
         <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
-      <div class="registration-field">
-        <%= f.password_field :current_password, autocomplete: "current_password", placeholder: "現在のパスワードを入力" %>
-      </div>
-
-      <div class="registration-field">
-        <%= f.password_field :password, autocomplete: "password", placeholder: "新しいパスワードを入力" %>
-      </div>
-
-      <div class="registration-field">
-        <%= f.password_field :password_confirmation, autocomplete: "password_confirmation", placeholder: "もう一度新しいパスワードを入力" %>
+      <div class="registration-link">
+        <%= link_to "パスワードを変更する", edit_password_user_custom_registration_path, class: "password-change-link" %>
       </div>
 
       <div class="registration-actions">
