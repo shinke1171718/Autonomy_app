@@ -1,4 +1,7 @@
-document.getElementById('next_step_button').addEventListener('submit', function(event) {
+document.addEventListener('submit', function(event) {
+  // イベントが発生したフォーム内の 'next_step_button' を探し、ない場合には処理を行わない。
+  let nextStepButton = event.target.querySelector('#next_step_button');
+  if (!nextStepButton) return;
 
   let minForm = 0;
   let maxForm = 14;
@@ -37,6 +40,9 @@ document.getElementById('next_step_button').addEventListener('submit', function(
 
 function validateAndHighlightInput(element ,sub_errorMessage, inputElement, event) {
   let menu_main_errorMessage = document.getElementById("main-menu-error");
+  console.log("きています。");
+  console.log(element);
+  console.log(inputElement);
   if (element.value === "" ) {
     event.preventDefault();
     menu_main_errorMessage.textContent = "⚠️未入力があります。";

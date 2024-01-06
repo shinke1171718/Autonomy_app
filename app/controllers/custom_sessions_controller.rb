@@ -5,8 +5,8 @@ class CustomSessionsController < ApplicationController
   end
 
   def create
-    #userのidとパスワードを格納する
-    user = User.find_by(name: params[:name])
+    #userのemailとパスワードを格納する
+    user = User.find_by(email: params[:email])
     #userとパスワードが一致するか確認
     if user && user.valid_password?(params[:password])
       #セッションIDを払い出す
@@ -18,9 +18,9 @@ class CustomSessionsController < ApplicationController
       redirect_to root_path
     else
       #ログインできませんでしたとアナウンス
-      flash[:notice] = "※入力した情報が違います。"
+      flash[:error] = "※ユーザー名もしくはパスワードが間違っています。"
       #合わない場合にはsessions#newへ戻る
-      render 'new'
+      redirect_to root_path
     end
   end
 

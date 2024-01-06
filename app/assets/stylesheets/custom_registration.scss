@@ -7,23 +7,38 @@
     @include form-title;
   }
 
-  .registration-field input {
-    @include field-form;
+  .registration-instructions{
+    @include form-instructions;
   }
 
-  .registration-actions {
-    @include form-submit-button;
-  }
+  .registration-input{
+    width: 40%;
+    @media screen and (max-width: 1300px) {
+      width: 65%;
+    }
+    @media screen and (max-width: 850px) {
+      width: 100%;
+    }
 
-  .registration-actions input[type="submit"] {
-    @include form-submit-button-input;
-  }
+    .registration-field input {
+      @include field-form;
+    }
 
-  .registration-link{
-    @include form-link;
-  }
+    .registration-actions {
+      @include form-submit-button;
+    }
 
-  .registration-link a {
-    text-decoration: none;
+    .registration-actions input[type="submit"] {
+      @include form-submit-button-input;
+    }
+
+    .registration-link{
+      @include form-link;
+      margin-bottom: 30px;
+    }
+
+    .registration-link a {
+      text-decoration: none;
+    }
   }
 }
