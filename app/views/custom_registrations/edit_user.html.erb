@@ -11,11 +11,11 @@
   <div class="registration-input">
     <%= form_with model: current_user, url: user_info_update_custom_registration_path, local: true, method: :patch do |f| %>
       <div class="registration-field">
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ユーザー名" %>
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ユーザー名", maxlength: 8 %>
       </div>
 
       <div class="registration-field">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", maxlength: 254 %>
       </div>
 
       <div class="registration-link">

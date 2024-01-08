@@ -11,8 +11,12 @@ document.addEventListener('submit', function(event) {
   // 名前とメールアドレスの入力フィールドを取得
   const nameInput = document.querySelector('input[name="user[name]"]');
   const emailInput = document.querySelector('input[name="user[email]"]');
+
   // 入力バリデーションを実行し、失敗した場合はフォームの送信を阻止
-  if (!validateInput(nameInput) || !validateInput(emailInput)) {
+  let isNameValid = validateInput(nameInput);
+  let isEmailValid = validateInput(emailInput);
+  // 入力バリデーションを実行し、失敗した場合はフォームの送信を阻止
+  if (!isNameValid && !isEmailValid) {
     event.preventDefault();
     return;
   }
@@ -44,6 +48,7 @@ function validateInput(input) {
     createErrorMessage(input, "⚠️入力してください。");
     return false;
   }
+  input.style.backgroundColor = "";
   // 入力値が有効な場合、trueを返す
   return true;
 }
