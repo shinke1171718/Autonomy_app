@@ -9,9 +9,9 @@
   </div>
 
   <div class="registration-input">
-    <%= form_with model: current_user, url: update_user_custom_registration_path, local: true, method: :patch do |f| %>
+    <%= form_with model: current_user, url: user_info_update_custom_registration_path, local: true, method: :patch do |f| %>
       <div class="registration-field">
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ユーザー名" %>
       </div>
 
       <div class="registration-field">

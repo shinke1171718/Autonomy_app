@@ -1,26 +1,30 @@
 class CustomSessionsController < ApplicationController
+  include FlashAndRedirect
   skip_before_action :authenticate_user!
 
   def new
   end
 
   def create
-    #userのidとパスワードを格納する
-    user = User.find_by(name: params[:name])
+    if params[:email].blank? || params[:password].blank?
+      set_flash_and_redirect(:error, "未入力があります。", root_path)
+      return
+    end
+
+    #userのemailとパスワードを格納する
+    user = User.find_by(email: params[:email])
     #userとパスワードが一致するか確認
     if user && user.valid_password?(params[:password])
       #セッションIDを払い出す
       session[:user_id] = user.id
       # current_userに値を設定する
       sign_in(user)
-      flash[:notice] = "ログインしました。"
       #もし一致する場合にはroot_pathへ移動
-      redirect_to root_path
+      set_flash_and_redirect(:notice, "ログインしました。", root_path)
     else
       #ログインできませんでしたとアナウンス
-      flash[:notice] = "※入力した情報が違います。"
       #合わない場合にはsessions#newへ戻る
-      render 'new'
+      set_flash_and_redirect(:error, "※ユーザー名もしくはパスワードが間違っています。", root_path)
     end
   end
 
@@ -32,8 +36,7 @@ class CustomSessionsController < ApplicationController
     #セッションの完全な処理
     reset_session
     #sessions#newへ戻る
-    flash[:notice] = "※ログアウトしました。"
     #一時的にsigninの画面にパスを出しています。
-    redirect_to new_user_custom_session_path
+    set_flash_and_redirect(:notice, "※ログアウトしました。", new_user_custom_session_path)
   end
 end

@@ -1,23 +1,23 @@
 <div class="new-session-container">
 
   <div class="session-title">
-    <h1>Sign in</h1>
+    <h1>ログイン</h1>
   </div>
 
   <div class="session-instructions">
-    <p>※未入力があるとLog inができません。</p>
+    <p>※未入力があるとログインができません。</p>
   </div>
 
   <div class="session-input">
     <%= form_with url: user_custom_session_path, local: true, data: { turbo: false } do |f| %>
       <div class="session-field">
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ニックネーム" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", maxlength: 254 %>
       </div>
       <div class="session-field">
-        <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード" %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード（最低8桁の英数字を含む）", maxlength: 20 %>
       </div>
       <div class="session-actions">
-        <%= f.submit "Log in" %>
+        <%= f.submit "ログイン" %>
       </div>
     <% end %>
   </div>
