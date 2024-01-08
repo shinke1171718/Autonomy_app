@@ -15,6 +15,7 @@ document.addEventListener('submit', function(event) {
   // 入力バリデーションを実行し、失敗した場合はフォームの送信を阻止
   let isNameValid = validateInput(nameInput);
   let isEmailValid = validateInput(emailInput);
+
   // 入力バリデーションを実行し、失敗した場合はフォームの送信を阻止
   if (!isNameValid && !isEmailValid) {
     event.preventDefault();
@@ -25,10 +26,10 @@ document.addEventListener('submit', function(event) {
   event.preventDefault();
   checkEmailAvailability(emailInput.value)
     .then(isAvailable => {
-      if (isAvailable) {
-        // メールアドレスが重複していない場合、フォームを送信
+      if (isAvailable && isNameValid && isEmailValid) {
+        // メールアドレスが重複しておらず、他のバリデーションも通過した場合、フォームを送信
         event.target.submit();
-      } else {
+      } else if (!isAvailable) {
         // メールアドレスが重複している場合、エラーメッセージを表示
         createErrorMessage(emailInput, "⚠️メールアドレスはすでに使用されています。");
       }
