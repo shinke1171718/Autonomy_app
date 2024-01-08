@@ -23,11 +23,14 @@
       </div>
 
       <div class="registration-actions">
-        <%= f.submit "更新" %>
+        <%= f.submit "更新", id: "update-user-submit" %>
       </div>
+
     <% end %>
     <div class="registration-back-button">
       <%= button_to "戻る", root_path, class: "back-button", method: :get %>
     </div>
   </div>
 </div>
+
+<%= javascript_include_tag 'user_validation' %>

@@ -64,6 +64,12 @@ class CustomRegistrationsController < ApplicationController
     end
   end
 
+  def check_email
+    email = params[:email]
+    is_taken = User.where.not(id: current_user.id).exists?(email: email)
+    render json: { is_taken: is_taken }
+  end
+
   private
 
   # ユーザー情報関連のパラメータが提供されているか確認

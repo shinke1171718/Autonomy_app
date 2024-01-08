@@ -40,9 +40,7 @@ document.addEventListener('submit', function(event) {
 
 function validateAndHighlightInput(element ,sub_errorMessage, inputElement, event) {
   let menu_main_errorMessage = document.getElementById("main-menu-error");
-  console.log("きています。");
-  console.log(element);
-  console.log(inputElement);
+
   if (element.value === "" ) {
     event.preventDefault();
     menu_main_errorMessage.textContent = "⚠️未入力があります。";

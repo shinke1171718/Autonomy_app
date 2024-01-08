@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   post '/cart_items/:id/increment', to: 'cart_items#increment', as: 'cart_item_increment'
   # カートアイテムの数量を減らす
   post '/cart_items/:id/decrement', to: 'cart_items#decrement', as: 'cart_item_decrement'
-
   post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
 
   resources :completed_menus do
@@ -40,7 +39,9 @@ Rails.application.routes.draw do
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
     get 'registrations/edit_user', to: 'custom_registrations#edit_user', as: :edit_user_custom_registration
     get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
-    # patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
+
+    # ユーザー情報編集時にメールアドレスの重複チェック機能をAjaxで追加するためのルーチング
+    post 'registrations/check_email', to: 'custom_registrations#check_email'
 
     # ユーザー情報更新用のルーティング
     patch 'registrations/update_user_info', to: 'custom_registrations#user_info_update', as: :user_info_update_custom_registration
