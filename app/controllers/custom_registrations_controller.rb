@@ -1,4 +1,5 @@
 class CustomRegistrationsController < ApplicationController
+  include FlashAndRedirect
   skip_before_action :authenticate_user!, only: [:new, :create]
 
   def new
@@ -7,16 +8,19 @@ class CustomRegistrationsController < ApplicationController
 
   def create
     #user情報を格納する
-    user = User.new(new_registration_params)
+    user = User.new(registration_params)
+
+    if user_info_missing? && password_info_missing?
+      set_flash_and_redirect(:error, "未入力があります。", new_user_custom_registration_path)
+      return
+    end
 
     if user.save
       session[:user_id] = user.id
       sign_in(user)
-      flash[:notice] = "ログインしました。"
-      redirect_to root_path
+      set_flash_and_redirect(:notice, "ログインしました。", root_path)
     else
-      set_error_flash(user)
-      redirect_to new_user_custom_registration_path
+      set_flash_and_redirect(:error, set_validation_error(user), new_user_custom_registration_path)
     end
   end
 
@@ -27,46 +31,35 @@ class CustomRegistrationsController < ApplicationController
   end
 
   def user_info_update
-    # フィールドの未入力チェックはコントローラーレベルで行う。
-    # モデルのバリデーションでは、フィールドが空の場合のチェックが難しいため、
-    # 未入力の状態で適切なエラーメッセージを提供するためにはコントローラーでのチェックが必要。
     if user_info_missing?
-      flash[:error] = "未入力があります。"
-      redirect_to edit_user_custom_registration_path
+      set_flash_and_redirect(:error, "未入力があります。", edit_user_custom_registration_path)
       return
     end
 
     # ユーザー情報の更新
     if current_user.update(registration_params)
-      flash[:notice] = "ユーザー情報を更新しました。"
-      redirect_to edit_user_custom_registration_path
+      set_flash_and_redirect(:notice, "ユーザー情報を更新しました。", edit_user_custom_registration_path)
     else
-      set_error_flash(current_user)
-      redirect_to edit_user_custom_registration_path
+      set_flash_and_redirect(:error, set_validation_error(current_user), edit_user_custom_registration_path)
       return
     end
   end
 
   def password_info_update
-    # ser_info_updateアクションの「if user_info_missing?」での説明と同様
     if password_info_missing?
-      flash[:error] = "未入力があります。"
-      redirect_to edit_password_user_custom_registration_path
+      set_flash_and_redirect(:error, "未入力があります。", edit_password_user_custom_registration_path)
       return
     end
 
     if !current_user.valid_password?(params[:user][:current_password])
-      errors.add(:current_password, '現在のパスワードが正しくありません')
-      redirect_to edit_password_user_custom_registration_path
+      set_flash_and_redirect(:error, "現在のパスワードが正しくありません。", edit_password_user_custom_registration_path)
       return
     end
 
     if current_user.update(registration_params)
-      flash[:notice] = "パスワードを更新しました。再度ログインをお願いします。"
-      redirect_to root_path
+      set_flash_and_redirect(:notice, "パスワードを更新しました。再度ログインをお願いします。", root_path)
     else
-      set_error_flash(current_user)
-      redirect_to edit_password_user_custom_registration_path
+      set_flash_and_redirect(:error, set_validation_error(current_user), edit_password_user_custom_registration_path)
       return
     end
   end
@@ -74,11 +67,14 @@ class CustomRegistrationsController < ApplicationController
   private
 
   # ユーザー情報関連のパラメータが提供されているか確認
+  # フィールドの未入力チェックはコントローラーレベルで行う。
+  # モデルのバリデーションでは、フィールドが空の場合のチェックができないため、
+  # 未入力の状態で適切なエラーメッセージを提供するためにはコントローラーでのチェックが必要。
   def user_info_missing?
     params[:user][:name].blank? || params[:user][:email].blank?
   end
 
-  # パスワード関連のパラメータが提供されているか確認
+  #「if user_info_missing?」での説明と同様
   def password_info_missing?
     params[:user][:current_password].blank? ||
     params[:user][:password].blank? ||
@@ -89,7 +85,7 @@ class CustomRegistrationsController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password)
   end
 
-  def set_error_flash(user)
-    flash[:error] = user.errors.full_messages.first.sub(/^.*\s/, '')
+  def set_validation_error(user)
+    user.errors.full_messages.first.sub(/^.*\s/, '')
   end
 end
