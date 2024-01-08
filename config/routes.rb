@@ -38,9 +38,14 @@ Rails.application.routes.draw do
     get 'users/session', to: 'custom_sessions#new', as: :new_user_custom_session
     post 'users/session', to: 'custom_sessions#create', as: :user_custom_session
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
-    get 'registrations/edit', to: 'custom_registrations#edit', as: :edit_user_custom_registration
+    get 'registrations/edit_user', to: 'custom_registrations#edit_user', as: :edit_user_custom_registration
     get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
-    patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
+    # patch 'registrations/update', to: 'custom_registrations#update', as: :update_user_custom_registration
+
+    # ユーザー情報更新用のルーティング
+    patch 'registrations/update_user_info', to: 'custom_registrations#user_info_update', as: :user_info_update_custom_registration
+    # パスワード情報更新用のルーティング
+    patch 'registrations/update_password_info', to: 'custom_registrations#password_info_update', as: :password_info_update_custom_registration
 
     resources :users do
       resources :menus do
