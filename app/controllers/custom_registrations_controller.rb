@@ -70,6 +70,12 @@ class CustomRegistrationsController < ApplicationController
     render json: { is_taken: is_taken }
   end
 
+  # パスワード更新画面で入力されたパスワードがあっているか検証
+  def validate_current_password
+    is_valid = current_user.valid_password?(params[:current_password])
+    render json: { is_valid: is_valid }
+  end
+
   private
 
   # ユーザー情報関連のパラメータが提供されているか確認

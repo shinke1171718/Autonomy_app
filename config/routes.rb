@@ -42,6 +42,8 @@ Rails.application.routes.draw do
 
     # ユーザー情報編集時にメールアドレスの重複チェック機能をAjaxで追加するためのルーチング
     post 'registrations/check_email', to: 'custom_registrations#check_email'
+    # ユーザーの現在のパスワードが正しいかを検証するためのAjaxリクエストを処理するためのルーティング
+    post 'registrations/validate_current_password', to: 'custom_registrations#validate_current_password'
 
     # ユーザー情報更新用のルーティング
     patch 'registrations/update_user_info', to: 'custom_registrations#user_info_update', as: :user_info_update_custom_registration
