@@ -10,6 +10,8 @@
 
   <div class="registration-input">
     <%= form_with url: user_custom_registration_path, local: true do |f| %>
+      <%= f.hidden_field :new_record, value: true %>
+
       <div class="registration-field">
         <%= f.text_field :name, name: 'user[name]', autofocus: true, autocomplete: "name", placeholder: "ユーザー名", maxlength: 8 %>
       </div>
@@ -19,11 +21,11 @@
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（最低8桁の英数字を含む）", maxlength: 20 %>
+        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（最低8桁の英数字を含む）", maxlength: 100 %>
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード", maxlength: 20 %>
+        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード", maxlength: 100 %>
       </div>
 
       <div class="registration-actions">
