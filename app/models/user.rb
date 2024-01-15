@@ -17,7 +17,7 @@ class User < ApplicationRecord
   # パスワードが変更された場合、または新規作成の場合に検証する
   validates :password, length: { minimum: 8, too_short: "パスワードは最低%{count}文字必要です。" }, if: :password_change_or_new_record?
   validates :password, confirmation: { message: "新しいパスワードと確認用パスワードが一致しません。" },
-    format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+\z/, message: "パスワードは8文字以上、大小英字、数字、特殊文字を含んでください。" }, if: :password_change_or_new_record?
+    format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+\z/, message: "パスワードは8文字以上、大小英字、数字、記号を含んでください。" }, if: :password_change_or_new_record?
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

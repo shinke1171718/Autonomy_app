@@ -1,104 +1,84 @@
-document.addEventListener('submit', function(event) {
-  let updatePasswordSubmitButton = event.target.querySelector('#update-password-submit');
-  if (!updatePasswordSubmitButton) return;
-
-  // フォームのバリデーション状態を追跡する変数
-  let PasswordIsValid = true;
-
-  clearErrorMessages();
-
+document.addEventListener('turbo:load', function() {
+  let validationTimeout; // タイマーを格納する変数
   const currentPasswordInput = document.querySelector('input[name="user[current_password]"]');
   const newPasswordInput = document.querySelector('input[name="user[password]"]');
   const newPasswordConfirmationInput = document.querySelector('input[name="user[password_confirmation]"]');
 
-  // 未入力のフィールドがあるか確認し、あればエラーメッセージを表示
-  [currentPasswordInput, newPasswordInput, newPasswordConfirmationInput].forEach(input => {
-    if (!input.value.trim()) {
-      createErrorMessage(input, "⚠️入力してください。");
-      input.style.backgroundColor = "rgb(255, 184, 184)";
+  // 現在のパスワードの検証
+  currentPasswordInput.addEventListener('input', function() {
+    // 前のタイマーをクリア
+    clearTimeout(validationTimeout);
+
+     // 新しいタイマーを設定
+    validationTimeout = setTimeout(function() {
+      validateInput(currentPasswordInput)
+    }, 500);
+  });
+
+  // 新しいパスワードの検証
+  newPasswordInput.addEventListener('input', function() {
+    clearTimeout(validationTimeout);
+
+    validationTimeout = setTimeout(function() {
+      validateInput(newPasswordInput)
+    }, 500);
+  });
+
+  // 確認用パスワードの検証
+  newPasswordConfirmationInput.addEventListener('input', function() {
+    clearTimeout(validationTimeout);
+
+    validationTimeout = setTimeout(function() {
+      validatePasswordConfirmation(newPasswordConfirmationInput, newPasswordInput)
+    }, 500);
+  });
+
+  document.addEventListener('submit', function(event) {
+    // すべてのフォームフィールドに対してバリデーションを実行
+    validateInput(currentPasswordInput);
+    validateInput(newPasswordInput);
+    validatePasswordConfirmation(newPasswordConfirmationInput, newPasswordInput)
+
+    // すべてのエラーメッセージ要素を取得
+    const errorMessages = document.querySelectorAll('.error-message');
+    let hasError = false;
+
+    // エラーメッセージがあるかどうかをチェック
+    errorMessages.forEach(function(errorMessage) {
+      if (errorMessage.textContent.trim() !== '') {
+        hasError = true;
+      }
+    });
+
+    // エラーがある場合は送信を防止
+    if (hasError) {
       event.preventDefault();
     }
   });
-
-  // currentPasswordInputにエラーのスタイルが適用されている場合、現在のパスワードの検証をスキップ
-  if (currentPasswordInput.style.backgroundColor === "rgb(255, 184, 184)") {
-    PasswordIsValid = false;
-  }
-
-  // 現在のパスワードの検証
-  if (PasswordIsValid) {
-    validateCurrentPassword(currentPasswordInput, event);
-  }
-
-  // 新しいパスワードの長さとフォーマットを検証
-  if (newPasswordInput.value.trim() !== '' && !isPasswordValid(newPasswordInput.value)) {
-    createErrorMessage(newPasswordInput, "⚠️8文字以上、大小英字、数字、特殊文字を含んでください。");
-    newPasswordInput.style.backgroundColor = "rgb(255, 184, 184)";
-    event.preventDefault();
-    PasswordIsValid = false;
-  }
-
-  // 新しいパスワードが未入力の場合、確認用パスワードにエラーメッセージを表示
-  if (!newPasswordInput.value.trim() && newPasswordConfirmationInput.value.trim()) {
-    createErrorMessage(newPasswordConfirmationInput, "⚠️新しいパスワードと内容が異なります。");
-    newPasswordConfirmationInput.style.backgroundColor = "rgb(255, 184, 184)";
-    event.preventDefault();
-  }
-
-  // 「newPasswordInput」または「newPasswordConfirmationInput」のいずれかがすでにエラーの場合は検証をスキップ
-  if ([newPasswordInput, newPasswordConfirmationInput].some(input => input.style.backgroundColor === "rgb(255, 184, 184)")) return;
-
-  // 新しいパスワードと確認用パスワードが一致するか検証
-  if (newPasswordInput.value !== newPasswordConfirmationInput.value) {
-    createErrorMessage(newPasswordConfirmationInput, "⚠️新しいパスワードと一致しません。");
-    newPasswordConfirmationInput.style.backgroundColor = "rgb(255, 184, 184)";
-    event.preventDefault();
-  }
 });
 
-function clearErrorMessages() {
-  document.querySelectorAll('.error-message').forEach(element => {
-    element.remove();
-  });
-  document.querySelectorAll('input').forEach(input => {
-    input.style.backgroundColor = "";
-  });
+
+
+
+function clearErrorMessages(input) {
+  // inputに関連するエラーメッセージ要素を探し、それらを削除
+  // input要素にあるerror-message要素を取得
+  const errorMessage = input.parentNode.querySelector('.error-message');
+  errorMessage.textContent = '';
+
+  // 対象の入力フィールドの背景色をリセット
+  input.style.backgroundColor = "";
 }
+
 
 function createErrorMessage(input, message) {
-  const errorMessage = document.createElement('div');
-  errorMessage.textContent = message;
-  errorMessage.classList.add('error-message');
-  errorMessage.style.color = 'red';
-  input.parentNode.insertBefore(errorMessage, input);
-}
-
-function validateCurrentPassword(input, callback) {
-  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  const url = '/registrations/validate_current_password';
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': token
-    },
-    body: JSON.stringify({ current_password: input.value })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (!data.is_valid) {
-      createErrorMessage(input, "⚠️現在のパスワードが間違っています。");
-      input.style.backgroundColor = "rgb(255, 184, 184)";
-      event.preventDefault();
-    }
-  })
-  .catch(error => {
-    // エラー処理
-    event.preventDefault();
-    formIsValid = false;
-  });
+  // inputの兄弟要素の中から最初のerror-messageクラスを持つ要素を見つける
+  const errorDiv = input.parentNode.querySelector('.error-message');
+  if (errorDiv) {
+    // エラーメッセージを設定
+    errorDiv.textContent = message;
+    errorDiv.style.color = 'red';
+  }
 }
 
 function isPasswordValid(password) {
@@ -110,4 +90,29 @@ function isPasswordValid(password) {
   // 次に正規表現を使ってパスワードの形式を検証
   const regex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+$/;
   return regex.test(password);
+}
+
+function validateInput(input) {
+  clearErrorMessages(input); // このフィールドの既存のエラーメッセージをクリア
+
+  if (!input.value.trim()) {
+    createErrorMessage(input, "⚠️入力してください。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  } else if (!isPasswordValid(input.value)) {
+    createErrorMessage(input, "⚠️8文字以上、大小英字、数字、記号を含んでください。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  }
+}
+
+// 新しいパスワードと確認用パスワードの検証関数
+function validatePasswordConfirmation(input, newPasswordInput) {
+  clearErrorMessages(input);
+
+  if (!input.value.trim()) {
+    createErrorMessage(input, "⚠️入力してください。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  } else if (newPasswordInput.value !== input.value) {
+    createErrorMessage(input, "⚠️新しいパスワードと一致しません。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  }
 }
