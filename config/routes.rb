@@ -37,16 +37,11 @@ Rails.application.routes.draw do
     get 'users/session', to: 'custom_sessions#new', as: :new_user_custom_session
     post 'users/session', to: 'custom_sessions#create', as: :user_custom_session
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
-    get 'registrations/edit_user', to: 'custom_registrations#edit_user', as: :edit_user_custom_registration
+    get 'registrations/edit_email', to: 'custom_registrations#edit_email', as: :edit_email_custom_registration
     get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
 
-    # ユーザー情報編集時にメールアドレスの重複チェック機能をAjaxで追加するためのルーチング
-    post 'registrations/check_email', to: 'custom_registrations#check_email'
-    # ユーザーの現在のパスワードが正しいかを検証するためのAjaxリクエストを処理するためのルーティング
-    post 'registrations/validate_current_password', to: 'custom_registrations#validate_current_password'
-
     # ユーザー情報更新用のルーティング
-    patch 'registrations/update_user_info', to: 'custom_registrations#user_info_update', as: :user_info_update_custom_registration
+    patch 'registrations/email_update', to: 'custom_registrations#email_update', as: :email_update_custom_registration
     # パスワード情報更新用のルーティング
     patch 'registrations/update_password_info', to: 'custom_registrations#password_info_update', as: :password_info_update_custom_registration
 

@@ -1,7 +1,7 @@
 <div class="edit-registration-container">
 
   <div class="registration-title">
-    <h1>ユーザー情報更新</h1>
+    <h1>メールアドレス更新</h1>
   </div>
 
   <div class="registration-instructions">
@@ -9,13 +9,12 @@
   </div>
 
   <div class="registration-input">
-    <%= form_with model: current_user, url: user_info_update_custom_registration_path, local: true, method: :patch do |f| %>
-      <div class="registration-field">
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "ユーザー名", maxlength: 8 %>
-      </div>
+    <%= form_with model: current_user, url: email_update_custom_registration_path, local: true, method: :patch do |f| %>
+      <%= f.hidden_field :email_change, value: true %>
 
       <div class="registration-field">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", maxlength: 254 %>
+        <div class="error-message"></div>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-link">
@@ -33,4 +32,4 @@
   </div>
 </div>
 
-<%= javascript_include_tag 'user_validation' %>
+<%= javascript_include_tag 'email_validation' %>

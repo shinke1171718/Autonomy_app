@@ -30,17 +30,17 @@ class CustomRegistrationsController < ApplicationController
   def edit_password
   end
 
-  def user_info_update
-    if user_info_missing?
-      set_flash_and_redirect(:error, "未入力があります。", edit_user_custom_registration_path)
+  def email_update
+    if params[:user][:email].blank?
+      set_flash_and_redirect(:error, "未入力があります。", edit_email_custom_registration_path)
       return
     end
 
     # ユーザー情報の更新
     if current_user.update(registration_params)
-      set_flash_and_redirect(:notice, "ユーザー情報を更新しました。", edit_user_custom_registration_path)
+      set_flash_and_redirect(:notice, "ユーザー情報を更新しました。", edit_email_custom_registration_path)
     else
-      set_flash_and_redirect(:error, set_validation_error(current_user), edit_user_custom_registration_path)
+      set_flash_and_redirect(:error, set_validation_error(current_user), edit_email_custom_registration_path)
       return
     end
   end
@@ -64,18 +64,6 @@ class CustomRegistrationsController < ApplicationController
     end
   end
 
-  def check_email
-    email = params[:email]
-    is_taken = User.where.not(id: current_user.id).exists?(email: email)
-    render json: { is_taken: is_taken }
-  end
-
-  # パスワード更新画面で入力されたパスワードがあっているか検証
-  def validate_current_password
-    is_valid = current_user.valid_password?(params[:current_password])
-    render json: { is_valid: is_valid }
-  end
-
   private
 
   # ユーザー情報関連のパラメータが提供されているか確認
@@ -94,7 +82,7 @@ class CustomRegistrationsController < ApplicationController
   end
 
   def registration_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :email_change, :password_change)
   end
 
   def set_validation_error(user)
