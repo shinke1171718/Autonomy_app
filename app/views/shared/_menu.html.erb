@@ -19,7 +19,7 @@
       <% end %>
 
       <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "menu-link" %>
-      <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "menu-link" %>
+      <%= link_to "ユーザー情報", edit_email_custom_registration_path(current_user.id), class: "menu-link" %>
       <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "menu-link" %>
     </div>
     <div class="mobile-menu-button">
@@ -46,7 +46,7 @@
   <% end %>
 
   <%= link_to "カレンダー", user_my_page_path(current_user.id), class: "mobile-menu-link" %>
-  <%= link_to "ユーザー情報", edit_user_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
+  <%= link_to "ユーザー情報", edit_email_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
   <%= link_to "ログアウト", destroy_user_custom_session_path, method: :get, class: "mobile-menu-link" %>
 </div>
 
