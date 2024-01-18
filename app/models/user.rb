@@ -19,7 +19,7 @@ class User < ApplicationRecord
     format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+\z/, message: "パスワードは8文字以上、大小英字、数字、記号を含んでください。" }, if: :password_change_or_new_record?
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable
+         :recoverable, :rememberable, :confirmable
   attr_accessor :current_password, :user_info_change, :password_change, :new_record, :email_change
 
   has_many :menu_users, dependent: :destroy

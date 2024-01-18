@@ -81,3 +81,6 @@ gem 'rack-cors'
 
 # HerokuにデプロイされたアプリケーションがGoogle Cloud Storageと連携して動作するよう設定
 gem "google-cloud-storage", require: false
+
+# 環境変数を管理するためのgem
+gem 'dotenv-rails'

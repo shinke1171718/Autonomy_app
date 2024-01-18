@@ -1,0 +1,2 @@
+module CustomConfirmationsHelper
+end
