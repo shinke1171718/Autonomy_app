@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   devise_scope :user do
+    get 'users/confirmation/custom_confirm', to: 'custom_confirmations#custom_confirm', as: :custom_user_confirmation
     get 'users/registration', to: 'custom_registrations#new', as: :new_user_custom_registration
     post 'users/registration', to: 'custom_registrations#create', as: :user_custom_registration
     get 'users/session', to: 'custom_sessions#new', as: :new_user_custom_session

@@ -101,6 +101,10 @@ GEM
       warden (~> 1.2.3)
     digest-crc (0.6.5)
       rake (>= 12.0.0, < 14.0.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.12.0)
     faraday (2.8.1)
       base64
@@ -315,6 +319,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  dotenv-rails
   google-cloud-storage
   image_processing
   importmap-rails

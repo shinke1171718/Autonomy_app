@@ -16,9 +16,7 @@ class CustomRegistrationsController < ApplicationController
     end
 
     if user.save
-      session[:user_id] = user.id
-      sign_in(user)
-      set_flash_and_redirect(:notice, "ログインしました。", root_path)
+      set_flash_and_redirect(:notice, "登録したメールアドレスに確認メールを送信しました。", root_path)
     else
       set_flash_and_redirect(:error, set_validation_error(user), new_user_custom_registration_path)
     end

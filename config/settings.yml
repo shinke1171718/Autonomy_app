@@ -11,3 +11,6 @@ limits:
   min_serving_size: 1
   default_serving_size: 1
   default_max_serving_size: 35
+
+confirmation:
+  token_validity_hours: 24
