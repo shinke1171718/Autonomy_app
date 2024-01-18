@@ -9,7 +9,7 @@ class CustomConfirmationsController < ApplicationController
     token_validity = @settings.dig('confirmation', 'token_validity_hours').hours
 
     # ユーザーが期限切れで削除されている、もしくは現在時刻が確認トークンの期限を過ぎている場合
-    if user.nil? || user.confirmation_sent_at <= 1.minute.ago
+    if user.nil? || user.confirmation_sent_at <= token_validity.ago
       flash[:error] = "無効な認証リンクです。"
       redirect_to root_path
       return
