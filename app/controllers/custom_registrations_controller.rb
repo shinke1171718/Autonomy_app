@@ -16,7 +16,7 @@ class CustomRegistrationsController < ApplicationController
     end
 
     if user.save
-      set_flash_and_redirect(:notice, "登録したメールアドレスに確認メールを送信しました。", root_path)
+      redirect_to show_resend_confirmation_form_path(user_id: user.id)
     else
       set_flash_and_redirect(:error, set_validation_error(user), new_user_custom_registration_path)
     end

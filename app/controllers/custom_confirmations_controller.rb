@@ -1,5 +1,19 @@
 class CustomConfirmationsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:custom_confirm]
+  skip_before_action :authenticate_user!, only: [:custom_confirm, :show_resend_confirmation_form]
+
+  def show_resend_confirmation_form
+    # user_idが送信された場合の処理
+    if params[:user_id].present?
+      user = User.find_by(id: params[:user_id])
+      @user_email = user.email
+
+    # user_idが送信されていない場合の処理
+    else
+      redirect_to root_path
+    end
+
+
+  end
 
   def custom_confirm
     # confirmation_tokenを使ってユーザーを検索
