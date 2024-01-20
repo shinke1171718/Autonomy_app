@@ -1,0 +1,37 @@
+<div class="resend-registration-container">
+
+  <div class="resend-registration-message">
+    <h1>確認メールを送付完了</h1>
+  </div>
+
+  <div class="resend-registration-email">
+    <p>登録されたメールアドレス<br>
+    <%= @user_email %></p>
+  </div>
+
+  <div class="resend-registration-explanation">
+    <p>
+      メールに記載されたリンクへアクセスし、<br>
+      認証を完了してください。
+    </p>
+  </div>
+
+  <div class="resend-registration-instruction">
+    <p>※URLの有効期限は24時間です</p>
+  </div>
+
+  <div class="resend-registration-sub-explanation">
+
+    <div class="resend-registration-sub-explanation-title">
+      <p>メールを確認できない場合</p>
+    </div>
+
+    <p>
+      ・迷惑メールフォルダに入っていないか<br>
+      ・メールアドレスに入力の誤りがないか<br>
+    </p>
+    <p>※メールアドレスに誤りがあった場合は<br>
+    <%= link_to '（再登録してください）', new_user_custom_registration_path %></p>
+  </div>
+
+</div>
