@@ -13,19 +13,19 @@
       <%= f.hidden_field :new_record, value: true %>
 
       <div class="registration-field">
-        <%= f.text_field :name, name: 'user[name]', autofocus: true, autocomplete: "name", placeholder: "ユーザー名", maxlength: 8 %>
+        <%= f.text_field :name, name: 'user[name]', autofocus: true, autocomplete: "name", placeholder: "ユーザー名（2〜15文字、英数字）" %>
       </div>
 
       <div class="registration-field">
-        <%= f.email_field :email, name: 'user[email]', autofocus: true, autocomplete: "email", placeholder: "メールアドレス", maxlength: 254 %>
+        <%= f.email_field :email, name: 'user[email]', autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（最低8桁の英数字を含む）", maxlength: 100 %>
+        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（8文字以上、英数記号含む）" %>
       </div>
 
       <div class="registration-field">
-        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード", maxlength: 100 %>
+        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード" %>
       </div>
 
       <div class="registration-actions">
