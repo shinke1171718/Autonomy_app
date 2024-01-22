@@ -36,6 +36,9 @@ class CustomConfirmationsController < ApplicationController
       user.confirmation_token = nil
 
       # 確認メール送信をスキップ
+      user.skip_confirmation_notification!
+
+      # 確認プロセスの手動実行
       user.skip_reconfirmation!
 
       user.save
