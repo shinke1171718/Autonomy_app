@@ -45,9 +45,8 @@ class CustomRegistrationsController < ApplicationController
     end
 
     # ユーザー情報の更新
+    # 新しいメールアドレスに確認メールを送信
     if current_user.update(registration_params)
-      # 新しいメールアドレスに確認メールを送信
-      current_user.send_reconfirmation_instructions
       set_flash_and_redirect(:notice, "メールアドレス更新の確認メールを送信しました。", edit_email_custom_registration_path)
     else
       set_flash_and_redirect(:error, set_validation_error(current_user), edit_email_custom_registration_path)
