@@ -29,6 +29,22 @@ class CustomConfirmationsController < ApplicationController
       return
     end
 
+    # メールアドレス更新の場合
+    if user.unconfirmed_email.present?
+      user.email = user.unconfirmed_email
+      user.unconfirmed_email = nil
+      user.confirmation_token = nil
+
+      # 確認メール送信をスキップ
+      user.skip_reconfirmation!
+
+      user.save
+
+      flash[:notice] = "メールアドレスが更新されました。"
+      redirect_to edit_email_custom_registration_path
+      return
+    end
+
     # ユーザーが既に認証済みの場合
     if user.confirmed?
       flash[:notice] = "すでに認証は完了しています。ログインしてください。"

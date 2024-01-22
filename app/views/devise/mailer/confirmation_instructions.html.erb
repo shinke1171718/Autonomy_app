@@ -2,12 +2,14 @@
 
 <p>この度は、メールアドレスのご本人確認をお願いいたします。以下のリンクをクリックして、認証手続きを完了させてください。</p>
 
-<p><%= link_to 'メールアドレスを認証する', custom_user_confirmation_url(confirmation_token: @token) %></p>
+<p><%= link_to 'メールアドレスを認証する', custom_user_confirmation_url(confirmation_token: @token) %></p><br>
 
-<p>もし誤ったメールアドレスを登録された場合、または上記リンクが機能しない場合には、お手数ですが再度新規登録をお願いします。</p>
+<p style="margin: 0; padding: 0;">新規登録の方へ：</p>
+<p style="margin: 0; padding: 0;">・メールアドレスの誤登録やリンク不具合の際は、再登録をお願いします。</p><br>
 
-<p>ご注意：</p>
-<ul>
-  <li>このリンクはお送りしたメールが届いてから24時間有効です。</li>
-  <li>24時間を過ぎると、リンクは無効となりますので、お早めにご対応ください。</li>
-</ul>
+<p style="margin: 0; padding: 0;">メールアドレス更新の方へ：</p>
+<p style="margin: 0; padding: 0;">・メールアドレスの認証前であれば、既存のアドレスでのログインは引き続き可能です。</p><br>
+
+<p style="margin: 0; padding: 0;">ご注意：</p>
+<p style="margin: 0; padding: 0;">・このリンクはお送りしたメールが届いてから24時間有効です。</p>
+<p style="margin: 0; padding: 0;">・24時間を過ぎると、リンクは無効となりますので、お早めにご対応ください。</p>
