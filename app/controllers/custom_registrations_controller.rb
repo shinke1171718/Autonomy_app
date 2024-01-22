@@ -6,6 +6,7 @@ class CustomRegistrationsController < ApplicationController
     @user = User.new
   end
 
+
   def create
     #user情報を格納する
     user = User.new(registration_params)
@@ -22,11 +23,14 @@ class CustomRegistrationsController < ApplicationController
     end
   end
 
+
   def edit_user
   end
 
+
   def edit_password
   end
+
 
   def email_update
     if params[:user][:email].blank?
@@ -34,14 +38,22 @@ class CustomRegistrationsController < ApplicationController
       return
     end
 
-    # ユーザー情報の更新
-    if current_user.update(registration_params)
-      set_flash_and_redirect(:notice, "ユーザー情報を更新しました。", edit_email_custom_registration_path)
-    else
-      set_flash_and_redirect(:error, set_validation_error(current_user), edit_email_custom_registration_path)
+    # 入力されたメールアドレスが現在のメールアドレスと同じかどうかをチェック
+    if params[:user][:email] == current_user.email
+      set_flash_and_redirect(:error, "登録済みのアドレスです。", edit_email_custom_registration_path)
       return
     end
+
+    # ユーザー情報の更新
+    if current_user.update(registration_params)
+      # 新しいメールアドレスに確認メールを送信
+      current_user.send_reconfirmation_instructions
+      set_flash_and_redirect(:notice, "メールアドレス更新の確認メールを送信しました。", edit_email_custom_registration_path)
+    else
+      set_flash_and_redirect(:error, set_validation_error(current_user), edit_email_custom_registration_path)
+    end
   end
+
 
   def password_info_update
     if password_info_missing?
