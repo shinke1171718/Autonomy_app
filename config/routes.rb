@@ -43,6 +43,12 @@ Rails.application.routes.draw do
     get 'registrations/edit_email', to: 'custom_registrations#edit_email', as: :edit_email_custom_registration
     get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
 
+    get 'password/request_reset', to: 'custom_passwords#request_reset', as: :request_reset_password
+    post 'password/send_reset_instructions', to: 'custom_passwords#send_reset_instructions', as: :send_reset_instructions
+    get 'password/verify_reset_token', to: 'custom_passwords#verify_reset_token', as: :verify_reset_token
+    get 'password/edit', to: 'custom_passwords#edit_password', as: :edit_password
+    patch 'password/update', to: 'custom_passwords#update_password', as: :update_password
+
     # ユーザー情報更新用のルーティング
     patch 'registrations/email_update', to: 'custom_registrations#email_update', as: :email_update_custom_registration
     # パスワード情報更新用のルーティング

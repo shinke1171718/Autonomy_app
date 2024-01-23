@@ -12,10 +12,6 @@
     margin-bottom: 0px
   }
 
-  .password-instructions p {
-    margin-top: 0px
-  }
-
   .registration-instructions{
     @include form-instructions;
   }
