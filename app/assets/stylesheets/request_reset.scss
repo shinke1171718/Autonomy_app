@@ -1,0 +1,60 @@
+@import 'shared/styles';
+
+.reset-password-container{
+  @include form-container;
+
+  .reset-password-title{
+    @include form-title;
+  }
+
+  .reset-password-title h1{
+    margin-bottom: 0px;
+  }
+
+  .reset-password-instructions p{
+    font-size: 13px;
+    margin-bottom: 30px;
+    text-align: center;
+    @media screen and (max-width: 600px) {
+      font-size: 10px;
+    }
+  }
+
+  .reset-password-input{
+    width: 50%;
+    @media screen and (max-width: 1000px){
+      width: 70%;
+    }
+    @media screen and (max-width: 900px){
+      width: 90%;
+    }
+
+    .reset-password-back-button{
+      width: 100%;
+
+      .back-button{
+        @include button;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  .reset-password-field input{
+    @include field-form
+  }
+
+  .reset-password-actions{
+    @include form-submit-button;
+  }
+
+  .reset-password-actions input{
+    @include button;
+    background-color: #1E9AF4;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+}

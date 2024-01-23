@@ -45,9 +45,12 @@
 
     .session-link{
       @include form-link;
+      padding-top: 10px;
+      padding-bottom: 3px;
     }
 
     .session-link a {
       text-decoration: none;
+      padding-bottom: 5px;
     }
 }
