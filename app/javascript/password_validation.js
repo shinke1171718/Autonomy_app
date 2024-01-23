@@ -1,4 +1,8 @@
 document.addEventListener('turbo:load', function() {
+
+  // "password-validation-area" idを持つ要素が存在するか確認
+  if (!document.getElementById('password-validation-area')) return;
+
   let validationTimeout; // タイマーを格納する変数
   const currentPasswordInput = document.querySelector('input[name="user[current_password]"]');
   const newPasswordInput = document.querySelector('input[name="user[password]"]');
@@ -34,6 +38,11 @@ document.addEventListener('turbo:load', function() {
   });
 
   document.addEventListener('submit', function(event) {
+    // イベントのトリガーとなった要素を取得
+    const triggerElement = event.submitter;
+    // トリガー要素が "back-button" クラスを持っているか確認
+    if (triggerElement && triggerElement.classList.contains('back-button')) return;
+
     // すべてのフォームフィールドに対してバリデーションを実行
     validateInput(currentPasswordInput);
     validateInput(newPasswordInput);

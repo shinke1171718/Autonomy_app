@@ -1,4 +1,4 @@
-<div class="edit-registration-container">
+<div class="edit-registration-container" id="email-validation-area">
 
   <div class="registration-title">
     <h1>メールアドレス更新</h1>
@@ -14,7 +14,7 @@
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-link">
@@ -27,9 +27,9 @@
 
     <% end %>
     <div class="registration-back-button">
-      <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+    <%= button_to "戻る", root_path, class: "back-button", method: :get %>
     </div>
   </div>
-</div>
 
-<%= javascript_include_tag 'email_validation' %>
+  <%= javascript_include_tag 'email_validation' %>
+</div>
