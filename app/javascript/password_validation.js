@@ -8,34 +8,40 @@ document.addEventListener('turbo:load', function() {
   const newPasswordInput = document.querySelector('input[name="user[password]"]');
   const newPasswordConfirmationInput = document.querySelector('input[name="user[password_confirmation]"]');
 
-  // 現在のパスワードの検証
-  currentPasswordInput.addEventListener('input', function() {
-    // 前のタイマーをクリア
-    clearTimeout(validationTimeout);
+  if (currentPasswordInput) {
+    // 現在のパスワードの検証
+    currentPasswordInput.addEventListener('input', function() {
+      // 前のタイマーをクリア
+      clearTimeout(validationTimeout);
 
-     // 新しいタイマーを設定
-    validationTimeout = setTimeout(function() {
-      validateInput(currentPasswordInput)
-    }, 500);
-  });
+      // 新しいタイマーを設定
+      validationTimeout = setTimeout(function() {
+        validateInput(currentPasswordInput)
+      }, 500);
+    });
+  }
 
-  // 新しいパスワードの検証
-  newPasswordInput.addEventListener('input', function() {
-    clearTimeout(validationTimeout);
+  if (newPasswordInput) {
+    // 新しいパスワードの検証
+    newPasswordInput.addEventListener('input', function() {
+      clearTimeout(validationTimeout);
 
-    validationTimeout = setTimeout(function() {
-      validateInput(newPasswordInput)
-    }, 500);
-  });
+      validationTimeout = setTimeout(function() {
+        validateInput(newPasswordInput)
+      }, 500);
+    });
+  }
 
-  // 確認用パスワードの検証
-  newPasswordConfirmationInput.addEventListener('input', function() {
-    clearTimeout(validationTimeout);
+  if (newPasswordConfirmationInput) {
+    // 確認用パスワードの検証
+    newPasswordConfirmationInput.addEventListener('input', function() {
+      clearTimeout(validationTimeout);
 
-    validationTimeout = setTimeout(function() {
-      validatePasswordConfirmation(newPasswordConfirmationInput, newPasswordInput)
-    }, 500);
-  });
+      validationTimeout = setTimeout(function() {
+        validatePasswordConfirmation(newPasswordConfirmationInput, newPasswordInput)
+      }, 500);
+    });
+  }
 
   document.addEventListener('submit', function(event) {
     // イベントのトリガーとなった要素を取得
@@ -65,8 +71,6 @@ document.addEventListener('turbo:load', function() {
     }
   });
 });
-
-
 
 
 function clearErrorMessages(input) {
@@ -102,6 +106,7 @@ function isPasswordValid(password) {
 }
 
 function validateInput(input) {
+  if (!input) return;
   clearErrorMessages(input); // このフィールドの既存のエラーメッセージをクリア
 
   if (!input.value.trim()) {

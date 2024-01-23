@@ -16,6 +16,9 @@ document.addEventListener('turbo:load', function() {
   });
 
   document.addEventListener('submit', function(event) {
+    // "email-validation-area" idを持つ要素が存在するか確認
+    if (!document.getElementById('email-validation-area')) return;
+
     // イベントのトリガーとなった要素を取得
     const triggerElement = event.submitter;
     // トリガー要素が "back-button" クラスを持っているか確認

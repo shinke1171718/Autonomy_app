@@ -1,5 +1,6 @@
 class CustomRegistrationsController < ApplicationController
   include FlashAndRedirect
+  include SetValidationErrorHelper
   skip_before_action :authenticate_user!, only: [:new, :create]
 
   def new
@@ -65,6 +66,8 @@ class CustomRegistrationsController < ApplicationController
       return
     end
 
+    binding.pry
+
     if current_user.update(registration_params)
       set_flash_and_redirect(:notice, "パスワードを更新しました。再度ログインをお願いします。", root_path)
     else
@@ -92,9 +95,5 @@ class CustomRegistrationsController < ApplicationController
 
   def registration_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :email_change, :password_change)
-  end
-
-  def set_validation_error(user)
-    user.errors.full_messages.first.sub(/^.*\s/, '')
   end
 end

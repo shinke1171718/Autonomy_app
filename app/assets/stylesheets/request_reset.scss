@@ -1,17 +1,17 @@
 @import 'shared/styles';
 
-.reset-password-container{
+.password-reset-request-container{
   @include form-container;
 
-  .reset-password-title{
+  .password-reset-request-title{
     @include form-title;
   }
 
-  .reset-password-title h1{
+  .password-reset-request-title h1{
     margin-bottom: 0px;
   }
 
-  .reset-password-instructions p{
+  .password-reset-request-instructions p{
     font-size: 13px;
     margin-bottom: 30px;
     text-align: center;
@@ -20,7 +20,7 @@
     }
   }
 
-  .reset-password-input{
+  .password-reset-request-input{
     width: 50%;
     @media screen and (max-width: 1000px){
       width: 70%;
@@ -29,7 +29,7 @@
       width: 90%;
     }
 
-    .reset-password-back-button{
+    .password-reset-request-back-button{
       width: 100%;
 
       .back-button{
@@ -41,15 +41,15 @@
     }
   }
 
-  .reset-password-field input{
+  .password-reset-request-field input{
     @include field-form
   }
 
-  .reset-password-actions{
+  .password-reset-request-actions{
     @include form-submit-button;
   }
 
-  .reset-password-actions input{
+  .password-reset-request-actions input{
     @include button;
     background-color: #1E9AF4;
     width: 100%;

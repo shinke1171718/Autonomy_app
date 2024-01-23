@@ -1,29 +1,31 @@
-<div class="reset-password-container" id="email-validation-area">
-  <div class="reset-password-title">
+<div class="password-reset-request-container" id="email-validation-area">
+  <div class="password-reset-request-title">
     <h1>パスワード再設定</h1>
   </div>
 
-  <div class="reset-password-instructions">
+  <div class="password-reset-request-instructions">
     <p>入力していただいたメールアドレス宛に、<br>
     再設定のご案内メールが届きます。</p>
   </div>
 
-  <div class="reset-password-input">
+  <div class="password-reset-request-input">
     <%= form_with url: send_reset_instructions_path, local: true, method: :post do |f| %>
-      <div class="reset-password-field">
+      <div class="password-reset-request-field">
         <div class="error-message"></div>
         <%= f.email_field :email, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
-      <div class="reset-password-actions">
+      <div class="password-reset-request-actions">
         <%= f.submit "メール送信", id: "send-reset-instructions-submit" %>
       </div>
     <% end %>
 
-    <div class="reset-password-back-button">
-      <%= button_to '戻る', '#', method: :get, class: 'back-button', id: 'back_button', onclick: "history.back(); return false;" %>
+    <div class="password-reset-request-back-button">
+      <% if session[:user_id] %>
+        <%= button_to '戻る', edit_password_user_custom_registration_path, method: :get, class: 'back-button', id: 'back_button' %>
+      <% else %>
+        <%= button_to '戻る', new_user_custom_session_path, method: :get, class: 'back-button', id: 'back_button' %>
+      <% end %>
     </div>
   </div>
 </div>
-
-<%= javascript_include_tag 'email_validation' %>
