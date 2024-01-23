@@ -35,14 +35,9 @@ class CustomSessionsController < ApplicationController
   end
 
   def destroy
-    #セッションIDを処分
-    session[:user_id] = nil
-    #ログでsessions_idがnilになったか確認するためにコード
-    Rails.logger.debug "session[:user_id] = #{session[:user_id]}"
     #セッションの完全な処理
     reset_session
     #sessions#newへ戻る
-    #一時的にsigninの画面にパスを出しています。
     set_flash_and_redirect(:notice, "※ログアウトしました。", new_user_custom_session_path)
   end
 end

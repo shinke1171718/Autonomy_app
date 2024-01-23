@@ -11,7 +11,7 @@
   <div class="session-input">
     <%= form_with url: user_custom_session_path, local: true, data: { turbo: false } do |f| %>
       <div class="session-field">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
       <div class="session-field">
         <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード（8文字以上、英数記号含む）" %>
