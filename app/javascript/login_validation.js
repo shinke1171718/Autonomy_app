@@ -1,18 +1,27 @@
-import {validateEmailInput } from './form_validation.js';
+import {validateInput, validateEmailInput } from './form_validation.js';
 
 document.addEventListener('turbo:load', function() {
-  // "email-validation-area" idを持つ要素が存在するか確認
-  if (!document.getElementById('email-validation-area')) return;
+  // "login-validation-area" idを持つ要素が存在するか確認
+  if (!document.getElementById('login-validation-area')) return;
 
   let validationTimeout;
   // メールアドレスの入力フィールドを取得
   const emailInput = document.querySelector('input[name="user[email]"]');
+  const newPasswordInput = document.querySelector('input[name="user[password]"]');
 
   // 名前入力フィールドのバリデーション
   emailInput.addEventListener('input', function() {
     clearTimeout(validationTimeout);
     validationTimeout = setTimeout(function() {
       validateEmailInput(emailInput);
+    }, 500);
+  });
+
+  newPasswordInput.addEventListener('input', function() {
+    clearTimeout(validationTimeout);
+
+    validationTimeout = setTimeout(function() {
+      validateInput(newPasswordInput)
     }, 500);
   });
 
@@ -27,6 +36,7 @@ document.addEventListener('turbo:load', function() {
 
     // フォームフィールドに対してバリデーションを実行
     validateEmailInput(emailInput);
+    validateInput(newPasswordInput)
 
     // すべてのエラーメッセージ要素を取得
     const errorMessage = emailInput.parentNode.querySelector('.error-message');
