@@ -4,13 +4,13 @@ class User < ApplicationRecord
 
   validates :name, presence: { message: "ユーザー名は必須です。" },
   length: { minimum: 2, too_short: "ユーザー名は最低%{count}文字必要です。", maximum: 15, too_long: "ユーザー名は最大%{count}文字までです。" },
-  format: { with: /\A[a-zA-Z0-9]+\z/, message: 'ユーザー名は英数字のみが使用できます' }, if: :user_info_change_or_new_record?
+  format: { with: /\A[a-zA-Z0-9]+\z/, message: 'ユーザー名は英数字のみが使用できます。' }, if: :user_info_change_or_new_record?
 
   # メールアドレスのバリデーション
-  validates :email, presence: { message: "メールアドレスは必須です" },
+  validates :email, presence: { message: "メールアドレスは必須です。" },
     uniqueness: { case_sensitive: false, message: "このメールアドレスは既に使用されています。" },
     length: { maximum: 254, too_long: "メールアドレスは最大%{count}文字までです。" },
-    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/, message: "メールアドレスの形式が不正です" }, if: :email_change_or_new_record?
+    format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/, message: "メールアドレスの形式が不正です。" }, if: :email_change_or_new_record?
 
   # パスワードのバリデーションを新規作成と更新の両方で適用
   # パスワードが変更された場合、または新規作成の場合に検証する

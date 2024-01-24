@@ -57,3 +57,33 @@ export function validateEmailInput(emailInput) {
     emailInput.style.backgroundColor = ""; // エラーがない場合は背景色をリセット
   }
 }
+
+export function validateNameInput(nameInput) {
+  clearErrorMessages(nameInput);
+
+  // ユーザー名の形式と文字数を確認する正規表現
+  const namePattern = /^[a-zA-Z0-9]{2,15}$/;
+
+  if (!nameInput.value.trim()) {
+    createErrorMessage(nameInput, "⚠️入力してください。");
+    nameInput.style.backgroundColor = "rgb(255, 184, 184)";
+  } else if (!namePattern.test(nameInput.value)) {
+    createErrorMessage(nameInput, "⚠️2~15文字、英数字を含んでください。");
+    nameInput.style.backgroundColor = "rgb(255, 184, 184)";
+  } else {
+    nameInput.style.backgroundColor = ""; // エラーがない場合は背景色をリセット
+  }
+}
+
+// 新しいパスワードと確認用パスワードの検証関数
+export function validatePasswordConfirmation(input, newPasswordInput) {
+  clearErrorMessages(input);
+
+  if (!input.value.trim()) {
+    createErrorMessage(input, "⚠️入力してください。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  } else if (newPasswordInput.value !== input.value) {
+    createErrorMessage(input, "⚠️新しいパスワードと一致しません。");
+    input.style.backgroundColor = "rgb(255, 184, 184)";
+  }
+}

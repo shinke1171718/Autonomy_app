@@ -1,4 +1,4 @@
-import { createErrorMessage, clearErrorMessages, validateInput } from './form_validation.js';
+import { validateInput, validatePasswordConfirmation } from './form_validation.js';
 
 document.addEventListener('turbo:load', function() {
 
@@ -73,16 +73,3 @@ document.addEventListener('turbo:load', function() {
     }
   });
 });
-
-// 新しいパスワードと確認用パスワードの検証関数
-function validatePasswordConfirmation(input, newPasswordInput) {
-  clearErrorMessages(input);
-
-  if (!input.value.trim()) {
-    createErrorMessage(input, "⚠️入力してください。");
-    input.style.backgroundColor = "rgb(255, 184, 184)";
-  } else if (newPasswordInput.value !== input.value) {
-    createErrorMessage(input, "⚠️新しいパスワードと一致しません。");
-    input.style.backgroundColor = "rgb(255, 184, 184)";
-  }
-}
