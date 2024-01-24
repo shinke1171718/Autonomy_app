@@ -1,4 +1,4 @@
-<div class="new-registration-container">
+<div class="new-registration-container" id="new-account-validation">
 
   <div class="registration-title">
     <h1>ユーザー新規登録</h1>
@@ -13,18 +13,22 @@
       <%= f.hidden_field :new_record, value: true %>
 
       <div class="registration-field">
+        <div class="error-message"></div>
         <%= f.text_field :name, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名（2〜15文字、英数字）" %>
       </div>
 
       <div class="registration-field">
+        <div class="error-message"></div>
         <%= f.email_field :email, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-field">
+        <div class="error-message"></div>
         <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（8~128文字、英数記号含む）" %>
       </div>
 
       <div class="registration-field">
+        <div class="error-message"></div>
         <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード" %>
       </div>
 
