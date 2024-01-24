@@ -1,4 +1,4 @@
-<div class="new-session-container">
+<div class="new-session-container" id="login-validation-area">
 
   <div class="session-title">
     <h1>ログイン</h1>
@@ -11,10 +11,12 @@
   <div class="session-input">
     <%= form_with url: user_custom_session_path, local: true, data: { turbo: false } do |f| %>
       <div class="session-field">
-        <%= f.email_field :email, autocomplete: "email", placeholder: "メールアドレス" %>
+        <div class="error-message"></div>
+        <%= f.email_field :email, autocomplete: "email", name: 'user[email]', placeholder: "メールアドレス" %>
       </div>
       <div class="session-field">
-        <%= f.password_field :password, autocomplete: "new-password", placeholder: "パスワード（8文字以上、英数記号含む）" %>
+        <div class="error-message"></div>
+        <%= f.password_field :password, autocomplete: "new-password", name: 'user[password]', placeholder: "パスワード（8~128文字、英数記号含む）" %>
       </div>
       <div class="session-actions">
         <%= f.submit "ログイン" %>

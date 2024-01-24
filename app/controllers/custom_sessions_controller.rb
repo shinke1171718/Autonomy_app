@@ -7,16 +7,16 @@ class CustomSessionsController < ApplicationController
 
   def create
     # 未入力があるかチェック
-    if params[:email].blank? || params[:password].blank?
+    if params[:user][:email].blank? || params[:user][:password].blank?
       set_flash_and_redirect(:error, "未入力があります。", root_path)
       return
     end
 
     #userのemailとパスワードを格納する
-    user = User.find_by(email: params[:email])
+    user = User.find_by(email: params[:user][:email])
 
     # userが存在しない、またはパスワードが一致しない場合
-    if user.nil? || !user.valid_password?(params[:password])
+    if user.nil? || !user.valid_password?(params[:user][:password])
       set_flash_and_redirect(:error, "※メールアドレスもしくはパスワードが間違っています。", root_path)
       return
     end

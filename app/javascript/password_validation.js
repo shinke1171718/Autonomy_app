@@ -1,3 +1,5 @@
+import { createErrorMessage, clearErrorMessages, validateInput } from './form_validation.js';
+
 document.addEventListener('turbo:load', function() {
 
   // "password-validation-area" idを持つ要素が存在するか確認
@@ -71,52 +73,6 @@ document.addEventListener('turbo:load', function() {
     }
   });
 });
-
-
-function clearErrorMessages(input) {
-  // inputに関連するエラーメッセージ要素を探し、それらを削除
-  // input要素にあるerror-message要素を取得
-  const errorMessage = input.parentNode.querySelector('.error-message');
-  errorMessage.textContent = '';
-
-  // 対象の入力フィールドの背景色をリセット
-  input.style.backgroundColor = "";
-}
-
-
-function createErrorMessage(input, message) {
-  // inputの兄弟要素の中から最初のerror-messageクラスを持つ要素を見つける
-  const errorDiv = input.parentNode.querySelector('.error-message');
-  if (errorDiv) {
-    // エラーメッセージを設定
-    errorDiv.textContent = message;
-    errorDiv.style.color = 'red';
-  }
-}
-
-function isPasswordValid(password) {
-  // まずパスワードの長さを検証
-  if (password.length < 8) {
-    return false;
-  }
-
-  // 次に正規表現を使ってパスワードの形式を検証
-  const regex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+$/;
-  return regex.test(password);
-}
-
-function validateInput(input) {
-  if (!input) return;
-  clearErrorMessages(input); // このフィールドの既存のエラーメッセージをクリア
-
-  if (!input.value.trim()) {
-    createErrorMessage(input, "⚠️入力してください。");
-    input.style.backgroundColor = "rgb(255, 184, 184)";
-  } else if (!isPasswordValid(input.value)) {
-    createErrorMessage(input, "⚠️8文字以上、大小英字、数字、記号を含んでください。");
-    input.style.backgroundColor = "rgb(255, 184, 184)";
-  }
-}
 
 // 新しいパスワードと確認用パスワードの検証関数
 function validatePasswordConfirmation(input, newPasswordInput) {

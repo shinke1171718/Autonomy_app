@@ -66,8 +66,6 @@ class CustomRegistrationsController < ApplicationController
       return
     end
 
-    binding.pry
-
     if current_user.update(registration_params)
       set_flash_and_redirect(:notice, "パスワードを更新しました。再度ログインをお願いします。", root_path)
     else

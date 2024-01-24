@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   # パスワードのバリデーションを新規作成と更新の両方で適用
   # パスワードが変更された場合、または新規作成の場合に検証する
-  validates :password, length: { minimum: 8, too_short: "パスワードは最低%{count}文字必要です。" }, if: :password_change_or_new_record?
+  validates :password, length: { minimum: 8, maximum: 128, too_short: "パスワードは最低%{count}文字必要です。", too_long: "パスワードは最大%{count}文字までです。" }, if: :password_change_or_new_record?
   validates :password, confirmation: { message: "新しいパスワードと確認用パスワードが一致しません。" },
     format: { with: /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]+\z/, message: "パスワードは8文字以上、大小英字、数字、記号を含んでください。" }, if: :password_change_or_new_record?
 
