@@ -2,7 +2,11 @@
 <%= render 'shared/back_button' %>
 
 <div class="menus-container">
-  <h3 class="menu-list-heading">サンプル献立</h3>
+
+  <nav class="menu-list-container">
+    <%= link_to "サンプル献立", sample_menus_path, class: "main-menu-list-heading", method: :get %>
+    <%= link_to "オリジナル献立", user_custom_menus_path(current_user), class: "menu-list-heading", method: :get %>
+  </nav>
 
   <div class="menus_list">
     <% if @default_menus.any? %>

@@ -29,12 +29,8 @@
     <p class="empty-cart-message">献立が選択されていません。</p>
   <% end %>
 
-
-
-
   <div class="button-set-container">
-    <%= button_to "オリジナル献立リスト", user_custom_menus_path(current_user), class: "button-style bg-custom-menu", method: :get %>
-    <%= button_to "サンプル献立リスト", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
+    <%= button_to "献立を選ぶ", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
     <% if @has_menu_items %>
       <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list", form: { data: { turbo_confirm: "既存の買い出しリストが上書きされます。本当に宜しいですか？" }} %>
     <% else %>
