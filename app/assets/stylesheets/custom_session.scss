@@ -2,7 +2,7 @@
 
 .new-session-container{
   @include form-container;
-  height: 400px;
+  height: 450px;
   @media screen and (max-width: 1200px) {
     width: 75%;
   }
