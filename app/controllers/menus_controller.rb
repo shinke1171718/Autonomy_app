@@ -78,6 +78,13 @@ class MenusController < ApplicationController
       @encoded_image = Base64.strict_encode64(image_data)
     end
 
+    # 編集時に再登録はしなかったが、最初に登録した画像データがある場合は再格納
+    if params[:menu][:image_data_url].present?
+      @image_data_url = params[:menu][:image_data_url]
+      @encoded_image = params[:menu][:encoded_image]
+    end
+
+
     if @menu.valid?
       render_confirm_page
     else
