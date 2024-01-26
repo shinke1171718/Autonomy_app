@@ -6,4 +6,7 @@ class UsersController < ApplicationController
     cart = current_user.cart
     @cart_items = cart.cart_items.includes(:menu) if cart
   end
+
+  def my_page
+  end
 end

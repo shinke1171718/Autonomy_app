@@ -1,0 +1,75 @@
+@import 'shared/styles';
+
+.my-page-container{
+  @include form-container;
+
+  .my-page-title{
+    @include form-title;
+  }
+
+  .my-page-input{
+    width: 50%;
+    @media screen and (max-width: 1000px){
+      width: 70%;
+    }
+    @media screen and (max-width: 900px){
+      width: 90%;
+    }
+
+    .my-page-button{
+      width: 100%;
+
+      .my-page-button,
+      .log-out-button{
+        display: block;
+        margin: 50px auto;
+        padding: 15px 0;
+        width: 30%;
+        font-size: 18px;
+        text-align: center;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 30px;
+
+        @media screen and (max-width: 800px) {
+          width: 100%;
+        }
+      }
+
+      .my-page-button{
+        background-color: #626262;
+        &:hover {
+          background-color: #959595;
+        }
+      }
+
+      .log-out-button{
+        background-color: #ff2929;
+        &:hover {
+          background-color: #fea1a1;
+        }
+      }
+    }
+
+    .my-page-back-button{
+      width: 100%;
+      margin-top: 50px;
+
+      .back-button{
+        @include button;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        @media screen and (max-width: 800px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
