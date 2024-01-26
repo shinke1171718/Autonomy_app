@@ -9,4 +9,8 @@ class UsersController < ApplicationController
 
   def my_page
   end
+
+  def user_info
+    @user = User.find(params[:id])
+  end
 end

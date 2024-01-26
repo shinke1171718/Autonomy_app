@@ -17,17 +17,13 @@
         <%= f.email_field :email, autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
-      <div class="registration-link">
-        <%= link_to "パスワードを変更する", edit_password_user_custom_registration_path, class: "password-change-link" %>
-      </div>
-
       <div class="registration-actions">
         <%= f.submit "更新", id: "update-user-submit" %>
       </div>
 
     <% end %>
     <div class="registration-back-button">
-    <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+    <%= button_to "戻る", user_info_path(current_user), class: "back-button", method: :get %>
     </div>
   </div>
 </div>

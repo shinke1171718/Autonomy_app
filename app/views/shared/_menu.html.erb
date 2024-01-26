@@ -19,7 +19,6 @@
       <% end %>
 
       <%= link_to "マイページ", user_my_page_path(current_user.id), class: "menu-link" %>
-      <%= link_to "ユーザー情報", edit_email_custom_registration_path(current_user.id), class: "menu-link" %>
     </div>
     <div class="mobile-menu-button">
       <button class="hamburger">
@@ -45,7 +44,6 @@
   <% end %>
 
   <%= link_to "マイページ", user_my_page_path(current_user.id), class: "mobile-menu-link" %>
-  <%= link_to "ユーザー情報", edit_email_custom_registration_path(current_user.id), class: "mobile-menu-link" %>
 </div>
 
 <div id="mask"></div>

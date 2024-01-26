@@ -1,0 +1,37 @@
+<div class="user-info-container">
+
+  <div class="user-info-title">
+    <h1>ユーザー情報</h1>
+  </div>
+
+  <div class="my-page-input">
+
+    <div class="user-details-container">
+      <p class="label">ユーザー名:</p>
+      <div class="detail-and-edit">
+        <p class="detail"><%= @user.name %></p>
+        <%= link_to "変更", '#', class: "edit-link" %>
+      </div>
+    </div>
+
+    <div class="user-details-container">
+      <p class="label">メールアドレス:</p>
+      <div class="detail-and-edit">
+        <p class="detail"><%= @user.email %></p>
+        <%= link_to "変更", edit_email_custom_registration_path, class: "edit-link" %>
+      </div>
+    </div>
+
+    <div class="user-details-container">
+      <p class="label">パスワード:</p>
+      <div class="detail-and-edit">
+        <p class="detail">••••••••</p>
+        <%= link_to "変更", edit_password_user_custom_registration_path, class: "edit-link" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-page-back-button">
+    <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+  </div>
+</div>

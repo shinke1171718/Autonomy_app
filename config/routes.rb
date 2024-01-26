@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'users#index'
   get 'users/:id/my_page', to: 'users#my_page', as: :user_my_page
+  get 'users/:id/user_info', to: 'users#user_info', as: :user_info
+
   post '/users/:user_id/menus/confirm', to: 'menus#confirm', as: :confirm_user_menu
   post 'users/:user_id/menus/units', to: 'menus#units'
 
