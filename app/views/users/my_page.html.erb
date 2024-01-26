@@ -1,0 +1,25 @@
+<div class="my-page-container">
+
+  <div class="my-page-title">
+    <h1>マイページ</h1>
+  </div>
+
+  <div class="my-page-input">
+
+    <div class="my-page-button">
+      <%= button_to "ユーザー情報", '#', class: "my-page-button", method: :get %>
+    </div>
+
+    <div class="my-page-button">
+      <%= button_to "オリジナル献立一覧", '#', class: "my-page-button", method: :get %>
+    </div>
+
+    <div class="my-page-button">
+      <%= button_to "ログアウト", destroy_user_custom_session_path, class: "log-out-button", method: :get %>
+    </div>
+
+    <div class="my-page-back-button">
+      <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+    </div>
+  </div>
+</div>
