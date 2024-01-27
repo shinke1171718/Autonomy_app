@@ -1,4 +1,4 @@
-import { validateInput, validatePasswordConfirmation } from './form_validation.js';
+import { validateInput, validatePasswordConfirmation } from 'form_validation';
 
 document.addEventListener('turbo:load', function() {
 
