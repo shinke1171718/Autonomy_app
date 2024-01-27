@@ -25,14 +25,32 @@ class CustomRegistrationsController < ApplicationController
   end
 
 
-  def edit_user
+  # ユーザー名の変更画面
+  def edit_user_name
   end
 
 
-  def edit_password
+  # ユーザー名の変更アクション
+  def user_name_update
+    if params[:user][:name].blank?
+      set_flash_and_redirect(:error, "未入力があります。", edit_user_name_custom_registration_path)
+      return
+    end
+
+    if current_user.update(registration_params)
+      set_flash_and_redirect(:notice, "ユーザー名を更新しました。", edit_user_name_custom_registration_path)
+    else
+      set_flash_and_redirect(:error, set_validation_error(current_user), edit_user_name_custom_registration_path)
+    end
   end
 
 
+  # メールアドレスの変更画面
+  def edit_email
+  end
+
+
+  # メールアドレスの変更アクション
   def email_update
     if params[:user][:email].blank?
       set_flash_and_redirect(:error, "未入力があります。", edit_email_custom_registration_path)
@@ -45,7 +63,6 @@ class CustomRegistrationsController < ApplicationController
       return
     end
 
-    # ユーザー情報の更新
     # 新しいメールアドレスに確認メールを送信
     if current_user.update(registration_params)
       set_flash_and_redirect(:notice, "メールアドレス更新の確認メールを送信しました。", edit_email_custom_registration_path)
@@ -55,6 +72,12 @@ class CustomRegistrationsController < ApplicationController
   end
 
 
+  # パスワードの変更画面
+  def edit_password
+  end
+
+
+  # パスワードの変更アクション
   def password_info_update
     if password_info_missing?
       set_flash_and_redirect(:error, "未入力があります。", edit_password_user_custom_registration_path)
@@ -92,6 +115,6 @@ class CustomRegistrationsController < ApplicationController
   end
 
   def registration_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :email_change, :password_change)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :user_info_change, :email_change, :password_change)
   end
 end
