@@ -13,3 +13,4 @@ pin "password_validation", to: "password_validation.js", preload: true
 pin "login_validation", to: "login_validation.js", preload: true
 pin "form_validation", to: "form_validation.js", preload: true
 pin "new_account_validation", to: "new_account_validation.js", preload: true
+pin "user_name_validation", to: "user_name_validation.js", preload: true
