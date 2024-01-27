@@ -1,4 +1,4 @@
-import { validateNameInput } from './form_validation.js';
+import { validateNameInput } from 'form_validation';
 
 document.addEventListener('turbo:load', function() {
   // "user-name-validation-area" idを持つ要素が存在するか確認

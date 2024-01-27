@@ -1,4 +1,4 @@
-import {validateInput, validateEmailInput } from './form_validation.js';
+import {validateInput, validateEmailInput } from 'form_validation';
 
 document.addEventListener('turbo:load', function() {
   // "login-validation-area" idを持つ要素が存在するか確認
