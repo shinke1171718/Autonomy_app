@@ -42,18 +42,22 @@ Rails.application.routes.draw do
     get 'users/session', to: 'custom_sessions#new', as: :new_user_custom_session
     post 'users/session', to: 'custom_sessions#create', as: :user_custom_session
     get 'users/sessions', to: 'custom_sessions#destroy', as: :destroy_user_custom_session
-    get 'registrations/edit_email', to: 'custom_registrations#edit_email', as: :edit_email_custom_registration
-    get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
 
+    # パスワードを忘れた場合の処理に関するルーチング
     get 'password/request_reset', to: 'custom_passwords#request_reset', as: :request_reset_password
     post 'password/send_reset_instructions', to: 'custom_passwords#send_reset_instructions', as: :send_reset_instructions
     get 'password/verify_reset_token', to: 'custom_passwords#verify_reset_token', as: :verify_reset_token
     get 'password/edit', to: 'custom_passwords#edit_password', as: :edit_password
     patch 'password/update', to: 'custom_passwords#update_password', as: :update_password
 
-    # ユーザー情報更新用のルーティング
+    # ユーザー名更新用のルーティング
+    get 'registrations/edit_user_name', to: 'custom_registrations#edit_user_name', as: :edit_user_name_custom_registration
+    patch 'registrations/user_name_update', to: 'custom_registrations#user_name_update', as: :user_name_update_custom_registration
+    # メールアドレス更新用のルーティング
+    get 'registrations/edit_email', to: 'custom_registrations#edit_email', as: :edit_email_custom_registration
     patch 'registrations/email_update', to: 'custom_registrations#email_update', as: :email_update_custom_registration
-    # パスワード情報更新用のルーティング
+    # パスワード更新用のルーティング
+    get 'registrations/edit_password', to: 'custom_registrations#edit_password', as: :edit_password_user_custom_registration
     patch 'registrations/update_password_info', to: 'custom_registrations#password_info_update', as: :password_info_update_custom_registration
 
     resources :users do

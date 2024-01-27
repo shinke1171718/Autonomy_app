@@ -1,0 +1,29 @@
+<div class="edit-registration-container">
+
+  <div class="registration-title">
+    <h1>ユーザー名変更</h1>
+  </div>
+
+  <div class="registration-instructions">
+    <p>ユーザー名は2〜15文字、英数字で設定をしてください。</p>
+  </div>
+
+  <div class="registration-input">
+    <%= form_with model: current_user, url: user_name_update_custom_registration_path, local: true, method: :patch do |f| %>
+      <%= f.hidden_field :user_info_change, value: true %>
+
+      <div class="registration-field">
+        <div class="error-message"></div>
+        <%= f.text_field :name, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名" %>
+      </div>
+
+      <div class="registration-actions">
+        <%= f.submit "変更" %>
+      </div>
+
+    <% end %>
+    <div class="registration-back-button">
+    <%= button_to "戻る", user_info_path(current_user), class: "back-button", method: :get %>
+    </div>
+  </div>
+</div>
