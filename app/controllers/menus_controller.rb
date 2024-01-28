@@ -237,6 +237,22 @@ class MenusController < ApplicationController
     redirect_to user_menu_path(user_id: current_user.id, id: params[:menu][:menu_id])
   end
 
+
+  def destroy
+    # menu_idからデータを取得
+    menu = Menu.find(params[:menu_id])
+    # menu_idに該当するshopping_list_menusデータがあるかチェック
+    if menu.shopping_list_menus.exists?
+      flash[:error] = "この献立は現在選択されています。"
+      redirect_to user_menu_path(menu_id: menu.id)
+    else
+      # menuデータを削除
+      menu.destroy
+      flash[:notice] = "献立を削除しました。"
+      redirect_to user_custom_menus_path
+    end
+  end
+
   private
 
   def menu_params

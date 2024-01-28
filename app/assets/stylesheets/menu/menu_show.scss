@@ -127,22 +127,34 @@
     }
 
     .edit-button,
-    .back-button {
+    .back-button,
+    .delete_button {
       @include button;
       width: 49%;
     }
 
+    .edit-button,
+    .delete_button{
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
     .edit-button{
       background-color: #777;
-      margin-bottom: 10px;
-
       &:hover {
         background-color: lighten(#7d7d7d, 10%);
       }
     }
 
+    .delete_button{
+      background-color: #ff3636;
+      &:hover {
+        background-color: lighten(#faadad, 10%);
+      }
+    }
+
     .back-button {
-      margin-top: 10px;
+      margin-top: 20px;
     }
   }
 }
