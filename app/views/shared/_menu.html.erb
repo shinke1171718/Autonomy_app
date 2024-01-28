@@ -4,49 +4,14 @@
     <span class="menu-bar-subtitle">~自炊で毎日の健康管理を~</span>
   </div>
   <div class="menu-bar-right">
-    <div id="menu" class="desktop-menu">
-
-      <% if @completed_menus_date %>
-        <%= link_to "献立を選ぶ", root_path, class: "menu-link" %>
-      <% end %>
-
-      <% if @has_menu_items %>
-        <%= link_to "買い物リスト", shopping_lists_path, class: "menu-link" %>
-      <% end %>
-
-      <% if @completed_menus_date %>
-        <%= link_to "献立を作る", completed_menus_path, class: "menu-link" %>
-      <% end %>
-
-      <%= link_to "マイページ", user_my_page_path(current_user.id), class: "menu-link" %>
-    </div>
-    <div class="mobile-menu-button">
-      <button class="hamburger">
-        <span class="hamburger_bar"></span>
-        <span class="hamburger_bar"></span>
-        <span class="hamburger_bar"></span>
-      </button>
-    </div>
+    <%= link_to user_my_page_path(current_user.id), class: "menu-icon-link" do %>
+      <%= image_tag("my-page-icon.png", alt: "マイページ", class: "menu-icon") %>
+      <span class="menu-icon-text">マイページ</span>
+    <% end %>
   </div>
 </div>
 
-<div class="mobile-menu-content">
-  <% if @completed_menus_date %>
-    <%= link_to "献立を選ぶ", root_path, class: "mobile-menu-link" %>
-  <% end %>
 
-  <% if @has_menu_items %>
-    <%= link_to "買い物リスト", shopping_lists_path, class: "mobile-menu-link" %>
-  <% end %>
-
-  <% if @completed_menus_date %>
-    <%= link_to "献立を作る", completed_menus_path, class: "mobile-menu-link" %>
-  <% end %>
-
-  <%= link_to "マイページ", user_my_page_path(current_user.id), class: "mobile-menu-link" %>
-</div>
-
-<div id="mask"></div>
 
 
 
