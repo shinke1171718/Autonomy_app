@@ -4,10 +4,12 @@
   @include form-container;
   @media screen and (max-width: 750px) {
     width: 100%;
+    padding: 0;
   }
 
   .user-info-title{
     @include form-title;
+    margin-top: 15px;
   }
 
   .my-page-input{
@@ -35,7 +37,7 @@
         border-bottom: 1px solid #ccc; /* アンダーラインを設定 */
         padding-bottom: 10px;
         @media screen and (max-width: 600px){
-          font-size: 10px;
+          font-size: 16px;
         }
       }
 
@@ -46,7 +48,8 @@
 
       .edit-link {
         color: #007bff;
-        text-decoration: underline;
+        text-decoration: none;
+        cursor: pointer;
       }
     }
   }
