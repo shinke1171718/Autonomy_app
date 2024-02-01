@@ -64,9 +64,6 @@
     </div>
 
     <div class="button-container">
-      <div class="shopping-complete-button">
-        <%= button_to '買い物完了', completed_menus_path, method: :post, class: 'complete-button', id: 'complete-button', form: { data: { turbo_confirm: "買い物を完了してもよろしいですか？" }} %>
-      </div>
       <%= button_to '戻る', '#', method: :get, class: 'back-button', id: 'back_button', onclick: "history.back(); return false;" %>
     </div>
   </div>

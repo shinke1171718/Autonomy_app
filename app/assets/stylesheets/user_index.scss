@@ -102,17 +102,12 @@
       cursor: pointer;
     }
 
-    .bg-standard-menu {
+    .bg-shopping-list,
+    .bg-standard-menu  {
       background-color: #1f1f1f;
-      @include hover-background(#dadada);
-    }
-
-    .bg-shopping-list {
-      background-color: rgba(#333, 0.1);
       height: 60px;
       margin-top: 20px;
       font-size: 25px;
-      cursor: auto;
     }
 
     @media screen and (max-width: 800px) {
