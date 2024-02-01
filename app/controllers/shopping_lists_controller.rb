@@ -3,7 +3,7 @@ class ShoppingListsController < ApplicationController
   include ShoppingListUpdater
 
   def index
-    shopping_list = current_user.cart.shopping_list
+    shopping_list = current_user_cart.shopping_list
 
     # ショッピングリストメニューを取得
     shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
@@ -40,12 +40,10 @@ class ShoppingListsController < ApplicationController
   def create
     begin
       ActiveRecord::Base.transaction do
-        # ユーザーのカートを取得
-        cart = current_user.cart
         # カートの中にあるmenu_idとその個数のデータを取得
-        cart_items = cart.cart_items
+        cart_items = current_user_cart.cart_items
         # ショッピングリストを取得または作成
-        shopping_list = cart.shopping_list || cart.create_shopping_list
+        shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
 
         # チェック済みの食材リストデータを直接データベースから取得
         checked_items = ShoppingListItem.where(shopping_list_id: shopping_list.id, is_checked: true)
@@ -110,10 +108,8 @@ class ShoppingListsController < ApplicationController
     # 確認ダイアログが必要かどうかを決定するために使用される。
     requires_attention = false
 
-    # ユーザーのカートを取得
-    cart = current_user.cart
     # ショッピングリストを取得または作成
-    shopping_list = cart.shopping_list || cart.create_shopping_list
+    shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
     # チェック済みの食材リストデータをデータベースから取得
     checked_items = ShoppingListItem.where(shopping_list_id: shopping_list.id, is_checked: true)
 
@@ -121,7 +117,7 @@ class ShoppingListsController < ApplicationController
     # 例：✔︎鶏肉 200g, ✔︎鶏肉 100g → ✔︎鶏肉 300g
     aggregate_and_update_checked_items(checked_items)
     # カートの中にある献立データを取得
-    cart_items = cart.cart_items
+    cart_items = current_user_cart.cart_items
 
     # cart_itemsから指定されたmenu_idを持つアイテムを更新または除外
     # データを減らし、実際のデータと比較することで食材リストのチェックされている値（例：✔︎鶏肉 200g）に影響があるかチェック

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Devise::Controllers::Helpers
   before_action :authenticate_user!
   before_action :load_settings
+  helper_method :current_user_cart
 
   private
 
@@ -19,5 +20,9 @@ class ApplicationController < ActionController::Base
   def handle_general_error
     flash[:error] = "登録中に予期せぬエラーが発生しました。"
     redirect_to root_path
+  end
+
+  def current_user_cart
+    current_user.cart
   end
 end
