@@ -80,11 +80,12 @@ module ShoppingListUpdater
   def aggregate_and_update_checked_items(checked_items)
     # checked_itemsの中にmaterial_idが重複している組み合わせをそれぞれmaterial_idごとにグレープ化
     grouped_checked_items = checked_items.group_by(&:material_id)
+    min_items_to_process = @settings.dig('limits', 'min_items_to_process')
 
     if grouped_checked_items.present?
       grouped_checked_items.each do |material_id, items|
         # アイテムが1つしかない場合、処理をスキップして次のイテレーションへ
-        next if items.size <= 1
+        next if items.size <= min_items_to_process
 
         # 各アイテムごとの変換後の数量の合計を計算
         total_quantity = items.reduce(0) do |sum, item|
