@@ -1,6 +1,7 @@
 class ShoppingListsController < ApplicationController
   include IngredientsAggregator
   include ShoppingListUpdater
+  before_action :ensure_cart_is_not_empty, only: [:create]
 
   def index
     shopping_list = current_user_cart.shopping_list
@@ -237,6 +238,13 @@ class ShoppingListsController < ApplicationController
       shopping_list.shopping_list_menus.delete_all
 
       render json: { requires_attention: false }
+    end
+  end
+
+  def ensure_cart_is_not_empty
+    if current_user_cart.cart_items.empty?
+      flash[:error] = "献立を選択してください。"
+      redirect_to root_path
     end
   end
 

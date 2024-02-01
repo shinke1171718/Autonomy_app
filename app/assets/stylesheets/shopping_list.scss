@@ -194,22 +194,6 @@
   }
 
   .button-container{
-    .shopping-complete-button{
-      .complete-button{
-        @include button;
-        width: 100%;
-        margin-bottom: 10px;
-        margin-top: 20px;
-        background-color: rgba(#1E9AF4, 0.3);
-        cursor: auto;
-
-        // @include button;のhover設定を打ち消すため設定
-        &:hover {
-          background-color: rgba(#1E9AF4, 0.3);
-        }
-      }
-    }
-
     .back-button{
       @include button;
       width: 100%;
