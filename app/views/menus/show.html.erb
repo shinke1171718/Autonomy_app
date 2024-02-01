@@ -22,7 +22,7 @@
 
   <div class="menu-button-container">
     <% if UserMenu.exists?(menu_id: @menu.id, user_id: current_user.id) %>
-      <%= button_to '編集', edit_user_menu_path(@menu), method: :get, class: 'edit-button', id: 'edit_button' %>
+      <%= button_to '編集', edit_user_menu_path, params: { menu_id: @menu.id }, method: :get, class: 'edit-button', id: 'edit_button' %>
       <%= button_to '削除', user_menu_path(current_user, menu_id: @menu.id), method: :delete, class: 'delete_button', id: 'delete_button', form: { data: { turbo_confirm: "本当に削除してよろしいでしょうか？" }}  %>
       <%= button_to '戻る', user_custom_menus_path(current_user), method: :get, class: 'back-button', id: 'back_button' %>
     <% else %>
