@@ -10,17 +10,19 @@
     <div class="menus_list">
       <% @cart_items.each do |cart_item| %>
         <div class="menu-item">
-          <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button" %>
+          <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button", params: { menu_id: cart_item.menu_id } %>
 
           <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
           <div class="menu-item-title"><%= truncate(cart_item.menu.menu_name, length: 10, omission: '..') %></div>
 
           <div class="menu-item-count">
-            <%= button_to '◀︎', cart_item_decrement_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "decrement-button" %>
-            <%= turbo_frame_tag "menu_item_quantity_#{cart_item.id}" do %>
-              <div class="menu-item-quantity"><%= cart_item.item_count %></div>
-            <% end %>
-            <%= button_to '▶︎', cart_item_increment_path(cart_item), method: :post, data: { turbo_frame: "menu_item_quantity_#{cart_item.id}" }, class: "increment-button" %>
+            <%= button_to '◀︎', cart_item_decrement_path(cart_item), method: :post, class: "decrement-button", params: { menu_id: cart_item.menu_id, item_count: cart_item.item_count } %>
+
+            <div id="menu-item-quantity-<%= cart_item.menu_id %>" class="menu-item-quantity">
+              <%= render 'users/quantity', cart_item: cart_item %>
+            </div>
+
+            <%= button_to '▶︎', cart_item_increment_path(cart_item), method: :post, class: "increment-button" %>
           </div>
         </div>
       <% end %>
@@ -31,10 +33,10 @@
 
   <div class="button-set-container">
     <%= button_to "献立を選ぶ", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
-    <% if @has_menu_items %>
-      <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list", form: { data: { turbo_confirm: "既存の買い出しリストが上書きされます。本当に宜しいですか？" }} %>
+    <% if @requires_attention_for_update %>
+      <%= button_to "買い物リスト", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list", form: { data: { turbo_confirm: "リスト更新により、すでにチェックされている必要食材の数値が変更されますがよろしいでしょうか？" }} %>
     <% else %>
-      <%= button_to "買い出しに行く", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list" %>
+      <%= button_to "買い物リスト", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list" %>
     <% end %>
   </div>
 </div>

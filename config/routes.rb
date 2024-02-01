@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   # CartItem#createへのルーティング
   resources :cart_items
   resources :shopping_lists
+  post 'shopping_lists/check_items', to: 'shopping_lists#check_items'
 
   # カートアイテムの数量を増やす
   post '/cart_items/:id/increment', to: 'cart_items#increment', as: 'cart_item_increment'
