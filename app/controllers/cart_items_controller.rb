@@ -62,8 +62,9 @@ class CartItemsController < ApplicationController
 
   def decrement
     cart_item = CartItem.find_by(id: params[:id])
+    min_items_to_decrement = @settings.dig('limits', 'min_items_to_decrement')
 
-    if cart_item.item_count > 1
+    if cart_item.item_count > min_items_to_decrement
       cart_item.decrement!(:item_count)
       update_shopping_list
     end
