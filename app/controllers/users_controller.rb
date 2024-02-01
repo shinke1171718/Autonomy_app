@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   # ホーム画面のアクション
   def index
     cart = current_user.cart
-    @cart_items = cart.cart_items.includes(:menu) if cart
+    @cart_items = cart.cart_items.includes(:menu).order(:added_at) if cart
   end
 
   # マイページ画面のアクション

@@ -1,4 +1,6 @@
 class CartItemsController < ApplicationController
+  include IngredientsAggregator
+  include ShoppingListUpdater
 
   def create
     # 現在のユーザーのカートを取得または新規作成
@@ -36,6 +38,18 @@ class CartItemsController < ApplicationController
     cart_item = CartItem.find(params[:id])
     cart_item.destroy
 
+    cart = current_user.cart
+    shopping_list = cart.shopping_list
+
+    # カート内のアイテムが空になったかチェック
+    if cart.cart_items.empty?
+      # ショッピングリスト内のアイテムとメニューを全て削除
+      shopping_list.shopping_list_items.delete_all
+      shopping_list.shopping_list_menus.delete_all
+    else
+      update_shopping_list
+    end
+
     redirect_back(fallback_location: root_path)
   end
 
@@ -49,8 +63,15 @@ class CartItemsController < ApplicationController
 
   def decrement
     cart_item = CartItem.find_by(id: params[:id])
-    cart_item.decrement!(:item_count) if cart_item.item_count > 1
-    redirect_back(fallback_location: root_path)
+
+    if cart_item.item_count > 1
+      cart_item.decrement!(:item_count)
+      update_shopping_list
+    end
+
+    respond_to do |format|
+      format.js { render partial: 'users/quantity', locals: { cart_item: cart_item } }
+    end
   end
 
   private

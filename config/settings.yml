@@ -14,3 +14,6 @@ limits:
 
 confirmation:
   token_validity_hours: 24
+
+cart:
+  default_item_count_decrement: 1
