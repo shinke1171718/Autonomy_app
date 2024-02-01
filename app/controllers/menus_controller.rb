@@ -3,6 +3,7 @@ class MenusController < ApplicationController
   include ServingSizeHandler
   include IngredientScaler
   before_action :set_and_sort_materials_by_category, only: [:new, :edit]
+  before_action :check_menu_selection, only: [:edit, :destroy]
 
   def custom_menus
     # 現在ログインしているユーザーのIDに関連付けられたすべてのメニューIDを取得
@@ -170,7 +171,7 @@ class MenusController < ApplicationController
       render 'edit', status: :unprocessable_entity
     else
       # 通常の `edit` リクエスト処理
-      @menu = Menu.find(params[:id])
+      @menu = Menu.find(params[:menu_id])
     end
 
     # MenuIngredient モデルを使用して ingredient_id のリストを取得
@@ -335,4 +336,10 @@ class MenusController < ApplicationController
     end
   end
 
+  def check_menu_selection
+    if current_user.cart.cart_items.exists?(menu_id: params[:menu_id])
+      flash[:error] = "この献立は現在選択されているため、編集（削除）はできません。"
+      redirect_to user_menu_path(menu_id: params[:menu_id])
+    end
+  end
 end
