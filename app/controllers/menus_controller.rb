@@ -337,7 +337,7 @@ class MenusController < ApplicationController
   end
 
   def check_menu_selection
-    if current_user.cart.cart_items.exists?(menu_id: params[:menu_id])
+    if current_user_cart.cart_items.exists?(menu_id: params[:menu_id])
       flash[:error] = "この献立は現在選択されているため、編集（削除）はできません。"
       redirect_to user_menu_path(menu_id: params[:menu_id])
     end

@@ -296,12 +296,10 @@ module ShoppingListUpdater
   def update_shopping_list
     begin
       ActiveRecord::Base.transaction do
-        # ユーザーのカートを取得
-        cart = current_user.cart
         # カートの中にあるmenu_idとその個数のデータを取得
-        cart_items = cart.cart_items
+        cart_items = current_user_cart.cart_items
         # ショッピングリストを取得または作成
-        shopping_list = cart.shopping_list || cart.create_shopping_list
+        shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
         # カート内のアイテムから献立IDと数量のハッシュを生成するメソッド
         menu_item_counts = get_menu_item_counts(cart_items)
 

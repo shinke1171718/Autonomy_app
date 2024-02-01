@@ -4,7 +4,7 @@ class CartItemsController < ApplicationController
 
   def create
     # 現在のユーザーのカートを取得または新規作成
-    cart = current_user.cart || current_user.create_cart
+    cart = current_user_cart || current_user.create_cart
 
     # 各モデルからのアイテム数の総計を取得
     total_items_count = total_items_count(cart)
@@ -38,11 +38,10 @@ class CartItemsController < ApplicationController
     cart_item = CartItem.find(params[:id])
     cart_item.destroy
 
-    cart = current_user.cart
-    shopping_list = cart.shopping_list
+    shopping_list = current_user_cart.shopping_list
 
     # カート内のアイテムが空になったかチェック
-    if cart.cart_items.empty?
+    if current_user_cart.cart_items.empty?
       # ショッピングリスト内のアイテムとメニューを全て削除
       shopping_list.shopping_list_items.delete_all
       shopping_list.shopping_list_menus.delete_all

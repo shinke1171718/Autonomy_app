@@ -14,7 +14,7 @@ class CompletedMenusController < ApplicationController
 
   def create
     # 現在のユーザーのShoppingListMenuからデータを取得
-    shopping_list = current_user.cart.shopping_list
+    shopping_list = current_user_cart.shopping_list
 
     # 現在登録されている買い物リストデータ
     shopping_list_menus = ShoppingListMenu.where(shopping_list_id: shopping_list.id)
