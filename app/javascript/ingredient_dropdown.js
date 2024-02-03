@@ -194,6 +194,7 @@ function handleIngredientUnitChange(clickedElement) {
       inputElement.style.pointerEvents = "none";
       inputElement.setAttribute("readonly", true);
       inputElement.setAttribute("tabindex", "-1");
+      inputElement.value = "";
       inputElement.placeholder = "";
     } else {
       inputElement.style.backgroundColor = "";
