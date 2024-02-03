@@ -242,6 +242,14 @@ class ShoppingListsController < ApplicationController
   end
 
   def ensure_cart_is_not_empty
+
+    # 新規でまだ献立を一度も選択していない状態で「買い物リスト」をクリックする処理
+    if current_user_cart.nil?
+      flash[:error] = "献立を選択してください。"
+      redirect_to root_path
+      return
+    end
+
     if current_user_cart.cart_items.empty?
       flash[:error] = "献立を選択してください。"
       redirect_to root_path
