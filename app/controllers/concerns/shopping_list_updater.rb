@@ -235,6 +235,9 @@ module ShoppingListUpdater
       existing_item = items_group[:existing_items].first
       new_item = items_group[:new_items].first
 
+      # 既存データまたは新規データが nil の場合は次のループへ
+      next if existing_item.nil? || new_item.nil?
+
       # unit_id が一致するか確認
       quantity_difference = if existing_item.unit_id == new_item.unit_id
         # quantity の差分を計算
