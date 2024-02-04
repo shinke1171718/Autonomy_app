@@ -14,22 +14,22 @@
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.text_field :name, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名（2〜15文字、英数字）" %>
+        <%= f.text_field :name, autofocus: false, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名（2〜15文字、英数字）" %>
       </div>
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.email_field :email, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autofocus: false, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.password_field :password, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（8~128文字、英数記号含む）" %>
+        <%= f.password_field :password, autofocus: false, name: 'user[password]', autocomplete: "password", placeholder: "パスワード（8~128文字、英数記号含む）" %>
       </div>
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.password_field :password_confirmation, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード" %>
+        <%= f.password_field :password_confirmation, autofocus: false, name: 'user[password_confirmation]', autocomplete: "password_confirmation", placeholder: "確認用パスワード" %>
       </div>
 
       <div class="registration-actions">

@@ -14,7 +14,7 @@
 
       <div class="registration-field">
         <div class="error-message"></div>
-        <%= f.text_field :name, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名" %>
+        <%= f.text_field :name, autofocus: false, name: 'user[name]', autocomplete: "name", placeholder: "ユーザー名" %>
       </div>
 
       <div class="registration-actions">

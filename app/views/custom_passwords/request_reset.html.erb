@@ -12,7 +12,7 @@
     <%= form_with url: send_reset_instructions_path, local: true, method: :post do |f| %>
       <div class="password-reset-request-field">
         <div class="error-message"></div>
-        <%= f.email_field :email, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autofocus: false, name: 'user[email]', autocomplete: "email", placeholder: "メールアドレス" %>
       </div>
 
       <div class="password-reset-request-actions">

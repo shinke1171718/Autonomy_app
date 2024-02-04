@@ -12,11 +12,11 @@
     <%= form_with url: user_custom_session_path, local: true, data: { turbo: false } do |f| %>
       <div class="session-field">
         <div class="error-message"></div>
-        <%= f.email_field :email, autocomplete: "email", name: 'user[email]', placeholder: "メールアドレス" %>
+        <%= f.email_field :email, autofocus: false, autocomplete: "email", name: 'user[email]', placeholder: "メールアドレス" %>
       </div>
       <div class="session-field">
         <div class="error-message"></div>
-        <%= f.password_field :password, autocomplete: "new-password", name: 'user[password]', placeholder: "パスワード（8~128文字、英数記号含む）" %>
+        <%= f.password_field :password, autofocus: false, autocomplete: "new-password", name: 'user[password]', placeholder: "パスワード（8~128文字、英数記号含む）" %>
       </div>
       <div class="session-actions">
         <%= f.submit "ログイン" %>
