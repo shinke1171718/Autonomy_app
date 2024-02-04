@@ -100,7 +100,10 @@ class MenusController < ApplicationController
     units = material.material_units.map do |material_unit|
       { id: material_unit.unit_id, name: material_unit.unit.unit_name }
     end
-    render json: units
+
+    # unit_id で昇順にソート
+    sorted_units = units.sort_by { |unit| unit[:id] }
+    render json: sorted_units
   end
 
 

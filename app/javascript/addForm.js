@@ -102,7 +102,7 @@ function updateMaxCountText(formCount_view, maxFormCount_view) {
   formCountLimit.textContent = "+作成あと(" + countLimit + "個)";
 }
 
-function createNewForms(defaultMaxCount, Data){
+function createNewForms(defaultMaxCount, Data, unitIds){
   for (var i = 0; i < defaultMaxCount ; i++) {
     createNewForm();
 
@@ -133,9 +133,10 @@ function createNewForms(defaultMaxCount, Data){
     }
 
     var ingredientUnitSelect = currentForm.querySelector(`#menu_ingredients_unit\\[${i}\\]`);
-    if (ingredientUnitSelect) {
+
+    if (ingredientUnitSelect && unitIds[i]) {
       // 単位のセットアップ
-      handleIngredientNameChange(ingredientUnitSelect, currentData.material_name);
+      handleIngredientNameChange(ingredientUnitSelect, currentData.material_name, unitIds[i]);
 
       // 選択された単位IDを適用するための遅延。DOMの更新後に単位を設定するために必要。
       const unitSelectionDelay = 500;
@@ -166,6 +167,16 @@ function updateForm(){
     return;
   }
 
+
+  // 配列のインデックスに対応する単位IDを格納するオブジェクトを作成
+  var unitIds = {};
+  for (const index in parsedIngredients) {
+    // parsedIngredients[index] が null または undefined でないことを確認
+    if (parsedIngredients[index] && parsedIngredients[index].hasOwnProperty('unit_id')) {
+      unitIds[index] = parsedIngredients[index].unit_id;
+    }
+  }
+
   // parsedIngredients から null でない値のみを抽出し、その数をカウント
   var formCount = Object.values(parsedIngredients).filter(value => value !== null).length;
 
@@ -176,18 +187,18 @@ function updateForm(){
   // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (formCount >= minFormCount) {
     const maxCount = formCount
-    createNewForms(maxCount, parsedIngredients)
+    createNewForms(maxCount, parsedIngredients, unitIds)
 
   // 新規で登録フォームを表示する場合の処理
   }else{
     // 新規で登録フォームを表示する場合、デフォルトのフォーム数（ここでは5）を設定してフォームを生成
     const maxCount = 5
-    createNewForms(maxCount, parsedIngredients)
+    createNewForms(maxCount, parsedIngredients, unitIds)
   }
 }
 
 // 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
-function handleIngredientNameChange(selectElement, value) {
+function handleIngredientNameChange(selectElement, value, selectedUnitId) {
   const material_name = value;
   const userId = document.querySelector('.menu-form-container').getAttribute('data-user-id');
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -205,6 +216,7 @@ function handleIngredientNameChange(selectElement, value) {
   .then(response => response.json())
   .then(data => {
 
+    // 既存のオプションをクリアする
     while (selectElement.firstChild) {
       selectElement.removeChild(selectElement.firstChild);
     }
@@ -214,9 +226,14 @@ function handleIngredientNameChange(selectElement, value) {
       option.value = item.id;
       option.textContent = item.name;
       selectElement.appendChild(option);
-      selectElement.style.pointerEvents = 'auto';
-      selectElement.removeAttribute('tabindex');
+      if (String(item.id) === String(selectedUnitId)) {
+        selectElement.value = selectedUnitId;
+      }
     });
+
+    // ドロップダウンメニューのオプションを操作可能に設定
+    selectElement.style.pointerEvents = 'auto';
+    selectElement.removeAttribute('tabindex');
   });
 }
 
