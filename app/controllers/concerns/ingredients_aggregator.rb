@@ -19,17 +19,15 @@ module IngredientsAggregator
 
       material = Material.find_by(id: material_id)
       material_name = material.material_name
-
       # 重複している食材の処理
-      total_quantity = aggregate_quantities(ingredients_group)
-      default_unit_id = ingredients_group.first.material.default_unit_id
+      total_quantity, unit_id_to_use = aggregate_quantities(ingredients_group)
 
       # 「material_id」、合算した「数量」、「デフォルト単位」を１つのインスタンスとして再構成
       aggregated_ingredient = Ingredient.new(
         material_name: material_name,
         material_id: material_id,
         quantity: total_quantity,
-        unit_id: default_unit_id
+        unit_id: unit_id_to_use
       )
 
       aggregated_ingredients << aggregated_ingredient
@@ -45,24 +43,35 @@ module IngredientsAggregator
 
     # 複数の食材の合算数値
     total_quantity = 0
-    # 合算時に使用する単位を取得
-    default_unit_id = grouped_ingredients.first.material.default_unit_id
-    # 取得した食材の単位が全て合算用の単位と同じならsame_unitに代入
-    same_unit = grouped_ingredients.all? { |ingredient| ingredient.unit_id == default_unit_id }
 
-    # 取得した食材の単位が全て合算用の単位と同じ場合の処理
-    total_quantity = if same_unit
-      grouped_ingredients.sum(&:quantity)
+    # グループ内で使用されている全てのunit_idを取得
+    unique_unit_ids = grouped_ingredients.map(&:unit_id).uniq
+    unique_unit_id_threshold = @settings.dig('limits', 'unique_unit_id_threshold')
+
+    # グループ内で使用されている全てのunit_idが同じかどうかを確認
+    is_same_unit_id = grouped_ingredients.map(&:unit_id).uniq.length == unique_unit_id_threshold
+
+    # 使用するunit_idを決定
+    unit_id_to_use = if is_same_unit_id
+      grouped_ingredients.first.unit_id
     else
-      # 取得した食材の単位がバラバラの場合、合算されたデータがsumに蓄積され戻り値としてtotal_quantityに格納
-      grouped_ingredients.reduce(0) do |sum, ingredient|
-        # MaterialUnitから変換率（conversion_factor）を取得
+      grouped_ingredients.first.material.default_unit_id
+    end
+
+    # 同じunit_idである場合と異なる場合で合算ロジックを分ける
+    if is_same_unit_id
+      # グループ内のunit_idが全て同じでその単位で合算
+      total_quantity = grouped_ingredients.sum(&:quantity)
+    else
+      # 異なるunit_idが存在する場合、materialのdefault_unit_idを使用して合算
+      total_quantity = grouped_ingredients.reduce(0) do |sum, ingredient|
         material_unit = MaterialUnit.find_by(material_id: ingredient.material_id, unit_id: ingredient.unit_id)
-        # 登録された数値と変換率（conversion_factor）を掛け、sumに蓄積する
-        sum + ingredient.quantity * material_unit.conversion_factor
+        conversion_factor = material_unit.conversion_factor
+        sum + ingredient.quantity * conversion_factor
       end
     end
 
-    total_quantity
+    [total_quantity, unit_id_to_use]
   end
+
 end

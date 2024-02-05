@@ -85,7 +85,6 @@ class MenusController < ApplicationController
       @encoded_image = params[:menu][:encoded_image]
     end
 
-
     if @menu.valid?
       render_confirm_page
     else
