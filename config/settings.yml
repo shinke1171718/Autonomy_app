@@ -13,6 +13,7 @@ limits:
   default_max_serving_size: 35
   min_items_to_process: 1
   min_items_to_decrement: 1
+  unique_unit_id_threshold: 1
 
 confirmation:
   token_validity_hours: 24
