@@ -9,9 +9,9 @@ class Menu < ApplicationRecord
   has_many :shopping_lists, through: :shopping_list_menus
   has_many :completed_menus, dependent: :destroy
 
-  validates :menu_name, presence: true, length: { maximum: 15 }
-  validates :menu_contents, presence: true, length: { maximum: 20 }
-  validates :contents, presence: true, length: { maximum: 1500 }
+  validates :menu_name, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 15, message: '登録中に予期せぬエラーが発生しました。' }
+  validates :menu_contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 60, message: '登録中に予期せぬエラーが発生しました。' }
+  validates :contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 1500, message: '登録中に予期せぬエラーが発生しました。' }
   before_validation :set_default_image
 
   # 複数のingredientデータを格納するために設定しています。
