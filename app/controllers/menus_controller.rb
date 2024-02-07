@@ -270,13 +270,14 @@ class MenusController < ApplicationController
   end
 
   def filter_ingredients(ingredients_params)
+
     # 設定から特定のunit_idを取得
     no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
 
     # material_idが空である要素を排除
     ingredient_data = ingredients_params.reject { |key, ingredient| ingredient['material_id'].blank? }
     # unit_idが特定の値の要素を選択
-    unit_specific_ingredients = ingredient_data.select { |key, ingredient| ingredient['unit_id'] == no_quantity_unit_id }
+    unit_specific_ingredients = ingredient_data.select { |key, ingredient| ingredient['unit_id'] == no_quantity_unit_id.to_s }
     # quantityが空でない要素を選択
     quantity_present_ingredients = ingredient_data.reject { |key, ingredient| ingredient['quantity'].blank? }
 

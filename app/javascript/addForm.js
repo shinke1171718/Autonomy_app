@@ -199,6 +199,7 @@ function updateForm(){
 
 // 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
 function handleIngredientNameChange(selectElement, value, selectedUnitId) {
+  const NO_QUANTITY_UNIT_ID = "17";
   const material_name = value;
   const userId = document.querySelector('.menu-form-container').getAttribute('data-user-id');
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -230,6 +231,17 @@ function handleIngredientNameChange(selectElement, value, selectedUnitId) {
         selectElement.value = selectedUnitId;
       }
     });
+
+    // 特定のID（例えば"少々"）が選択された時の処理をここに追加
+    if (String(selectedUnitId) === NO_QUANTITY_UNIT_ID) {
+      const inputElement = selectElement.closest('div').querySelector(".ingredient-quantity");
+      inputElement.style.backgroundColor = "#e0e0e0";
+      inputElement.style.pointerEvents = "none";
+      inputElement.setAttribute("readonly", true);
+      inputElement.setAttribute("tabindex", "-1");
+      inputElement.value = "";
+      inputElement.placeholder = "";
+    }
 
     // ドロップダウンメニューのオプションを操作可能に設定
     selectElement.style.pointerEvents = 'auto';

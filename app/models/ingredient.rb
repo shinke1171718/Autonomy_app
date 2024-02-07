@@ -4,12 +4,13 @@ class Ingredient < ApplicationRecord
   belongs_to :material
   belongs_to :unit
 
-  validates :material_name, presence: true
-  validates :material_id, presence: true, length: { maximum: 15 }
+  validates :material_name, presence: { message: '登録中に予期せぬエラーが発生しました。' }
+  validates :material_id, presence: { message: '登録中に予期せぬエラーが発生しました。' }
 
-# 'quantity'は10桁まで許容。小数点含むためと、合算時の桁数考慮のため
-  validates :quantity, presence: true, length: { maximum: 10 }, unless: :skip_quantity_validation?
-  validates :unit_id, presence: true
+  # 'quantity'は10桁まで許容。小数点含むためと、合算時の桁数考慮のため
+  validates :quantity, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 10, too_long: '登録中に予期せぬエラーが発生しました。' }, unless: :skip_quantity_validation?
+
+  validates :unit_id, presence: { message: '登録中に予期せぬエラーが発生しました。' }
 
   private
 
