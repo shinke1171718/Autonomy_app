@@ -14,6 +14,9 @@ class Menu < ApplicationRecord
   validates :contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 1500, message: '登録中に予期せぬエラーが発生しました。' }
   before_validation :set_default_image
 
+  # モデルのingredientモデルのバリデーション設定
+  validate :validate_ingredients
+
   # 複数のingredientデータを格納するために設定しています。
   attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url
 
@@ -23,6 +26,16 @@ class Menu < ApplicationRecord
     if image.blank?
       default_image = Rails.root.join("app/assets/images/default-menu-icon.png")
       self.image.attach(io: File.open(default_image), filename: "default-menu-icon.png")
+    end
+  end
+
+  def validate_ingredients
+    ingredients.each do |ingredient|
+      if !ingredient.valid?
+        ingredient.errors.full_messages.each do |message|
+          errors.add(:base, message)
+        end
+      end
     end
   end
 
