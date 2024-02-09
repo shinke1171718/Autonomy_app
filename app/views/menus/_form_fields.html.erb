@@ -8,11 +8,6 @@
   <%= f.text_field :menu_contents, autofocus: false, id: "menu_contents", autocomplete: "menu_contents", placeholder: "献立の説明(最大60字)" %>
 </div>
 
-<div id="menu-error-contents" class="menu-error"></div>
-<div class="content-field">
-  <%= f.text_area :contents, autofocus: false, id: "contents", autocomplete: "contents", placeholder: "作り方(最大1500字)" %>
-</div>
-
 <div class="image-field">
   <%= f.file_field :image, autofocus: false, autocomplete: "image", placeholder: "献立の写真", id: "menu_image" %>
 </div>
