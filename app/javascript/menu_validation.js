@@ -7,7 +7,7 @@ document.addEventListener('submit', function(event) {
   let maxForm = 14;
   let menu_name = document.getElementById("menu_name");
   let menu_contents = document.getElementById("menu_contents");
-  let contents = document.getElementById("contents");
+  // let contents = document.getElementById("contents");
   let errorMessage_name = document.getElementById("menu-error_name");
   let errorMessage_menu_contents = document.getElementById("menu-error-menu-contents");
   let errorMessage_contents = document.getElementById("menu-error-contents");
@@ -18,7 +18,7 @@ document.addEventListener('submit', function(event) {
   // menuモデルのバリデーション
   validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)
   validateAndHighlightInput(menu_contents, errorMessage_menu_contents, inputContent, event)
-  validateAndHighlightInput(contents, errorMessage_contents, inputText, event)
+  // validateAndHighlightInput(contents, errorMessage_contents, inputText, event)
 
   // ingredientモデルのバリデーション
   for (let i = minForm; i < maxForm; i++) {

@@ -35,8 +35,7 @@ class MenusController < ApplicationController
     # 受け取ったmenuデータを再度インスタンス化
     @menu = Menu.new(
       menu_name: params[:menu][:menu_name],
-      menu_contents: params[:menu][:menu_contents],
-      contents: params[:menu][:contents],
+      menu_contents: params[:menu][:menu_contents]
     )
 
     # ingredientデータの処理
@@ -259,14 +258,14 @@ class MenusController < ApplicationController
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents, :encoded_image, :filename, :image_content_type, :image_data_url, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
+    params.require(:menu).permit(:menu_name, :menu_contents, :encoded_image, :filename, :image_content_type, :image_data_url, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
   end
 
   # このメソッドでは、`confirm` アクションからのリダイレクト時に、ストロングパラメータを
   # 使用して、許可された属性（menu_name、menu_contents、contents）をモデルに一括で割り当てる
   # ために必要なパラメータをフィルタリングします。
   def menu_params_from_confirm
-    params.require(:menu).permit(:menu_name, :menu_contents, :contents)
+    params.require(:menu).permit(:menu_name, :menu_contents)
   end
 
   def filter_ingredients(ingredients_params)

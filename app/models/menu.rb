@@ -11,7 +11,6 @@ class Menu < ApplicationRecord
 
   validates :menu_name, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 15, message: '登録中に予期せぬエラーが発生しました。' }
   validates :menu_contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 60, message: '登録中に予期せぬエラーが発生しました。' }
-  validates :contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 1500, message: '登録中に予期せぬエラーが発生しました。' }
   before_validation :set_default_image
 
   # モデルのingredientモデルのバリデーション設定
