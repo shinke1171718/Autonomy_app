@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_15_010902) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_09_050421) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -127,6 +127,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_010902) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "recipe_step_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recipe_steps", force: :cascade do |t|
+    t.bigint "menu_id", null: false
+    t.bigint "recipe_step_category_id", null: false
+    t.integer "step_order"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["menu_id"], name: "index_recipe_steps_on_menu_id"
+    t.index ["recipe_step_category_id"], name: "index_recipe_steps_on_recipe_step_category_id"
+  end
+
   create_table "shopping_list_items", force: :cascade do |t|
     t.bigint "shopping_list_id", null: false
     t.bigint "material_id", null: false
@@ -198,6 +215,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_15_010902) do
   add_foreign_key "carts", "users"
   add_foreign_key "completed_menus", "menus"
   add_foreign_key "completed_menus", "users"
+  add_foreign_key "recipe_steps", "menus"
+  add_foreign_key "recipe_steps", "recipe_step_categories"
   add_foreign_key "shopping_list_items", "categories"
   add_foreign_key "shopping_list_items", "materials"
   add_foreign_key "shopping_list_items", "shopping_lists"
