@@ -8,6 +8,7 @@ class Menu < ApplicationRecord
   has_many :shopping_list_menus, dependent: :restrict_with_exception
   has_many :shopping_lists, through: :shopping_list_menus
   has_many :completed_menus, dependent: :destroy
+  has_many :recipe_steps, dependent: :destroy
 
   validates :menu_name, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 15, message: '登録中に予期せぬエラーが発生しました。' }
   validates :menu_contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 60, message: '登録中に予期せぬエラーが発生しました。' }
