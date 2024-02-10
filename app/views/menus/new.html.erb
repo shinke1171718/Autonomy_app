@@ -23,13 +23,27 @@
         <% end %>
 
         <div class ="contents-title">
-          <p>２.食材リスト設定</p>
+          <p>２.作り方の設定</p>
+        </div>
+
+        <div class="steps-form-input" id="steps-form-input">
+          <%= f.fields_for :steps do |step_form| %>
+            <div id="step_form"></div>
+          <% end %>
+
+          <div class="step-count-up-button">
+            <button class="step-form-count-up" data-action="increment" id="step-form-count-up"><span id="step-form-count-limit"></span></button>
+          </div>
+        </div>
+
+        <div class ="contents-title">
+          <p>３.必要食材の設定</p>
         </div>
 
         <div id="ingredients-error" class="ingredients-error-message"></div>
         <div id ="ingredients-date", data-ingredients="<%= @menu.ingredients.to_json %>"></div>
 
-        <div class="ingredient-form-input">
+        <div class="ingredient-form-input" id="ingredient-form-input">
           <div class="ingredient-form-field">
             <div id="ingredient-form-add-container">
               <%= f.fields_for :ingredients do |ingredient_form| %>
@@ -40,7 +54,7 @@
           </div>
 
           <div class="count-up-button">
-            <button class="form-count-up" data-action="increment" id="form-count-up"><span id="formCountLimit"></span></button>
+            <button class="form-count-up" data-action="increment" id="form-count-up"><span id="form-count-limit"></span></button>
           </div>
         </div>
 
@@ -63,3 +77,4 @@
   <%= javascript_include_tag 'ingredient_dropdown' %>
   <%= javascript_include_tag 'menu_validation' %>
   <%= javascript_include_tag 'image_preview' %>
+  <%= javascript_include_tag 'dynamic_step_forms' %>
