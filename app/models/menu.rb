@@ -18,7 +18,7 @@ class Menu < ApplicationRecord
   validate :validate_ingredients
 
   # 複数のingredientデータを格納するために設定しています。
-  attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url
+  attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url, :steps
 
   private
 
