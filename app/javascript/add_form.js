@@ -177,9 +177,9 @@ function createNewForms(defaultMaxCount, Data, unitIds){
 function updateForm(){
   let ingredientsDate = document.getElementById('ingredients-date');
   // data-ingredients 属性の値を取得
-  let dataAttr = ingredientsDate.getAttribute('data-ingredients');
+  let ingredientsDataAttribute = ingredientsDate.getAttribute('data-ingredients');
   // JSON文字列をオブジェクトに変換
-  let parsedIngredients = JSON.parse(dataAttr);
+  let parsedIngredients = JSON.parse(ingredientsDataAttribute);
 
   // 食材未登録の状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (parsedIngredients === null) {
@@ -189,7 +189,6 @@ function updateForm(){
     createNewForms(maxCount, {});
     return;
   }
-
 
   // 配列のインデックスに対応する単位IDを格納するオブジェクトを作成
   let unitIds = {};

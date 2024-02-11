@@ -38,6 +38,10 @@ class MenusController < ApplicationController
       menu_contents: params[:menu][:menu_contents]
     )
 
+    if params[:menu][:recipe_steps_attributes]
+      @menu.recipe_steps = params[:menu][:recipe_steps_attributes]
+    end
+
     # ingredientデータの処理
     # 別途子モデルであるingredientsをmenuに別途割り当てる。
     # 理由は「accepts_nested_attributes_for」を使用しないためです。
