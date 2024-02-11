@@ -102,61 +102,6 @@ function createNewStepForms(defaultMaxCount, Data){
   updateMaxStepCountText(stepFormCountView, maxStepFormCountView)
 }
 
-
-// // 一時的に設定
-// function createNewForms(defaultMaxCount, Data, unitIds){
-//   for (let i = 0; i < defaultMaxCount ; i++) {
-//     createNewForm();
-
-//     // Dataが存在しない、またはData[i]が存在しない場合、以降の処理をスキップ
-//     if (!Data || !Data[i]) continue;
-//     let currentData = Data[i];
-//     let currentForm = document.querySelectorAll('.custom-ingredient-fields')[i];
-
-//     let ingredientNameField = currentForm.querySelector(`#ingredient_name\\[${i}\\]`);
-//     let ingredientIdField = currentForm.querySelector(`#ingredient_id\\[${i}\\]`);
-//     let ingredientQuantityField = currentForm.querySelector(`#ingredient_quantity\\[${i}\\]`);
-
-//     // 材料名、数量、単位IDを設定
-//     if (ingredientNameField) {
-//       // readonly 属性を一時的に解除
-//       ingredientNameField.removeAttribute('readonly');
-//       // 値を設定
-//       ingredientNameField.value = currentData.material_name || '';
-//       // 再び readonly 属性を設定
-//       ingredientNameField.setAttribute('readonly', true);
-//     }
-
-//     if (ingredientIdField) ingredientIdField.value = currentData.material_id || '';
-
-//     if (ingredientQuantityField) {
-//       // formatQuantity関数を使用して数量を整形してから設定
-//       ingredientQuantityField.value = formatQuantity(currentData.quantity) || '';
-//     }
-
-//     let ingredientUnitSelect = currentForm.querySelector(`#menu_ingredients_unit\\[${i}\\]`);
-
-//     if (ingredientUnitSelect && unitIds[i]) {
-//       // 単位のセットアップ
-//       handleIngredientNameChange(ingredientUnitSelect, currentData.material_name, unitIds[i]);
-
-//       // 選択された単位IDを適用するための遅延。DOMの更新後に単位を設定するために必要。
-//       const unitSelectionDelay = UNIT_SELECTION_DELAY_MS;
-
-//       // 既に選択されている単位IDがあれば、それを選択する
-//       // この処理には動的フォーム作成＋単位設定処理を行った後に処理される必要があるため、あえて遅延させています。
-//       setTimeout(() => {
-//         ingredientUnitSelect.value = currentData.unit_id || '';
-//       }, unitSelectionDelay);
-//     }
-//   }
-//   updateMaxCountText(ingredientFormCountView, ingredientMaxFormCountView)
-// }
-
-
-
-
-
 // フォームにあるフォーム追加ボタンで表示されるカウントについての処理
 function updateMaxStepCountText(stepFormCountView, maxStepFormCountView) {
   // formCountLimit 要素を取得
