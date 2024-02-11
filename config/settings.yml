@@ -20,3 +20,7 @@ confirmation:
 
 cart:
   default_item_count_decrement: 1
+
+recipe_step:
+  initial_step_order: 0
+  step_order_increment: 1

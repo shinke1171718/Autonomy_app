@@ -65,6 +65,8 @@ function createNewStepForm() {
   const displayOffset = FORM_INDEX_OFFSET;
   let newFormCount_view = stepFormCountView + displayOffset;
 
+  let stepFormCount_Back = stepFormCountBack + displayOffset;
+
   const twoDigitThreshold = TWO_DIGIT_DISPLAY_THRESHOLD;
   let paddedNewFormCount = newFormCount_view < twoDigitThreshold ? '0' + newFormCount_view : newFormCount_view;
 
@@ -74,7 +76,7 @@ function createNewStepForm() {
     <div class="step-form-field">
 
       <div class="step-delete-button">
-        <a href="#" class="step-form-count-down" data-action="decrement",  id="step-form-count-down[${stepFormCountBack}]">❌</a>
+        <a href="#" class="step-form-count-down" data-action="decrement",  id="step-form-count-down[${stepFormCount_Back}]">❌</a>
       </div>
 
       <div class="step-field-wrapper">
@@ -84,7 +86,7 @@ function createNewStepForm() {
 
         <div class="step-fields">
           <div class="step-category-dropdown">
-            <select name="steps[${stepFormCountBack}][category_id]" class="select-dropdown">
+            <select name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
               <option value="">工程ジャンルを選択してください。</option>
               <option value="1">野菜の下準備（切る/剥くなど）</option>
               <option value="2">肉の下準備（切る/解凍など）</option>
@@ -94,7 +96,7 @@ function createNewStepForm() {
             </select>
           </div>
           <div class="step-description">
-            <textarea name="steps[${stepFormCountBack}][notes]" maxlength="60" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
+            <textarea name="menu[recipe_steps][${stepFormCount_Back}][description]" maxlength="60" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
           </div>
         </div>
       </div>

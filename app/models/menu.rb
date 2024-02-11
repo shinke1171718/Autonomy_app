@@ -10,15 +10,18 @@ class Menu < ApplicationRecord
   has_many :completed_menus, dependent: :destroy
   has_many :recipe_steps, dependent: :destroy
 
-  validates :menu_name, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 15, message: '登録中に予期せぬエラーが発生しました。' }
-  validates :menu_contents, presence: { message: '登録中に予期せぬエラーが発生しました。' }, length: { maximum: 60, message: '登録中に予期せぬエラーが発生しました。' }
+  # 全てのバリデーションエラーメッセージを統一
+  common_error_message = '登録中に予期せぬエラーが発生しました。'
+
+  validates :menu_name, presence: { message: common_error_message }, length: { maximum: 15, message: common_error_message }
+  validates :menu_contents, presence: { message: common_error_message }, length: { maximum: 60, message: common_error_message }
   before_validation :set_default_image
 
-  # モデルのingredientモデルのバリデーション設定
   validate :validate_ingredients
+  validate :validate_recipe_steps
 
   # 複数のingredientデータを格納するために設定しています。
-  attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url, :steps
+  attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url, :recipe_steps
 
   private
 
@@ -35,6 +38,16 @@ class Menu < ApplicationRecord
         ingredient.errors.full_messages.each do |message|
           errors.add(:base, message)
         end
+      end
+    end
+  end
+
+  def validate_recipe_steps
+    recipe_steps.each do |recipe_step|
+      next if recipe_step.valid?
+
+      recipe_step.errors.full_messages.each do |message|
+        errors.add(:base, message)
       end
     end
   end

@@ -3,7 +3,7 @@
 
     <%= form_with model: @menu, url: user_menu_path(id: current_user.id, menu_id: @menu.id), method: :patch, local: true do |f| %>
       <%= f.hidden_field :menu_id, value: params[:menu][:menu_id] %>
-      <%= render 'menu_confirm_details', f: f, menu: @menu, image_data_url: @image_data_url, encoded_image: @encoded_image,
+      <%= render 'menu_confirm_details', f: f, menu: @menu, recipe_steps: @menu.recipe_steps, image_data_url: @image_data_url, encoded_image: @encoded_image,
       image_content_type: @image_content_type, ingredients: @menu.ingredients, button_text: "更新" %>
     <% end %>
 
@@ -11,7 +11,7 @@
       <div class="menu-edit-button">
         <%= form_with model: @menu, url: edit_confirm_user_menus_path(current_user, id: @menu.id), method: :post, local: true do |f| %>
           <%= f.hidden_field :menu_id, value: params[:menu][:menu_id] %>
-          <%= render 'review_edit_menu_fields', f: f, menu: @menu, encoded_image: @encoded_image, image_data_url: @image_data_url %>
+          <%= render 'review_edit_menu_fields', f: f, menu: @menu, recipe_steps: @menu.recipe_steps, encoded_image: @encoded_image, image_data_url: @image_data_url %>
         <% end %>
       </div>
     </div>

@@ -1,6 +1,12 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  has_many :menu_users, dependent: :destroy
+  has_many :menus, through: :menu_users
+  has_one :cart, dependent: :destroy
+  has_many :completed_menus, dependent: :destroy
+  has_many :shopping_lists, dependent: :destroy
+  has_many :completed_menus, dependent: :destroy
 
   validates :name, presence: { message: "ユーザー名は必須です。" },
   length: { minimum: 2, too_short: "ユーザー名は最低%{count}文字必要です。", maximum: 15, too_long: "ユーザー名は最大%{count}文字までです。" },
@@ -21,13 +27,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable
   attr_accessor :current_password, :user_info_change, :password_change, :new_record, :email_change
-
-  has_many :menu_users, dependent: :destroy
-  has_many :menus, through: :menu_users
-  has_one :cart, dependent: :destroy
-  has_many :completed_menus, dependent: :destroy
-  has_many :shopping_lists, dependent: :destroy
-  has_many :completed_menus, dependent: :destroy
 
   private
 

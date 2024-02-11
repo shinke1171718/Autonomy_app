@@ -5,6 +5,13 @@
 <%= f.hidden_field :image_content_type, value: menu.image.content_type %>
 <%= f.hidden_field :image_data_url, value: image_data_url %>
 
+<% if menu.recipe_steps.present? %>
+  <% menu.recipe_steps.each_with_index do |recipe_step, index| %>
+    <%= f.hidden_field "recipe_steps_attributes[#{index}][description]", value: recipe_step.description %>
+    <%= f.hidden_field "recipe_steps_attributes[#{index}][recipe_step_category_id]", value: recipe_step.recipe_step_category_id %>
+  <% end %>
+<% end %>
+
 <% if menu.ingredients.present? %>
   <% menu.ingredients.each_with_index do |ingredient, index| %>
     <%= f.hidden_field "ingredients_attributes[#{index}][material_name]", value: ingredient.material_name %>

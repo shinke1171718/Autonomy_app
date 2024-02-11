@@ -53,12 +53,18 @@ class MenusController < ApplicationController
   def confirm
     @menu = Menu.new(menu_params)
 
+    # 食材データを「@menu.steps」に格納
+    if params[:menu][:recipe_steps].present?
+      filtered_steps = filter_steps_data(params[:menu][:recipe_steps])
+      @menu.recipe_steps = instantiate_steps(filtered_steps)
+    end
+
     # 食材データを「@menu.ingredients」に格納
     if params[:menu][:ingredients].present?
       # フィルタリングされた食材データを取得
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
       # インスタンス化して@menuに関連付ける
-      create_ingredient_instances(@menu, filtered_ingredients)
+      @menu.ingredients = create_ingredient_instances(filtered_ingredients)
     end
 
     # 画像が新規アップロードされた場合、uploaded_fileを作成
@@ -108,11 +114,17 @@ class MenusController < ApplicationController
   def create
     menu = Menu.new(menu_params)
 
+    # 食材データを「@menu.steps」に格納
+    if params[:menu][:recipe_steps].present?
+      filtered_steps = filter_steps_data(params[:menu][:recipe_steps])
+      menu.recipe_steps = instantiate_steps(filtered_steps)
+    end
+
     if params[:menu][:ingredients].present?
       # フィルタリングされた食材データを取得
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
       # インスタンス化して@menuに関連付ける
-      create_ingredient_instances(menu, filtered_ingredients)
+      menu.ingredients = create_ingredient_instances(filtered_ingredients)
     end
 
     # 画像データがある場合の処理
@@ -122,21 +134,28 @@ class MenusController < ApplicationController
       menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
-    menu.save
-    UserMenu.create!(menu_id: menu.id, user_id: current_user.id)
+    begin
+      ActiveRecord::Base.transaction do
+        menu.save!
+        UserMenu.create!(menu_id: menu.id, user_id: current_user.id)
 
-    if menu.ingredients.present?
-      begin
-        ActiveRecord::Base.transaction do
+        if menu.recipe_steps.present?
+          menu.recipe_steps.each do |recipe_step|
+            recipe_step.menu_id = menu.id
+            recipe_step.save!
+          end
+        end
+
+        if menu.ingredients.present?
           menu.ingredients.each do |ingredient|
             ingredient.save!
             MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
           end
         end
-      rescue ActiveRecord::RecordInvalid
-        handle_general_error
-        return
       end
+    rescue ActiveRecord::RecordInvalid
+      handle_general_error
+      return
     end
 
     flash[:notice] = "献立を登録しました。"
@@ -191,7 +210,6 @@ class MenusController < ApplicationController
     end
   end
 
-
   def update
     menu = Menu.find(params[:menu][:menu_id])
 
@@ -207,7 +225,7 @@ class MenusController < ApplicationController
       # フィルタリングされた食材データを取得
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
       # インスタンス化して@menuに関連付ける
-      ingredient_data = create_ingredient_instances(menu, filtered_ingredients)
+      menu.ingredients = create_ingredient_instances(filtered_ingredients)
     end
 
     begin
@@ -223,8 +241,8 @@ class MenusController < ApplicationController
         menu.update!(menu_params)
 
         # 新しい食材データを保存
-        if ingredient_data.present?
-          ingredient_data.each do |ingredient|
+        if menu.ingredients.present?
+          menu.ingredients.each do |ingredient|
             ingredient.save!
             MenuIngredient.create!(menu_id: menu.id, ingredient_id: ingredient.id)
           end
@@ -258,7 +276,7 @@ class MenusController < ApplicationController
   private
 
   def menu_params
-    params.require(:menu).permit(:menu_name, :menu_contents, :encoded_image, :filename, :image_content_type, :image_data_url, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id])
+    params.require(:menu).permit(:menu_name, :menu_contents, :encoded_image, :filename, :image_content_type, :image_data_url, ingredients_attributes: [:material_name, :material_id, :quantity, :unit_id], recipe_steps_attributes: [:recipe_step_category_id, :description])
   end
 
   # このメソッドでは、`confirm` アクションからのリダイレクト時に、ストロングパラメータを
@@ -287,6 +305,12 @@ class MenusController < ApplicationController
   # メニューインスタンスに関連付ける食材インスタンスを作成するメソッド
   def create_ingredient_instances(menu_instance, filtered_ingredients)
     menu_instance.ingredients = filtered_ingredients.map do |ingredient_data|
+      Ingredient.new(ingredient_data)
+    end
+  end
+
+  def create_ingredient_instances(filtered_ingredients)
+    filtered_ingredients.map do |ingredient_data|
       Ingredient.new(ingredient_data)
     end
   end
@@ -342,6 +366,23 @@ class MenusController < ApplicationController
     if current_user_cart.cart_items.exists?(menu_id: params[:menu_id])
       flash[:error] = "この献立は現在選択されているため、編集（削除）はできません。"
       redirect_to user_menu_path(menu_id: params[:menu_id])
+    end
+  end
+
+  # 受け取ったstepsデータを使用するデータだけ取得
+  def filter_steps_data(steps_params)
+
+    steps_params.select do |_, value|
+      value[:recipe_step_category_id].present? && value[:description].present?
+    end
+  end
+
+  # メニューインスタンスに関連付けるstepsインスタンスを作成するメソッド
+  def instantiate_steps(filtered_steps)
+    # ActionController::Parameters オブジェクトをハッシュに変換し、その値の配列を取得
+    steps_array = filtered_steps.to_unsafe_h.values
+    steps_array.map do |value|
+      RecipeStep.new(recipe_step_category_id: value[:recipe_step_category_id], description: value[:description])
     end
   end
 end
