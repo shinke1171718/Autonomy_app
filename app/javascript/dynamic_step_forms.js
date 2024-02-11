@@ -14,6 +14,10 @@ var FORM_INDEX_OFFSET = 1;
 var TWO_DIGIT_DISPLAY_THRESHOLD = 10;
 // デフォルトで表示されるフォームの最大数
 var DEFAULT_MAX_FORM_COUNT = 5;
+// 工程未登録時に生成するフォームの数
+var INGREDIENT_NO_FORM_STEPS_COUNT = 0;
+// フォームが少なくとも1つ存在することを示す最小フォームカウント
+var INGREDIENT_MIN_FORM_STEPS_COUNT = 1;
 
 var stepFormCountView = INITIAL_FORM_COUNT_VIEW;
 var stepFormCountBack = INITIAL_FORM_COUNT_BACK;
@@ -38,12 +42,62 @@ document.addEventListener("click", function(event) {
 
 function updateStepForm(){
   const maxStepCount = DEFAULT_MAX_FORM_COUNT;
-  createNewForms(maxStepCount)
+  let stepsDate = document.getElementById('steps-date');
+  // data-ingredients 属性の値を取得
+  let stepsDataAttribute = stepsDate.getAttribute('data-steps');
+  // JSON文字列をオブジェクトに変換
+  let parsedSteps = JSON.parse(stepsDataAttribute);
+
+  // 食材未登録の状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
+  if (parsedSteps === null) {
+    // maxCount: 新しく生成するフォームの数を指定。
+    // ここでは食材が未登録のため、0に設定してフォームを生成しない。
+    const maxStepCount = DEFAULT_MAX_FORM_COUNT;
+    createNewStepForms(maxStepCount)
+    return;
+  }
+
+  // parsedSteps から null でない値のみを抽出し、その数をカウント
+  let formStepCount = Object.values(parsedSteps).filter(value => value !== null).length;
+  // 最小フォームカウント：この値は、フォームが存在している（つまりフォームの数が0より大きい）ことを確認するために使用される。
+  // 1は、少なくとも1つのフォームが存在することを意味し、この条件を満たした場合のみフォームの再作成を行う。
+  const minFormStepCount = INGREDIENT_MIN_FORM_STEPS_COUNT;
+
+  // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
+  if (formStepCount >= minFormStepCount) {
+    // 編集時に設定されていたフォームの数を設定
+    const StepCount = formStepCount
+    createNewStepForms(StepCount, parsedSteps)
+
+  // 新規で登録フォームを表示する場合の処理
+  }else{
+    // 新規で登録フォームを表示する場合、デフォルトのフォーム数（ここでは5）を設定してフォームを生成
+    const defaultStepCount = DEFAULT_MAX_FORM_COUNT
+    createNewStepForms(defaultStepCount, parsedSteps)
+  }
 }
 
-function createNewForms(defaultMaxCount){
-  for (var i = 0; i < defaultMaxCount ; i++) {
+function createNewStepForms(createFormCount, Data){
+  for (var i = 0; i < createFormCount ; i++) {
     createNewStepForm()
+    // Dataが存在しない、またはData[i]が存在しない場合、以降の処理をスキップ
+    if (!Data || !Data[i]) continue;
+    let currentStepData = Data[i];
+    let currentStepForm = document.querySelectorAll('.step-form-field')[i];
+    // ステップカテゴリIDを取得するためのセレクタ
+    let stepCategoryField = currentStepForm .querySelector(`#recipe_step_category_id\\[${i}\\]`);
+    // ステップの説明を取得するためのセレクタ
+    let stepDescriptionField = currentStepForm .querySelector(`#recipe_steps_description\\[${i}\\]`);
+
+    // ステップカテゴリIDを設定
+    if (stepCategoryField && currentStepData.recipe_step_category_id) {
+      stepCategoryField.value = currentStepData.recipe_step_category_id;
+    }
+
+    // ステップの説明を設定
+    if (stepDescriptionField && currentStepData.description) {
+      stepDescriptionField.value = currentStepData.description;
+    }
   }
   updateMaxStepCountText(stepFormCountView, maxStepFormCountView)
 }
@@ -86,7 +140,7 @@ function createNewStepForm() {
 
         <div class="step-fields">
           <div class="step-category-dropdown">
-            <select name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
+            <select id="recipe_step_category_id[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
               <option value="">工程ジャンルを選択してください。</option>
               <option value="1">野菜の下準備（切る/剥くなど）</option>
               <option value="2">肉の下準備（切る/解凍など）</option>
@@ -96,7 +150,7 @@ function createNewStepForm() {
             </select>
           </div>
           <div class="step-description">
-            <textarea name="menu[recipe_steps][${stepFormCount_Back}][description]" maxlength="60" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
+            <textarea id="recipe_steps_description[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][description]" maxlength="60" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
           </div>
         </div>
       </div>

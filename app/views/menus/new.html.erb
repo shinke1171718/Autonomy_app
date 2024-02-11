@@ -26,6 +26,8 @@
           <p>２.作り方の設定</p>
         </div>
 
+        <div id ="steps-date", data-steps="<%= @menu.recipe_steps.to_json %>"></div>
+
         <div class="steps-form-input" id="steps-form-input">
           <%= f.fields_for :steps do |step_form| %>
             <div id="step_form"></div>
@@ -73,7 +75,7 @@
   <div id="dropdownBackground" class="dropdown-bg"></div>
 </div>
 
-  <%= javascript_include_tag 'addForm' %>
+  <%= javascript_include_tag 'add_form' %>
   <%= javascript_include_tag 'ingredient_dropdown' %>
   <%= javascript_include_tag 'menu_validation' %>
   <%= javascript_include_tag 'image_preview' %>
