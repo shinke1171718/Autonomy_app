@@ -77,8 +77,8 @@ function updateStepForm(){
   }
 }
 
-function createNewStepForms(defaultMaxCount, Data){
-  for (var i = 0; i < defaultMaxCount ; i++) {
+function createNewStepForms(createFormCount, Data){
+  for (var i = 0; i < createFormCount ; i++) {
     createNewStepForm()
     // Dataが存在しない、またはData[i]が存在しない場合、以降の処理をスキップ
     if (!Data || !Data[i]) continue;

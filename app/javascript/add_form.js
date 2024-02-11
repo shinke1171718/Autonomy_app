@@ -125,8 +125,8 @@ function updateMaxCountText(ingredientFormCountView, ingredientMaxFormCountView)
   formCountLimit.textContent = "+作成（あと" + countLimit + "個）";
 }
 
-function createNewForms(defaultMaxCount, Data, unitIds){
-  for (let i = 0; i < defaultMaxCount ; i++) {
+function createNewForms(defaultCount, Data, unitIds){
+  for (let i = 0; i < defaultCount ; i++) {
     createNewForm();
 
     // Dataが存在しない、またはData[i]が存在しない場合、以降の処理をスキップ
@@ -208,14 +208,14 @@ function updateForm(){
 
   // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (formCount >= minFormCount) {
-    const maxCount = formCount
-    createNewForms(maxCount, parsedIngredients, unitIds)
+    const createFormCount = formCount
+    createNewForms(createFormCount, parsedIngredients, unitIds)
 
   // 新規で登録フォームを表示する場合の処理
   }else{
     // 新規で登録フォームを表示する場合、デフォルトのフォーム数（ここでは5）を設定してフォームを生成
-    const maxCount = INGREDIENT_DEFAULT_NEW_FORM_COUNT
-    createNewForms(maxCount, parsedIngredients, unitIds)
+    const defaultFormCount = INGREDIENT_DEFAULT_NEW_FORM_COUNT
+    createNewForms(defaultFormCount, parsedIngredients, unitIds)
   }
 }
 
