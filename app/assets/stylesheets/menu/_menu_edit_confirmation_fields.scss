@@ -2,4 +2,24 @@
 
 .menu-confirm-container{
   @include flex-center-column;
+
+  .recipe-step-contents {
+    margin-bottom: 20px;
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+
+      .step-order,
+      .step-category-name {
+        margin-right: 10px;
+      }
+
+      // 必要に応じて各項目のスタイルを追加
+      .step-order {
+        font-weight: bold;
+      }
+    }
+  }
 }

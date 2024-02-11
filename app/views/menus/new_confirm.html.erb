@@ -2,15 +2,14 @@
   <div class="confirm-form-container">
 
     <%= form_with model: @menu, url: user_menus_path(current_user), method: :post, local: true do |f| %>
-      <%= render 'menu_confirm_details', f: f, menu: @menu, image_data_url: @image_data_url, encoded_image: @encoded_image,
+      <%= render 'menu_confirm_details', f: f, menu: @menu, recipe_steps: @menu.recipe_steps, image_data_url: @image_data_url, encoded_image: @encoded_image,
       image_content_type: @image_content_type, ingredients: @menu.ingredients, button_text: "登録" %>
     <% end %>
-
 
     <div class="button-confirm-container">
       <div class="menu-edit-button">
         <%= form_with model: @menu, url: new_user_menu_path(current_user), method: :post, local: true do |f| %>
-          <%= render 'review_edit_menu_fields', f: f, menu: @menu, encoded_image: @encoded_image, image_data_url: @image_data_url %>
+          <%= render 'review_edit_menu_fields', f: f, menu: @menu, recipe_steps: @menu.recipe_steps, encoded_image: @encoded_image, image_data_url: @image_data_url %>
         <% end %>
       </div>
     </div>
