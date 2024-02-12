@@ -33,16 +33,20 @@ class Menu < ApplicationRecord
   end
 
   def validate_ingredients
+    return if !ingredients.present?
+
     ingredients.each do |ingredient|
-      if !ingredient.valid?
-        ingredient.errors.full_messages.each do |message|
-          errors.add(:base, message)
-        end
+      next if ingredient.valid?
+
+      ingredient.errors.full_messages.each do |message|
+        errors.add(:base, message)
       end
     end
   end
 
   def validate_recipe_steps
+    return if !recipe_steps.present?
+
     recipe_steps.each do |recipe_step|
       next if recipe_step.valid?
 

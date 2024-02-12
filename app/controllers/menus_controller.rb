@@ -191,11 +191,26 @@ class MenusController < ApplicationController
       # 理由は「accepts_nested_attributes_for」を使用しないためです。
       @menu.ingredients = params[:menu][:ingredients_attributes]
 
+      @menu.recipe_steps = params[:menu][:recipe_steps_attributes]
+
       # `confirm`からのPOST後のリダイレクトのため `edit` へレンダリング
       render 'edit', status: :unprocessable_entity
     else
       # 通常の `edit` リクエスト処理
       @menu = Menu.find(params[:menu_id])
+    end
+
+
+    # menu_idに該当するRecipeStepのデータを取得
+    recipe_steps = RecipeStep.where(menu_id: @menu.id)
+
+    # @menu.recipe_steps にデータを設定
+    @menu.recipe_steps = recipe_steps.each_with_index.inject({}) do |hash, (recipe_step, index)|
+      hash[index.to_s] = {
+        recipe_step_category_id: recipe_step.recipe_step_category_id.to_s,
+        description:             recipe_step.description
+      }
+      hash
     end
 
     # MenuIngredient モデルを使用して ingredient_id のリストを取得
@@ -224,11 +239,17 @@ class MenusController < ApplicationController
       menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
+    # 食材データを「@menu.steps」に格納
+    if params[:menu][:recipe_steps].present?
+      filtered_steps = filter_steps_data(params[:menu][:recipe_steps])
+      menu.recipe_steps = instantiate_steps(filtered_steps)
+    end
+
     # 食材データがある場合の処理
     if params[:menu][:ingredients].present?
       # フィルタリングされた食材データを取得
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
-      # インスタンス化して@menuに関連付ける
+      # インスタンス化してmenuに関連付ける
       menu.ingredients = create_ingredient_instances(filtered_ingredients)
     end
 
@@ -238,11 +259,24 @@ class MenusController < ApplicationController
         ingredient_ids = MenuIngredient.where(menu_id: menu.id).pluck(:ingredient_id)
         ingredients = Ingredient.where(id: ingredient_ids)
 
+        # 現在登録されているRecipeStepデータを取得
+        recipe_steps = RecipeStep.where(menu_id: menu.id)
+
+        # 既存の工程データを削除する
+        recipe_steps.destroy_all
         # 既存の食材データを削除する
         ingredients.destroy_all
 
         # メニューデータを更新
         menu.update!(menu_params)
+
+        # 新しい工程データを保存
+        if menu.recipe_steps.present?
+          menu.recipe_steps.each do |recipe_step|
+            recipe_step.menu_id = menu.id
+            recipe_step.save!
+          end
+        end
 
         # 新しい食材データを保存
         if menu.ingredients.present?
