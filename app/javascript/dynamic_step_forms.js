@@ -50,9 +50,6 @@ function updateStepForm(){
 
   // 食材未登録の状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (parsedSteps === null) {
-    // maxCount: 新しく生成するフォームの数を指定。
-    // ここでは食材が未登録のため、0に設定してフォームを生成しない。
-    const maxStepCount = DEFAULT_MAX_FORM_COUNT;
     createNewStepForms(maxStepCount)
     return;
   }
@@ -62,7 +59,6 @@ function updateStepForm(){
   // 最小フォームカウント：この値は、フォームが存在している（つまりフォームの数が0より大きい）ことを確認するために使用される。
   // 1は、少なくとも1つのフォームが存在することを意味し、この条件を満たした場合のみフォームの再作成を行う。
   const minFormStepCount = INGREDIENT_MIN_FORM_STEPS_COUNT;
-
   // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (formStepCount >= minFormStepCount) {
     // 編集時に設定されていたフォームの数を設定

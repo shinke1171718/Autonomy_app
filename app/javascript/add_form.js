@@ -120,7 +120,6 @@ function updateMaxCountText(ingredientFormCountView, ingredientMaxFormCountView)
 
   // 作成可能なフォームの残り数を計算
   let countLimit = ingredientMaxFormCountView - ingredientFormCountView;
-
   // formCountLimit 要素のテキストを更新して、残りのフォーム数を表示
   formCountLimit.textContent = "+作成（あと" + countLimit + "個）";
 }
