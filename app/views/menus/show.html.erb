@@ -1,7 +1,7 @@
 
 <div class="menu-show-container" id="menu-show-container">
   <div class="menu-detail-container">
-    <%= render partial: 'shared/menu_details', locals: { menu: @menu } %>
+    <%= render 'shared/menu_details', menu: @menu, recipe_steps: @recipe_steps %>
 
     <div class="ingredient-show-container">
       <div class ="show-contents-title">

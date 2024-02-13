@@ -28,4 +28,28 @@
   <div class ="menu-contents">
     <%= image_tag(rails_blob_path(menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
   </div>
+
+  <div class="show-contents-title">
+    <p>　作り方　</p>
+  </div>
+
+  <% if recipe_steps.present? %>
+    <% recipe_steps.each_with_index do |step, index| %>
+      <div class ="recipe-step-container">
+        <div class ="recipe-step-contents">
+          <div class="step-header">
+            <div class="step-order">
+              <p><%= index + 1 %></p>
+            </div>
+            <div class="step-category-name">
+              <p><%= step.recipe_step_category.name %></p>
+            </div>
+          </div>
+          <div class="step-description">
+            <p><%= step.description %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>
