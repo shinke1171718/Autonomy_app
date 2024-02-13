@@ -12,12 +12,14 @@
     <%= menu.menu_name %>
   </div>
 
-  <div class="show-contents-title">
-    <p>　献立の説明　</p>
-  </div>
-  <div class ="menu-contents">
-    <%= menu.menu_contents %>
-  </div>
+  <% if menu.menu_contents.present? %>
+    <div class="show-contents-title">
+      <p>　献立の説明　</p>
+    </div>
+    <div class ="menu-contents">
+      <%= menu.menu_contents %>
+    </div>
+  <% end %>
 
   <div class="show-contents-title">
     <p>　献立画像　</p>

@@ -6,7 +6,7 @@
     </div>
 
     <div class ="contents-title">
-      <p>１.献立情報の設定</p>
+      <p>１.献立名の設定<span class="required-text">（※必須）</span></p>
     </div>
 
     <div class="menu-form-input">
@@ -21,7 +21,7 @@
         <% end %>
 
         <div class ="contents-title">
-          <p>２.作り方の設定</p>
+          <p>４.作り方の設定<span class="required-text">（※必須）</span></p>
         </div>
 
         <div id ="steps-date", data-steps="<%= @menu.recipe_steps.to_json %>"></div>
@@ -37,7 +37,7 @@
         </div>
 
         <div class ="contents-title">
-          <p>３.必要食材の設定</p>
+          <p>５.必要食材の設定<span class="required-text">（※必須）</span></p>
         </div>
 
         <div id ="ingredients-date", data-ingredients="<%= @menu.ingredients.to_json %>"></div>

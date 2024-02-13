@@ -120,7 +120,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_050421) do
 
   create_table "menus", force: :cascade do |t|
     t.string "menu_name", default: "", null: false
-    t.text "menu_contents", default: "", null: false
+    t.text "menu_contents"
     t.text "image_meta_data", default: "", null: false
     t.string "image", default: "", null: false
     t.datetime "created_at", null: false
