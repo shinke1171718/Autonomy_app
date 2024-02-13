@@ -38,10 +38,8 @@ document.addEventListener('submit', function(event) {
       hasError = true;
     }
   });
-  console.log(hasError);
 
   if (hasError) {
-    console.log("きました");
     event.preventDefault();
   }
 });
