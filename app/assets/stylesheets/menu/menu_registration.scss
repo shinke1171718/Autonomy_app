@@ -113,57 +113,59 @@
   }
 
   .steps-form-input {
-    .step-form-field {
-      display: flex; // 横並びにする
-      align-items: flex-start;
-      align-items: center;
+    .step-form-container{
+      .step-form-field {
+        display: flex; // 横並びにする
+        align-items: flex-start;
+        align-items: center;
 
-      .step-delete-button {
-        margin-right: 10px;
-      }
-
-      a {
-        text-decoration: none;
-      }
-
-      .step-field-wrapper{
-        width: 100%;
-        display: flex;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-
-        .step-form-number {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-right: 1px solid #ccc;
-          padding: 0.5em;
+        .step-delete-button {
+          margin-right: 10px;
         }
 
-        .step-fields {
-          display: block; // デフォルトでブロック要素なので、必要に応じて明示的に設定
-          width: 100%; // 幅を100%にする
+        a {
+          text-decoration: none;
+        }
 
-          .step-category-dropdown,
-          .step-description {
-            width: 100%;
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 16px;
+        .step-field-wrapper{
+          width: 100%;
+          display: flex;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+
+          .step-form-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #ccc;
+            padding: 0.5em;
           }
 
-          .select-dropdown,
-          .text-field {
-            width: 100%;
-            border: none;
-            border-bottom: 1px solid #ccc; // 下線を追加
-            padding:5px;
-          }
+          .step-fields {
+            display: block; // デフォルトでブロック要素なので、必要に応じて明示的に設定
+            width: 100%; // 幅を100%にする
 
-          .step-description {
+            .step-category-dropdown,
+            .step-description {
+              width: 100%;
+              margin-top: 0;
+              margin-bottom: 0;
+              font-size: 16px;
+            }
+
+            .select-dropdown,
             .text-field {
-              width: calc(100% - 10px);
+              width: 100%;
               border: none;
+              border-bottom: 1px solid #ccc; // 下線を追加
+              padding:5px;
+            }
+
+            .step-description {
+              .text-field {
+                width: calc(100% - 10px);
+                border: none;
+              }
             }
           }
         }

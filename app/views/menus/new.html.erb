@@ -9,8 +9,6 @@
       <p>１.献立情報の設定</p>
     </div>
 
-    <div id="main-menu-error" class="menu-error-message"></div>
-
     <div class="menu-form-input">
       <%= form_with model: @menu, url: confirm_user_menu_path(current_user.id), method: :post, id: "menu_form" do |f| %>
         <%= render 'form_fields', f: f %>
@@ -42,13 +40,13 @@
           <p>３.必要食材の設定</p>
         </div>
 
-        <div id="ingredients-error" class="ingredients-error-message"></div>
         <div id ="ingredients-date", data-ingredients="<%= @menu.ingredients.to_json %>"></div>
 
         <div class="ingredient-form-input" id="ingredient-form-input">
           <div class="ingredient-form-field">
             <div id="ingredient-form-add-container">
               <%= f.fields_for :ingredients do |ingredient_form| %>
+                <div id="ingredient-error" class="ingredient-error-message"></div>
                 <div id="ingredient_form"></div>
                 <%= render 'ingredient_selector', materials_by_category: @materials_by_category, menu: @menu %>
               <% end %>

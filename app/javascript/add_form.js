@@ -17,7 +17,7 @@ var INGREDIENT_DECIMAL_BASE = 10;
 // フォームが少なくとも1つ存在することを示す最小フォームカウント
 var INGREDIENT_MIN_FORM_COUNT = 1;
 // 新規登録フォームのデフォルト数
-var INGREDIENT_DEFAULT_NEW_FORM_COUNT = 5;
+var INGREDIENT_DEFAULT_NEW_FORM_COUNT = 3;
 // 食材未登録時に生成するフォームの数
 var INGREDIENT_NO_INGREDIENT_FORM_COUNT = 0;
 // 2桁表示が必要になる数値のしきい値
@@ -77,6 +77,8 @@ function createNewForm() {
 
   if (ingredientFormCountView < ingredientMaxFormCountView) {
     let newForm = `
+    <div class="ingredient-form-container">
+      <div id="ingredient-error[${newFormCount_back}]" class="ingredient-error-message"></div>
       <div class="custom-ingredient-fields">
         <div class="form-delete-button">
           <a href="#" class="form-count-down" data-action="decrement",  id="form-count-down[${newFormCount_back}]">❌</a>
@@ -87,7 +89,8 @@ function createNewForm() {
         <input type="number" id="ingredient_quantity[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][quantity]" autocomplete="quantity" placeholder="数量" maxlength="4" step="0.1" class="ingredient-quantity">
         <select id="menu_ingredients_unit[${newFormCount_back}]" name="menu[ingredients][${newFormCount_back}][unit_id]" class="ingredient-unit" tabindex="-1">
         </select>
-      </div>`;
+      </div>
+    </div>`;
 
     ingredient_form.insertAdjacentHTML("beforeend", newForm);
     ingredientFormCountView++;

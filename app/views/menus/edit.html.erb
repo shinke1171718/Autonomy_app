@@ -9,8 +9,6 @@
       <p>１.献立情報入力</p>
     </div>
 
-    <div id="main-menu-error" class="menu-error-message"></div>
-
     <div class="menu-form-input">
       <%= form_with model: @menu, url: confirm_user_menu_path(current_user), method: :post, id: "menu_form" do |f| %>
         <%= f.hidden_field :menu_id, value: @menu.id %>
