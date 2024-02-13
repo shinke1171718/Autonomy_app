@@ -5,4 +5,48 @@
   .show-contents-title{
     @include contents-title;
   }
+
+  .recipe-step-container{
+    width: 70%;
+    @media screen and (max-width: 500px) {
+      width: 100%;
+    }
+    .recipe-step-contents {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      @media screen and (max-width: 500px) {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+      }
+
+      .step-header {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+
+        .step-order,
+        .step-category-name {
+          font-size: 18px;
+          margin-right: 10px;
+          @media screen and (max-width: 500px) {
+            margin-left: 10px;
+          }
+        }
+
+        .step-description {
+          word-wrap: break-word;
+        }
+
+        // 必要に応じて各項目のスタイルを追加
+        .step-order {
+          font-weight: bold;
+        }
+      }
+    }
+  }
 }

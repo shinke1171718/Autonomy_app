@@ -177,6 +177,9 @@ class MenusController < ApplicationController
 
     # scale_ingredientsメソッドを呼び出して、quantityを更新
     @scaled_ingredients = scale_ingredients(aggregated_ingredients, @serving_size)
+
+    # 作り方の工程データを取得
+    @recipe_steps = RecipeStep.where(menu_id: @menu.id)
   end
 
 
