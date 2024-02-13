@@ -14,7 +14,7 @@ class Menu < ApplicationRecord
   common_error_message = '登録中に予期せぬエラーが発生しました。'
 
   validates :menu_name, presence: { message: common_error_message }, length: { maximum: 20, message: common_error_message }
-  validates :menu_contents, presence: { message: common_error_message }, length: { maximum: 20, message: common_error_message }
+  validates :menu_contents, length: { maximum: 20, message: common_error_message }, allow_blank: true
   before_validation :set_default_image
 
   validate :validate_ingredients

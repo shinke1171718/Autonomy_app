@@ -14,12 +14,11 @@ document.addEventListener('submit', function(event) {
   let inputName = document.querySelector(".name-form-field input");
   let inputContent = document.querySelector(".menu-contents-field input");
 
-
   if (!validateAndHighlightInput(menu_name, errorMessage_name, inputName, event)) {
     hasError = true;
   }
 
-  if (!validateAndHighlightInput(menu_contents, errorMessage_menu_contents, inputContent, event)) {
+  if (!validateInputLength(menu_contents, errorMessage_menu_contents, inputContent, event)) {
     hasError = true;
   }
 
@@ -60,7 +59,7 @@ function initializeRealtimeValidation() {
 
   // メニュー内容のリアルタイムバリデーション
   menuContentsInput.addEventListener('input', function() {
-    setupDelayedValidation(menu_contents, () => validateAndHighlightInput(menu_contents, errorMessage_menu_contents, inputContent));
+    setupDelayedValidation(menu_contents, () => validateInputLength(menu_contents, errorMessage_menu_contents, inputContent));
   });
 
   // 各ステップのリアルタイムバリデーション
@@ -96,11 +95,24 @@ function setupDelayedValidation(inputElement, validationFunction) {
   });
 }
 
-
 function validateAndHighlightInput(element, sub_errorMessage, inputElement) {
   // 入力値が空、または20文字を超えている場合にエラーメッセージを表示
   if (element.value.trim() === "" || element.value.trim().length > 20) {
     sub_errorMessage.textContent = "⚠️必須：20文字以内で入力してください。";
+    inputElement.style.backgroundColor = "rgb(255, 184, 184)";
+    return false;
+  } else {
+    // 条件を満たしている場合はエラーメッセージと背景色をクリア
+    sub_errorMessage.textContent = "";
+    inputElement.style.backgroundColor = "";
+    return true;
+  }
+}
+
+function validateInputLength(element, sub_errorMessage, inputElement) {
+  // 入力値が60文字を超えている場合にエラーメッセージを表示
+  if (element.value.trim().length > 20) {
+    sub_errorMessage.textContent = "⚠️20文字以内で入力してください。";
     inputElement.style.backgroundColor = "rgb(255, 184, 184)";
     return false;
   } else {
@@ -171,6 +183,7 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
     errorDiv.textContent = "";
     quantityInput.style.backgroundColor = "";
     errorDiv.style.color = "";
+    return true;
   }
 }
 

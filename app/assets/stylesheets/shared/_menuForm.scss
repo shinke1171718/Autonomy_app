@@ -27,6 +27,11 @@
   padding-top: 10px;
   text-decoration: underline;
   text-align:  center;
+
+  .required-text {
+    color: red;
+    font-size: 15px;
+  }
 }
 
 @mixin default-button-style{
