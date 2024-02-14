@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :cooking_flows
+
   devise_for :users
   devise_scope :user do
     get 'users/confirmation/custom_confirm', to: 'custom_confirmations#custom_confirm', as: :custom_user_confirmation
