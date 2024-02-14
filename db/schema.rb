@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_09_050421) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_14_051600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_050421) do
     t.datetime "updated_at", null: false
     t.index ["menu_id"], name: "index_completed_menus_on_menu_id"
     t.index ["user_id"], name: "index_completed_menus_on_user_id"
+  end
+
+  create_table "cooking_flows", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cooking_flows_on_cart_id"
+  end
+
+  create_table "cooking_steps", force: :cascade do |t|
+    t.bigint "cooking_flow_id", null: false
+    t.bigint "recipe_step_id", null: false
+    t.string "menu_name", default: "", null: false
+    t.integer "step_order"
+    t.boolean "is_checked"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooking_flow_id"], name: "index_cooking_steps_on_cooking_flow_id"
+    t.index ["recipe_step_id"], name: "index_cooking_steps_on_recipe_step_id"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -215,6 +234,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_050421) do
   add_foreign_key "carts", "users"
   add_foreign_key "completed_menus", "menus"
   add_foreign_key "completed_menus", "users"
+  add_foreign_key "cooking_flows", "carts"
+  add_foreign_key "cooking_steps", "cooking_flows"
+  add_foreign_key "cooking_steps", "recipe_steps"
   add_foreign_key "recipe_steps", "menus"
   add_foreign_key "recipe_steps", "recipe_step_categories"
   add_foreign_key "shopping_list_items", "categories"

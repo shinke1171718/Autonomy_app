@@ -1,6 +1,7 @@
 class RecipeStep < ApplicationRecord
   belongs_to :menu, optional: true
   belongs_to :recipe_step_category
+  has_many :cooking_steps
 
   # 全てのバリデーションエラーメッセージを統一
   common_error_message = '登録中に予期せぬエラーが発生しました。'
