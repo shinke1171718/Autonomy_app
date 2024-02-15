@@ -139,7 +139,7 @@ function createNewStepForm() {
           <div class="step-fields">
             <div class="step-category-dropdown">
               <select id="recipe_step_category_id[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
-                <option value="">工程ジャンルを選択してください。</option>
+                <option value="">工程ジャンルを選択</option>
                 <option value="1">野菜の下準備（切る/剥くなど）</option>
                 <option value="2">肉の下準備（切る/解凍など）</option>
                 <option value="3">その他の下準備（切る/解凍など）</option>
