@@ -125,12 +125,12 @@ class ShoppingListsController < ApplicationController
     # データを減らし、実際のデータと比較することで食材リストのチェックされている値（例：✔︎鶏肉 200g）に影響があるかチェック
     # 減少（削除）したデータ作成
 
-    # デフォルトのアイテム数減少量
-    default_item_count_decrement = @settings.dig('cart', 'default_item_count_decrement')
-
     # 数量変更の場合の処理
     # 献立の作る数量を減少させた場合の食材リストデータ（仮）を作成
     if item_count_to_remove
+      # デフォルトのアイテム数減少量
+      default_item_count_decrement = @settings.dig('cart', 'default_item_count_decrement')
+
       # 指定されたmenu_idのアイテムの数量を減らす
       cart_item_to_update = cart_items.find { |item| item.menu_id.to_s == menu_id_to_remove }
       cart_item_to_update.item_count -= default_item_count_decrement
@@ -169,8 +169,16 @@ class ShoppingListsController < ApplicationController
 
     # 集約された食材リストデータ（仮）をShoppingListItemのインスタンスとして作成
     shopping_list_items_instances = create_shopping_list_items(aggregated_ingredients, shopping_list)
+
     # 食材リストデータ（仮）の中にチェック済みの食材データがない場合
     if !shopping_list.shopping_list_items.where(is_checked: true).exists?
+      render json: { requires_attention: false }
+      return
+    end
+
+    # 削除した献立の食材データは全て未チェックだった場合の処理
+    match_result = check_items_match(shopping_list, shopping_list_items_instances)
+    if match_result
       render json: { requires_attention: false }
       return
     end
@@ -240,5 +248,28 @@ class ShoppingListsController < ApplicationController
 
       render json: { requires_attention: false }
     end
+  end
+
+  # チェック済みのアイテムがshopping_list_items_instancesに完全に一致するか確認するメソッド
+  def check_items_match(shopping_list, shopping_list_items_instances)
+    # チェック済みのアイテムを取得
+    checked_items = shopping_list.shopping_list_items.where(is_checked: true)
+
+    # チェック済みアイテムがshopping_list_items_instances内に完全に一致するか確認
+    checked_items.each do |checked_item|
+      match_found = shopping_list_items_instances.any? do |instance_item|
+        instance_item.material_id == checked_item.material_id &&
+        instance_item.quantity == checked_item.quantity &&
+        instance_item.unit_id == checked_item.unit_id
+      end
+
+      # 一致するアイテムが見つからなかった場合、ループを抜けて false を返す
+      if !match_found
+        return false
+      end
+    end
+
+    # 全てのアイテムが一致した場合は true を返す
+    true
   end
 end
