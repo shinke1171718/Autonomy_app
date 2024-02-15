@@ -175,7 +175,7 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
 
   // 数量が半角数字ではない、または空の場合にエラーメッセージを表示
   if (!quantityValue || !isHalfWidthNumber(quantityValue)) {
-    errorDiv.textContent = "⚠️必須：半角数字で数量の設定をしてください。";
+    errorDiv.textContent = "⚠️必須：半角数字（小数可、先頭0不可）で数量の設定してください。";
     quantityInput.style.backgroundColor = "rgb(255, 184, 184)";
     errorDiv.style.color = "red";
     return false;
@@ -189,5 +189,5 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
 
 // 半角数字のみかどうかをチェックするヘルパー関数
 function isHalfWidthNumber(value) {
-  return /^[0-9]+$/.test(value);
+  return /^(?!0\d)\d*(\.\d+)?$/.test(value);
 }
