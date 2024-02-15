@@ -88,12 +88,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_14_051600) do
   create_table "cooking_steps", force: :cascade do |t|
     t.bigint "cooking_flow_id", null: false
     t.bigint "recipe_step_id", null: false
+    t.bigint "recipe_step_category_id"
     t.string "menu_name", default: "", null: false
     t.integer "step_order"
     t.boolean "is_checked"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cooking_flow_id"], name: "index_cooking_steps_on_cooking_flow_id"
+    t.index ["recipe_step_category_id"], name: "index_cooking_steps_on_recipe_step_category_id"
     t.index ["recipe_step_id"], name: "index_cooking_steps_on_recipe_step_id"
   end
 
@@ -236,6 +238,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_14_051600) do
   add_foreign_key "completed_menus", "users"
   add_foreign_key "cooking_flows", "carts"
   add_foreign_key "cooking_steps", "cooking_flows"
+  add_foreign_key "cooking_steps", "recipe_step_categories"
   add_foreign_key "cooking_steps", "recipe_steps"
   add_foreign_key "recipe_steps", "menus"
   add_foreign_key "recipe_steps", "recipe_step_categories"

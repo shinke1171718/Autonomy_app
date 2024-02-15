@@ -1,0 +1,45 @@
+.menu-list{
+  display: flex;
+  margin: 10px;
+  @media screen and (max-width: 600px) {
+    height: 27px;
+  }
+
+  .menu-item{
+    width: 100%;
+    @media screen and (max-width: 600px) {
+      height: 30px;
+      width: 60%;
+    }
+
+    .menu-image{
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
+    }
+    .menu-name{
+      text-align: center;
+      @media screen and (max-width: 600px) {
+        font-size: 18px;
+        margin-right: 10px;
+        text-align: right;
+      }
+    }
+  }
+
+  .menu-item-counts{
+    @media screen and (max-width: 600px) {
+      width: 40%;
+    }
+  }
+
+  .menu-item-counts p {
+    font-size: 25px;
+    margin-top: 30px;
+    width: 50px;
+    @media screen and (max-width: 600px) {
+      font-size: 18px;
+      margin-top: 0px;
+    }
+  }
+}

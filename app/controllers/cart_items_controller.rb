@@ -56,6 +56,7 @@ class CartItemsController < ApplicationController
   def increment
     cart_item = CartItem.find_by(id: params[:id])
     cart_item.increment!(:item_count)
+
     redirect_back(fallback_location: root_path)
   end
 

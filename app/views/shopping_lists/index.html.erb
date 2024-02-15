@@ -11,22 +11,7 @@
 
     <div class="shopping-menu-list">
       <% @menus.each do |menu_date| %>
-        <div class="menu-list">
-          <div class="menu-item">
-
-            <div class="menu-image">
-              <%= image_tag(rails_blob_path(menu_date.image.variant(resize_to_fill: [80, 80])), class: "rounded-image") %>
-            </div>
-
-            <div class="menu-name">
-              <%= truncate(menu_date.menu_name, length: 7, omission: '..') %>
-            </div>
-          </div>
-
-          <div class="menu-item-counts">
-            <p>× <%= @menu_item_counts[menu_date.id] %></p>
-          </div>
-        </div>
+        <%= render 'shared/menu_item_display', menu_item_counts: @menu_item_counts, menu_date: menu_date  %>
       <% end %>
     </div>
   </div>
