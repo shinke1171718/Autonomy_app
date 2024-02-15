@@ -161,7 +161,7 @@ function clearSearchResults(searchResultsTitle) {
   searchResultsTitle.style.display = "none";
 }
 
-// // 全てのingredients-listを表示する
+// 全てのingredients-listを表示する
 function openDropdown(ingredientList, dropdownBg, searchResultsTitle) {
   const categoryLists = document.querySelectorAll('.ingredient-category ul');
   categoryLists.forEach(list => {
@@ -171,6 +171,7 @@ function openDropdown(ingredientList, dropdownBg, searchResultsTitle) {
   dropdownBg.style.display = "block";
   ingredientList.style.display = "block";
   clearSearchResults(searchResultsTitle);
+  document.body.style.overflow = 'hidden';
 }
 
 // 全てのingredients-listの表示を非表示にする
@@ -179,6 +180,7 @@ function closeDropdown(ingredientList, searchInput, dropdownBg, searchResultsTit
   ingredientList.style.display = "none";
   searchInput.value = "";
   clearSearchResults(searchResultsTitle);
+  document.body.style.overflow = '';
 }
 
 // ingredient_unitに値が変更された時の処理

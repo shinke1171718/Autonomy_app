@@ -265,9 +265,10 @@
 
       .ingredient-select{
         display: none;
-        position: absolute;
-        left: 34%;
-        top: 30%;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         width: 30%;
         z-index: 10;
         background-color: #ffffff;
