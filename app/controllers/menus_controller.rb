@@ -71,7 +71,13 @@ class MenusController < ApplicationController
       @menu.ingredients = create_ingredient_instances(filtered_ingredients)
     end
 
-    # 画像が新規アップロードされた場合、uploaded_fileを作成
+    # 編集時に再登録はしなかったが、最初に登録した画像データがある場合は再格納
+    if params[:menu][:image_data_url].present?
+      @image_data_url = params[:menu][:image_data_url]
+      @encoded_image = params[:menu][:encoded_image]
+    end
+
+    # 画像が新規アップロードされた場合、uploaded_fileを作成し既存データを上書き
     if params[:menu][:image].present?
       uploaded_file = params[:menu][:image]
     end
@@ -86,12 +92,6 @@ class MenusController < ApplicationController
       image_data = uploaded_file.read
       # Base64エンコードに変換
       @encoded_image = Base64.strict_encode64(image_data)
-    end
-
-    # 編集時に再登録はしなかったが、最初に登録した画像データがある場合は再格納
-    if params[:menu][:image_data_url].present?
-      @image_data_url = params[:menu][:image_data_url]
-      @encoded_image = params[:menu][:encoded_image]
     end
 
     if @menu.valid?
