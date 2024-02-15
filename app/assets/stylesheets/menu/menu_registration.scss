@@ -277,11 +277,10 @@
         padding: 5px 20px;
         border-radius: 8px;
         @media screen and (max-width: 1000px) {
-          left: 25%;
+
           width: 45%;
         }
         @media screen and (max-width: 700px) {
-          left: 6%;
           width: 80%;
           padding: 0px 10px;
         }
