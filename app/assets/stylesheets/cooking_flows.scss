@@ -1,0 +1,145 @@
+@import 'shared/menuForm';
+@import 'shared/styles';
+
+.cooking-flow-container{
+  @include menu-container;
+
+  .menu-overview{
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:  center;
+  }
+
+  .cooking-flow-header{
+    @include menu-heading;
+    @include menu-heading-after;
+  }
+
+  .cooking-flow-header h3{
+    margin-bottom: 0;
+  }
+
+  .cooking-flow-body{
+    display: block;
+    margin-top: 30px;
+    width: 100%;
+    @media screen and (max-width: 600px) {
+      border: 2px solid #000000;
+      border-radius: 20px;
+      width: 80%;
+    }
+
+    .menu-overview {
+      font-size: 20px;
+      text-decoration: underline;
+      text-align:  center;
+    }
+
+    .menu-items{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      @media screen and (max-width: 600px) {
+        display: block;
+        margin-top: 30px;
+      }
+    }
+  }
+
+  .ingredients-section{
+    width: 40%;
+    padding-bottom: 30px;
+    @media screen and (max-width: 1100px) {
+      width: 65%;
+    }
+
+    .ingredient-overview{
+      @include contents-title;
+      @media screen and (max-width: 480px) {
+        font-size: 17px;
+      }
+    }
+
+    .ingredient-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid black;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+
+    .ingredient-item p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .material-name {
+      flex-basis: 70%;
+    }
+
+    .quantity-unit {
+      display: flex;
+      flex-basis: 30%;
+      justify-content: flex-end;
+    }
+
+    .quantity,
+    .unit {
+      margin-left: 10px;
+    }
+  }
+
+  .recipe-step-container{
+    width: 70%;
+    @media screen and (max-width: 500px) {
+      width: 100%;
+    }
+    .recipe-step-contents {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      @media screen and (max-width: 500px) {
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+      }
+
+      .step-header {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+
+        .step-order,
+        .step-category-name {
+          font-size: 18px;
+          margin-right: 10px;
+          @media screen and (max-width: 500px) {
+            font-size: 15px;
+            margin-left: 10px;
+          }
+        }
+
+        .step-description {
+          word-wrap: break-word;
+        }
+
+        .step-order {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .button-container{
+    width: 100%;
+    .back-button{
+      @include button;
+    }
+  }
+}

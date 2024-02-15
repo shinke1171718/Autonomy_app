@@ -1,4 +1,3 @@
-# app/controllers/concerns/ingredient_scaler.rb
 module IngredientScaler
 
   private

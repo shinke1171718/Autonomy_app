@@ -1,6 +1,4 @@
-# app/controllers/concerns/shopping_list_updater.rb
 module ShoppingListUpdater
-  extend ActiveSupport::Concern
 
   def reset_and_create_shopping_list_items(shopping_list, shopping_list_items_instances, menu_item_counts)
     #既存のショッピングリストアイテムとメニューを削除

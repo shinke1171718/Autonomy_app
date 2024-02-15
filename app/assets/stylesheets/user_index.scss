@@ -6,10 +6,12 @@
   .menu-heading {
     @include menu-heading;
     margin-top: 0px;
+    font-size: 25px
   }
 
   .menu-heading h3 {
     @include menu-heading-h3;
+    margin-top: 0px;
     @media screen and (max-width: 900px) {
       font-size: 17px;
     }
@@ -18,6 +20,7 @@
 
   .menus_list{
     @include menus_list;
+    padding-top: 0px;
 
     .menu-item{
       @include menu_item;

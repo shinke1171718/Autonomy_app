@@ -1,0 +1,65 @@
+<div class="cooking-flow-container">
+
+  <div class="cooking-flow-header">
+    <h3>　レシピ　</h3>
+  </div>
+
+
+  <div class="menu-overview">
+    <p>　作る予定の献立　</p>
+  </div>
+
+  <div class="cooking-flow-body">
+    <div class="menu-items">
+      <% @menus.each do |menu_date| %>
+        <%= render 'shared/menu_item_display', menu_item_counts: @menu_item_counts, menu_date: menu_date  %>
+      <% end %>
+    </div>
+  </div>
+
+
+
+  <div class="ingredients-section">
+    <% @ingredients.each do |menu_data| %>
+      <p class="menu-overview">　食材リスト（<%= menu_data[:menu_name] %>）　</p>
+      <% menu_data[:ingredients].each do |ingredient_data| %>
+        <div class="ingredient-item">
+          <p class="material-name"><%= ingredient_data[:ingredient].material_name %></p>
+          <div class="quantity-unit">
+            <p class="quantity"><%= display_quantity(ingredient_data[:quantity]) %></p>
+            <p class="unit"><%= ingredient_data[:unit_name] %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+
+
+  <div class="menu-overview">
+    <p>　作り方　</p>
+  </div>
+
+  <% @cooking_steps_with_menu_name.each_with_index do |data, index| %>
+    <div class="recipe-step-container">
+      <div class="recipe-step-contents">
+        <div class="step-header">
+          <div class="step-order">
+            <p><%= index + 1 %></p>
+          </div>
+          <div class="step-category-name">
+            <% category_name = data[:recipe_step].recipe_step_category.name.gsub(/\（.*?\）/, '') %>
+            <p><%= "#{category_name}（#{data[:menu_name]}）" %></p>
+          </div>
+        </div>
+        <div class="step-description">
+          <p><%= data[:recipe_step].description %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="button-container">
+    <%= button_to "戻る", root_path, class: "back-button", method: :get %>
+  </div>
+</div>

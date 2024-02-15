@@ -24,3 +24,8 @@ cart:
 recipe_step:
   initial_step_order: 0
   step_order_increment: 1
+
+recipe_step_categories:
+  vegetable_prep: 1
+  meat_prep: 2
+  other_prep: 3
