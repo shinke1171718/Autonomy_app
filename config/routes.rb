@@ -23,16 +23,6 @@ Rails.application.routes.draw do
   post '/cart_items/:id/decrement', to: 'cart_items#decrement', as: 'cart_item_decrement'
   post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
 
-  resources :completed_menus do
-    member do
-      # 献立のページで、提供する人数を変更するためのアクション
-      post '/completed_menus/:menu_id/change_serving_size', to: 'completed_menus#change_serving_size', as: :change_serving_size
-
-      # 作った献立を調理完了として設定するアクション
-      get 'mark_as_completed', to: 'completed_menus#mark_as_completed', as: :mark_as
-    end
-  end
-
   resources :cooking_flows
 
   devise_for :users

@@ -1,4 +1,4 @@
-@import 'shared/menuForm';
+@import 'shared/form';
 
 .menu-confirm-container{
   @include flex-center-column;
@@ -25,7 +25,7 @@
         display: flex;
         align-items: center;
         justify-content: start;
-  
+
         .step-order,
         .step-category-name {
           font-size: 18px;

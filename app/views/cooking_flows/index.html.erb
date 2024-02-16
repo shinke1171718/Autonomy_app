@@ -18,10 +18,9 @@
   </div>
 
 
-
   <div class="ingredients-section">
     <% @ingredients.each do |menu_data| %>
-      <p class="menu-overview">　食材リスト（<%= menu_data[:menu_name] %>）　</p>
+      <p class="ingredient-overview">　食材リスト（<%= truncate(menu_data[:menu_name], length: 9, omission: '..') %>）　</p>
       <% menu_data[:ingredients].each do |ingredient_data| %>
         <div class="ingredient-item">
           <p class="material-name"><%= ingredient_data[:ingredient].material_name %></p>
@@ -35,8 +34,7 @@
   </div>
 
 
-
-  <div class="menu-overview">
+  <div class="step-overview">
     <p>　作り方　</p>
   </div>
 
@@ -49,7 +47,7 @@
           </div>
           <div class="step-category-name">
             <% category_name = data[:recipe_step].recipe_step_category.name.gsub(/\（.*?\）/, '') %>
-            <p><%= "#{category_name}（#{data[:menu_name]}）" %></p>
+            <p><%= "#{category_name}（#{truncate(data[:menu_name], length: 10, omission: '...')}）" %></p>
           </div>
         </div>
         <div class="step-description">

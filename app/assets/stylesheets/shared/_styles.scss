@@ -1,147 +1,11 @@
 
-// 「Sign up」と「Sign in」用のスタイルです。
-@mixin form-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  width: 50%;
-  margin: 150px auto;
-  height: auto;
-  margin-bottom: 60px;
-  @media screen and (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    padding: 20px 40px;
-    box-sizing: border-box;
-    margin-top: 100px;
-    margin-bottom: 60px;
-  }
-}
-
-@mixin form-instructions{
-  font-size: 13px;
-  position: relative;
-  margin-top: -40px;
-  margin-bottom: 10px;
-  @media screen and (max-width: 600px) {
-    font-size: 10px;
-  }
-}
-
-@mixin form-submit-button-input{
-  padding: 10px 40%;
-  font-size: 15px;
-  background-color: #1E9AF4;
-  color: white;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-@mixin form-submit-button{
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-@mixin field-form{
-  width: 90%;
-  padding: 10px 4%;
-  font-size: 16px;
-  margin-bottom: 13px;
-  border-radius: 20px;
-  margin-right: 13px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-@mixin form-title{
-  margin-bottom: 10px;
-  @media screen and (max-width: 400px) {
-    font-size: 13px;
-    margin-bottom: 25px;
-  }
-}
-
-@mixin form-link{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 13px;
-  @media screen and (max-width: 400px) {
-    font-size: 10px;
-  }
-}
-
-@mixin button {
-  display: block;
-  margin: 50px auto;
-  padding: 15px 0;
-  width: 30%;
-  font-size: 18px;
-  text-align: center;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  @media screen and (max-width: 800px) {
-    width: 80%;
-  }
-
+@mixin hover-background($color: #a3a3a3) {
   &:hover {
-    background-color: #959595;
+    background-color: $color;
   }
 }
 
-@mixin menus_list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding-top: 50px;
-  gap: 10px;
-  align-items: stretch;
-  justify-content: center;
-}
-
-@mixin menu-item {
-  width: 250px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  border-radius: 20px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-
-@mixin menu-item-title {
-  margin-top: 10px;
-  color: black;
-  text-decoration: none;
-}
-
-@mixin rounded-image {
-  border-radius: 20px;
-}
-
-@mixin menu-heading {
+@mixin list-heading {
   display: block;
   margin-top: 10px;
   margin-bottom: 30px;
@@ -155,7 +19,7 @@
   }
 }
 
-@mixin menu-heading-after {
+@mixin list-heading-after {
   &::after {
     content: "";
     position: absolute;
@@ -164,12 +28,6 @@
     width: 100%;
     height: 2px;
     background-color: #000000;
-  }
-}
-
-@mixin hover-background($color: #a3a3a3) {
-  &:hover {
-    background-color: $color;
   }
 }
 
@@ -183,41 +41,4 @@
   margin-bottom: 0;
   padding-bottom: 5px;
   line-height: 1.2;
-}
-
-@mixin menus-list{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 10px;
-  align-items: stretch;
-  justify-content: center;
-  padding-top: 30px;
-}
-
-@mixin menu-item-title {
-  margin-top: 10px;
-  color: black;
-  text-decoration: none;
-}
-
-@mixin menu-item{
-  position: relative;
-  width: 250px;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  border-radius: 20px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-@mixin rounded-image{
-  border-radius: 20px;
 }

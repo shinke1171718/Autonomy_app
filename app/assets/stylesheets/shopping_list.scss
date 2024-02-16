@@ -1,4 +1,4 @@
-@import 'shared/menuForm';
+@import 'shared/form';
 @import 'shared/styles';
 
 .shopping-list-container{
@@ -9,8 +9,8 @@
   }
 
   .list-title{
-    @include menu-heading;
-    @include menu-heading-after;
+    @include list-heading;
+    @include list-heading-after;
   }
 
   .list-title h3{
