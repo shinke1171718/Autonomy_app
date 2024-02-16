@@ -7,12 +7,12 @@ class CartItemsController < ApplicationController
     cart = current_user_cart || current_user.create_cart
 
     # 各モデルからのアイテム数の総計を取得
-    total_items_count = total_items_count(cart)
+    shopping_list_menus_count = ShoppingListMenu.where(shopping_list_id: cart.shopping_list&.id).count
     max_total_items = @settings.dig('limits', 'max_total_items')
 
     # 総数が20個を超えている場合の処理
-    if total_items_count >= max_total_items
-      flash[:error] = "献立の登録上限に達しました。"
+    if shopping_list_menus_count >= max_total_items
+      flash[:error] = "選択できる上限に達しました。"
       redirect_back(fallback_location: root_path) and return
     end
 
@@ -73,23 +73,5 @@ class CartItemsController < ApplicationController
     respond_to do |format|
       format.js { render partial: 'users/quantity', locals: { cart_item: cart_item } }
     end
-  end
-
-  private
-
-  # このメソッドは、ユーザーが関連するCompletedMenu、ShoppingListMenu、
-  # およびCartItemモデルからの総アイテム数を計算します。
-  def total_items_count(cart)
-    # ユーザーに関連するCompletedMenuモデルのアイテム数を計算
-    completed_menus_count = CompletedMenu.where(user_id: current_user.id, is_completed: false).count
-
-    # ユーザーのカートに関連するShoppingListMenuモデルのアイテム数を計算
-    shopping_list_menus_count = ShoppingListMenu.where(shopping_list_id: cart.shopping_list&.id).count
-
-    # カート内のCartItemモデルのアイテム数を計算
-    cart_items_count = cart.cart_items.count
-
-    # 3つのモデルからの総アイテム数を合計して返す
-    completed_menus_count + shopping_list_menus_count + cart_items_count
   end
 end
