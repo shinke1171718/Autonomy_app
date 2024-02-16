@@ -54,7 +54,7 @@ export function validateEmailInput(emailInput) {
     createErrorMessage(emailInput, "⚠️メールアドレスの形式が不正です");
     emailInput.style.backgroundColor = "rgb(255, 184, 184)";
   } else {
-    emailInput.style.backgroundColor = ""; // エラーがない場合は背景色をリセット
+    emailInput.style.backgroundColor = "";
   }
 }
 
@@ -62,16 +62,16 @@ export function validateNameInput(nameInput) {
   clearErrorMessages(nameInput);
 
   // ユーザー名の形式と文字数を確認する正規表現
-  const namePattern = /^[a-zA-Z0-9]{2,15}$/;
+  const nameLengthPattern = /^.{2,15}$/;
 
   if (!nameInput.value.trim()) {
     createErrorMessage(nameInput, "⚠️入力してください。");
     nameInput.style.backgroundColor = "rgb(255, 184, 184)";
-  } else if (!namePattern.test(nameInput.value)) {
-    createErrorMessage(nameInput, "⚠️2~15文字、英数字を含んでください。");
+  } else if (!nameLengthPattern.test(nameInput.value)) {
+    createErrorMessage(nameInput, "⚠️2~15文字で入力してください。");
     nameInput.style.backgroundColor = "rgb(255, 184, 184)";
   } else {
-    nameInput.style.backgroundColor = ""; // エラーがない場合は背景色をリセット
+    nameInput.style.backgroundColor = "";
   }
 }
 

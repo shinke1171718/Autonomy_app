@@ -7,8 +7,7 @@ class User < ApplicationRecord
   has_many :shopping_lists, dependent: :destroy
 
   validates :name, presence: { message: "ユーザー名は必須です。" },
-  length: { minimum: 2, too_short: "ユーザー名は最低%{count}文字必要です。", maximum: 15, too_long: "ユーザー名は最大%{count}文字までです。" },
-  format: { with: /\A[a-zA-Z0-9]+\z/, message: 'ユーザー名は英数字のみが使用できます。' }, if: :user_info_change_or_new_record?
+  length: { minimum: 2, too_short: "ユーザー名は最低%{count}文字必要です。", maximum: 15, too_long: "ユーザー名は最大%{count}文字までです。" }, if: :user_info_change_or_new_record?
 
   # メールアドレスのバリデーション
   validates :email, presence: { message: "メールアドレスは必須です。" },
