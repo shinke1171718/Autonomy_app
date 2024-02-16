@@ -233,7 +233,7 @@ class MenusController < ApplicationController
   end
 
   def update
-    menu = Menu.find(params[:menu][:menu_id])
+    menu = Menu.find(params[:id])
 
     # 画像データがある場合の処理
     if params[:menu].values_at(:encoded_image, :image_content_type).all?

@@ -66,18 +66,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_14_051600) do
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  create_table "completed_menus", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "menu_id", null: false
-    t.integer "menu_count", null: false
-    t.boolean "is_completed", default: false, null: false
-    t.date "date_completed"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["menu_id"], name: "index_completed_menus_on_menu_id"
-    t.index ["user_id"], name: "index_completed_menus_on_user_id"
-  end
-
   create_table "cooking_flows", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.datetime "created_at", null: false
@@ -234,8 +222,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_14_051600) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "menus"
   add_foreign_key "carts", "users"
-  add_foreign_key "completed_menus", "menus"
-  add_foreign_key "completed_menus", "users"
   add_foreign_key "cooking_flows", "carts"
   add_foreign_key "cooking_steps", "cooking_flows"
   add_foreign_key "cooking_steps", "recipe_step_categories"

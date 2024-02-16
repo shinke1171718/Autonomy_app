@@ -1,0 +1,152 @@
+@mixin form-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  width: 50%;
+  margin: 150px auto;
+  height: auto;
+  margin-bottom: 60px;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    margin-top: 100px;
+    margin-bottom: 60px;
+  }
+}
+
+@mixin form-instructions{
+  font-size: 13px;
+  position: relative;
+  margin-top: -40px;
+  margin-bottom: 10px;
+  @media screen and (max-width: 600px) {
+    font-size: 10px;
+  }
+}
+
+@mixin form-submit-button-input{
+  padding: 10px 40%;
+  font-size: 15px;
+  background-color: #1E9AF4;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@mixin form-submit-button{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+@mixin field-form{
+  width: 90%;
+  padding: 10px 4%;
+  font-size: 16px;
+  margin-bottom: 13px;
+  border-radius: 20px;
+  margin-right: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@mixin form-title{
+  margin-bottom: 10px;
+  @media screen and (max-width: 400px) {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+}
+
+@mixin form-link{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 13px;
+  @media screen and (max-width: 400px) {
+    font-size: 10px;
+  }
+}
+
+@mixin button {
+  display: block;
+  margin: 50px auto;
+  padding: 15px 0;
+  width: 30%;
+  font-size: 18px;
+  text-align: center;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  @media screen and (max-width: 800px) {
+    width: 80%;
+  }
+
+  &:hover {
+    background-color: #959595;
+  }
+}
+
+// 登録編集のフォームの大枠で使用します
+@mixin menu-container {
+  display: flex;
+  width: 60%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    margin: 0px auto 60px;
+    margin-bottom: 0px;
+  }
+}
+
+@mixin contents-title{
+  font-size: 20px;
+  padding-top: 10px;
+  text-decoration: underline;
+  text-align:  center;
+
+  .required-text {
+    color: red;
+    font-size: 15px;
+  }
+}
+
+@mixin default-button-style{
+  padding: 10px 45%;
+  font-size: 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@mixin flex-center-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
