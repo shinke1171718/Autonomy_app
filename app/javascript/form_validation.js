@@ -25,7 +25,7 @@ export function validateInput(input) {
     createErrorMessage(input, "⚠️入力してください。");
     input.style.backgroundColor = "rgb(255, 184, 184)";
   } else if (!isPasswordValid(input.value)) {
-    createErrorMessage(input, "⚠️8~128文字、大小英字、数字、記号を含んでください。");
+    createErrorMessage(input, "⚠️8~128文字、英数字（記号は任意）");
     input.style.backgroundColor = "rgb(255, 184, 184)";
   }
 }
@@ -37,7 +37,10 @@ export function isPasswordValid(password) {
   }
 
   // 正規表現を使ってパスワードの形式を検証
-  const regex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[\W_])[a-zA-Z\d\W_]{8,128}$/;
+  // 大文字小文字を区別せず、記号があってもなくても良い設定
+  // 最低1つの英字と1つの数字が必要
+  // 記号はどちらでもいい
+  const regex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d\W_]{8,128}$/;
   return regex.test(password);
 }
 
