@@ -40,4 +40,14 @@ class CustomSessionsController < ApplicationController
     #sessions#newへ戻る
     set_flash_and_redirect(:notice, "※ログアウトしました。", new_user_custom_session_path)
   end
+
+  def guest_sign_in
+    user = User.find_or_create_by!(email: 'guest@example.com') do |user|
+      user.name = "ゲスト様"
+      user.password = 'guest123'
+      user.skip_confirmation!
+    end
+    sign_in user
+    set_flash_and_redirect(:notice, "ゲストユーザーとしてログインしました。", root_path)
+  end
 end
