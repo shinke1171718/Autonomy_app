@@ -58,7 +58,7 @@
   <% end %>
 
   <div class="button-container">
-    <%= button_to '調理完了', complete_cooking_flow_path(@cooking_flow), method: :patch, class: 'back-button', form: { data: { turbo_confirm: "お疲れ様です！調理完了のため選択していた献立をリセットします。よろしいでしょうか？" } } %>
+    <%= button_to '調理完了', complete_cooking_flow_path(@cooking_flow), method: :patch, class: 'complete-button', form: { data: { turbo_confirm: "お疲れ様です！調理完了のため選択していた献立をリセットします。よろしいでしょうか？" } } %>
 
     <%= button_to "戻る", root_path, class: "back-button", method: :get %>
   </div>

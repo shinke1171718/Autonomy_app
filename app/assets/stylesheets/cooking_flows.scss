@@ -155,6 +155,26 @@
     width: 100%;
     .back-button{
       @include button;
+      margin-top: 5px;
+      width: 50%;
+      @media screen and (max-width: 500px) {
+        width: 80%;
+      }
+    }
+
+    .complete-button{
+      @include button;
+      background-color: #1E9AF4;
+      color: white;
+      margin-bottom: 20px;
+      width: 50%;
+      @media screen and (max-width: 500px) {
+        width: 80%;
+      }
+
+      &:hover {
+        background-color: #b4e2ff;
+      }
     }
   }
 }
