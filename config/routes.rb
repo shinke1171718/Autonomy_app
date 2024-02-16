@@ -23,7 +23,11 @@ Rails.application.routes.draw do
   post '/cart_items/:id/decrement', to: 'cart_items#decrement', as: 'cart_item_decrement'
   post '/shopping_lists/:id/toggle_check', to: 'shopping_lists#toggle_check', as: 'shopping_list_toggle_check'
 
-  resources :cooking_flows
+  resources :cooking_flows do
+    member do
+      patch :complete
+    end
+  end
 
   devise_for :users
   devise_scope :user do

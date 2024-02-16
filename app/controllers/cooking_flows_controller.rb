@@ -4,19 +4,14 @@ class CookingFlowsController < ApplicationController
 
   def index
     # cooking_flowがある場合は取得し、ない場合は新規作成
-    cooking_flow = CookingFlow.find_or_create_by(cart_id: current_user.cart.id)
+    @cooking_flow = CookingFlow.find_or_create_by(cart_id: current_user.cart.id)
 
     # カートに含まれるメニューIDを取得し、メニューIDに紐づくレシピステップをmenu_idごとにグループ化
     recipe_steps_by_menu = fetch_recipe_steps_by_menu
     # 引数で渡されたレシピステップのグループからCookingStepインスタンスを生成
-    cooking_steps = build_cooking_steps(recipe_steps_by_menu, cooking_flow.id)
+    cooking_steps = build_cooking_steps(recipe_steps_by_menu, @cooking_flow.id)
     # レシピステップカテゴリIDに基づいて分類し、指定された順序（野菜の下準備、その他の下準備、肉の下準備）で並び替え
     sorted_steps = sort_cooking_steps(cooking_steps)
-
-    # ショッピングリストメニューを取得
-    shopping_list = current_user_cart.shopping_list
-    # shopping_list_menusレコードに関連付けられたmenuオブジェクト、さらにそのmenuに関連付けられたimage_attachmentとそのblobを取得
-    shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
 
     cart_items = current_user_cart.cart_items
     # メニューデータを取得
@@ -43,12 +38,29 @@ class CookingFlowsController < ApplicationController
     @ingredients = build_ingredients_data(menu_ingredients, menus, units, @menu_item_counts)
   end
 
+  def complete
+    cooking_flow = CookingFlow.find(params[:id])
+
+    ActiveRecord::Base.transaction do
+      cart = cooking_flow.cart
+      cart.destroy!
+    end
+
+    flash[:notice] = "調理が完了し、選択した献立がリセットされました。"
+    redirect_to root_path
+
+  rescue ActiveRecord::RecordNotDestroyed => e
+    flash[:error] = "データの削除中にエラーが発生しました。"
+    redirect_to cooking_flows_path
+  end
+
+
   private
 
   # 現在のユーザーのカートに含まれるメニューIDを取得し、それらのメニューIDに紐づくレシピステップを
   # メニューIDごとにグループ化して取得します。
   def fetch_recipe_steps_by_menu
-    menu_ids = current_user.cart.cart_items.pluck(:menu_id).uniq
+    menu_ids = current_user_cart.cart_items.pluck(:menu_id).uniq
     RecipeStep.where(menu_id: menu_ids).group_by(&:menu_id)
   end
 
