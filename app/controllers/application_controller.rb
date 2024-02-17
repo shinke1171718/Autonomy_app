@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user!
     unless current_user
-      redirect_to new_user_custom_session_path
+      redirect_to landing_pages_show_path
     end
   end
 
