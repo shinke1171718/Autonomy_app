@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'landing_pages/show', to: 'landing_pages#show'
   root to: 'users#index'
   get 'users/:id/my_page', to: 'users#my_page', as: :user_my_page
   get 'users/:id/user_info', to: 'users#user_info', as: :user_info
