@@ -3,7 +3,7 @@
 <div class="menu-index-container" id="menu-index">
 
   <div class="menu-heading">
-    <h3>選択された献立</h3>
+    <h3>選択されたレシピ</h3>
   </div>
 
   <% if @cart_items.present? %>
@@ -12,7 +12,7 @@
         <div class="menu-item">
           <%= button_to '✖️', cart_item_path(cart_item), method: :delete, class: "delete-button", params: { menu_id: cart_item.menu_id } %>
 
-          <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 190])), class: "rounded-image") %>
+          <%= image_tag(rails_blob_path(cart_item.menu.image.variant(resize_to_fill: [220, 140])), class: "rounded-image") %>
           <div class="menu-item-title"><%= truncate(cart_item.menu.menu_name, length: 10, omission: '..') %></div>
 
           <div class="menu-item-count">
@@ -28,11 +28,11 @@
       <% end %>
     </div>
   <% else %>
-    <p class="empty-cart-message">献立が選択されていません。</p>
+    <p class="empty-cart-message">レシピが選択されていません。</p>
   <% end %>
 
   <div class="button-set-container">
-    <%= button_to "献立を選ぶ", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
+    <%= button_to "レシピを作る・選ぶ", sample_menus_path, class: "button-style bg-standard-menu", method: :get %>
     <%= button_to "買い物リスト", shopping_lists_path, class: "button-style bg-shopping-list", method: :post, id: "shopping-list" %>
     <%= button_to "レシピを確認", cooking_flows_path, class: "button-style bg-standard-menu", method: :get %>
   </div>

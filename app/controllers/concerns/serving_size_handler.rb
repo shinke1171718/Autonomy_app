@@ -36,8 +36,8 @@ module ServingSizeHandler
   private
 
   def set_serving_sizes
-    # 買い出し前の献立にはそれぞれデフォルト値を設定
-    # 買い出し後の献立にはそれぞれ「買い出しを完了した献立数を設定」
+    # 買い出し前のmenuにはそれぞれデフォルト値を設定
+    # 買い出し後のmenuにはそれぞれ「買い出しを完了したmenu数を設定」
     @serving_size = params[:serving_size].present? ? params[:serving_size].to_i : @settings.dig('limits', 'default_serving_size')
     @max_serving_size = params[:max_count].present? ? params[:max_count].to_i : @settings.dig('limits', 'default_max_serving_size')
 

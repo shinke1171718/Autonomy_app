@@ -3,12 +3,12 @@
 
 <div class="menus-container">
   <nav class="menu-list-container">
-    <%= link_to "サンプル献立", sample_menus_path, class: "menu-list-heading", method: :get %>
-    <%= link_to "オリジナル献立", user_custom_menus_path(current_user), class: "main-menu-list-heading", method: :get %>
+    <%= link_to "サンプルレシピ", sample_menus_path, class: "menu-list-heading", method: :get %>
+    <%= link_to "オリジナルレシピ", user_custom_menus_path(current_user), class: "main-menu-list-heading", method: :get %>
   </nav>
 
   <div class="menus_list">
-    <%= button_to "オリジナル献立作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get, data: { turbo: false } %>
+    <%= button_to "オリジナルレシピ作成", new_user_menu_path(current_user.id), class: "original-menu-button", method: :get, data: { turbo: false } %>
 
 
     <%= turbo_frame_tag 'original_menus_frame' do %>

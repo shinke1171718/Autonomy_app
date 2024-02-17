@@ -30,7 +30,7 @@ function setupDeleteButtonListeners(buttonClass) {
       .then(response => response.json())
       .then(data => {
         if (data.requires_attention) {
-          if (confirm('献立の変更により、既にチェックされた食材の数量が変わるか、リストから削除されます。この変更を適用しますか？')) {
+          if (confirm('レシピの変更により、既にチェックされた食材の数量が変わるか、リストから削除されます。この変更を適用しますか？')) {
             form.submit();
           }
         } else {

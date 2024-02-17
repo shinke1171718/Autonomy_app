@@ -54,7 +54,7 @@ class ShoppingListsController < ApplicationController
         # その中に同じ食材があれば合算する処理
         aggregate_and_update_checked_items(checked_items)
 
-        # カート内のアイテムから献立IDと数量のハッシュを生成するメソッド
+        # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
         menu_item_counts = get_menu_item_counts(cart_items)
         # カート内のアイテムに基づいて必要な食材を取得し、それらを必要な量だけ複製する
         ingredients_duplicated = duplicate_ingredients_for_menu(cart_items, menu_item_counts)
@@ -97,7 +97,7 @@ class ShoppingListsController < ApplicationController
     return
   end
 
-  # 献立を減少（削除）を行う際に食材リストですでにチェックされている値（例：✔︎鶏肉 200g）が
+  # menuを減少（削除）を行う際に食材リストですでにチェックされている値（例：✔︎鶏肉 200g）が
   # 変更される場合に確認ダイヤログを出す指示をするアクション
   def check_items
     # パラメータからmenu_idとitem_countを取得
@@ -118,7 +118,7 @@ class ShoppingListsController < ApplicationController
     # チェック済みの食材リストデータで同じ食材があれば合算する処理
     # 例：✔︎鶏肉 200g, ✔︎鶏肉 100g → ✔︎鶏肉 300g
     aggregate_and_update_checked_items(checked_items)
-    # カートの中にある献立データを取得
+    # カートの中にあるmenuデータを取得
     cart_items = current_user_cart.cart_items
 
     # cart_itemsから指定されたmenu_idを持つアイテムを更新または除外
@@ -126,7 +126,7 @@ class ShoppingListsController < ApplicationController
     # 減少（削除）したデータ作成
 
     # 数量変更の場合の処理
-    # 献立の作る数量を減少させた場合の食材リストデータ（仮）を作成
+    # menuの作る数量を減少させた場合の食材リストデータ（仮）を作成
     if item_count_to_remove
       # デフォルトのアイテム数減少量
       default_item_count_decrement = @settings.dig('cart', 'default_item_count_decrement')
@@ -141,7 +141,7 @@ class ShoppingListsController < ApplicationController
         updated_cart_items << item unless item.menu_id.to_s == menu_id_to_remove
       end
 
-    # 献立を削除させた場合の食材リストデータを作成
+    #menuを削除させた場合の食材リストデータを作成
     else
       # menu_id_to_remove に該当するアイテムを除外
       updated_cart_items = cart_items.reject { |item| item.menu_id.to_s == menu_id_to_remove }
@@ -154,7 +154,7 @@ class ShoppingListsController < ApplicationController
       return
     end
 
-    # 食材リストデータ（仮）から献立IDと数量のハッシュを生成
+    # 食材リストデータ（仮）からmenuIDと数量のハッシュを生成
     menu_item_counts = get_menu_item_counts(updated_cart_items)
     # 食材リストデータ（仮）に基づいて必要な食材を取得し、必要な量だけ複製
     ingredients_duplicated = duplicate_ingredients_for_menu(updated_cart_items, menu_item_counts)
@@ -176,7 +176,7 @@ class ShoppingListsController < ApplicationController
       return
     end
 
-    # 削除した献立の食材データは全て未チェックだった場合の処理
+    # 削除したmenuの食材データは全て未チェックだった場合の処理
     match_result = check_items_match(shopping_list, shopping_list_items_instances)
     if match_result
       render json: { requires_attention: false }
