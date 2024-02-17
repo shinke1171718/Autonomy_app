@@ -1,22 +1,22 @@
 <div id="menu-error_name" class="menu-error"></div>
 <div class="name-form-field">
-  <%= f.text_field :menu_name, autofocus: false, id: "menu_name", autocomplete: "menu_name", placeholder: "献立名(最大20字)" %>
+  <%= f.text_field :menu_name, autofocus: false, id: "menu_name", autocomplete: "menu_name", placeholder: "レシピ名(最大20字)" %>
 </div>
 
 
 <div class ="contents-title">
-  <p>２.献立説明を設定</p>
+  <p>２.レシピ説明を設定</p>
 </div>
 
 <div id="menu-error-menu-contents" class="menu-error"></div>
 <div class="menu-contents-field">
-  <%= f.text_field :menu_contents, autofocus: false, id: "menu_contents", autocomplete: "menu_contents", placeholder: "献立の説明(最大20字)" %>
+  <%= f.text_field :menu_contents, autofocus: false, id: "menu_contents", autocomplete: "menu_contents", placeholder: "レシピの説明(最大20字)" %>
 </div>
 
 <div class ="contents-title">
-  <p>３.献立画像を設定</p>
+  <p>３.レシピ画像を設定</p>
 </div>
 
 <div class="image-field">
-  <%= f.file_field :image, autofocus: false, autocomplete: "image", placeholder: "献立の写真", id: "menu_image" %>
+  <%= f.file_field :image, autofocus: false, autocomplete: "image", placeholder: "レシピの写真", id: "menu_image" %>
 </div>

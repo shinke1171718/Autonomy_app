@@ -29,7 +29,7 @@ class CartItemsController < ApplicationController
       cart.cart_items.create(menu_id: params[:menu_id], item_count: params[:serving_size])
     end
 
-    flash[:notice] = "献立を選択しました。"
+    flash[:notice] = "レシピを選択しました。"
     redirect_to root_path
   end
 

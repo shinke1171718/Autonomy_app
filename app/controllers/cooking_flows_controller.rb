@@ -46,7 +46,7 @@ class CookingFlowsController < ApplicationController
       cart.destroy!
     end
 
-    flash[:notice] = "調理が完了し、選択した献立がリセットされました。"
+    flash[:notice] = "調理が完了し、選択したレシピがリセットされました。"
     redirect_to root_path
 
   rescue ActiveRecord::RecordNotDestroyed => e

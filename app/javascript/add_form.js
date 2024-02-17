@@ -208,7 +208,7 @@ function updateForm(){
   // 1は、少なくとも1つのフォームが存在することを意味し、この条件を満たした場合のみフォームの再作成を行う。
   const minFormCount = INGREDIENT_MIN_FORM_COUNT;
 
-  // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
+  // menuを設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (formCount >= minFormCount) {
     const createFormCount = formCount
     createNewForms(createFormCount, parsedIngredients, unitIds)

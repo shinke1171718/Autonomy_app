@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   post '/users/:user_id/menus/confirm', to: 'menus#confirm', as: :confirm_user_menu
   post 'users/:user_id/menus/units', to: 'menus#units'
 
-  # ユーザーが作成した献立用のルーティング
+  # ユーザーが作成したmenu用のルーティング
   get 'users/:user_id/custom_menus', to: 'menus#custom_menus', as: :user_custom_menus
 
-  # 標準献立用のルーティング
+  # 標準menu用のルーティング
   get 'sample_menus', to: 'menus#sample_menus', as: :sample_menus
 
   # CartItem#createへのルーティング

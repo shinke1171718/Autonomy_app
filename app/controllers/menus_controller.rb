@@ -134,7 +134,7 @@ class MenusController < ApplicationController
     # 画像データがある場合の処理
     if params[:menu].values_at(:encoded_image, :image_content_type).all?
       image_data = Base64.decode64(params[:menu][:encoded_image])
-      filename = "user_#{current_user.id}の献立の画像"
+      filename = "user_#{current_user.id}のレシピの画像"
       menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
@@ -162,7 +162,7 @@ class MenusController < ApplicationController
       return
     end
 
-    flash[:notice] = "献立を登録しました。"
+    flash[:notice] = "レシピを登録しました。"
     redirect_to user_custom_menus_path
   end
 
@@ -170,7 +170,7 @@ class MenusController < ApplicationController
   def show
     @menu = Menu.find(params[:id])
 
-    # 重複した献立を基準の単位に変換し、合算する
+    # 重複したmenuを基準の単位に変換し、合算する
     menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
     ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
     aggregated_ingredients = aggregate_ingredients(ingredients)
@@ -235,13 +235,6 @@ class MenusController < ApplicationController
   def update
     menu = Menu.find(params[:id])
 
-    # 画像データがある場合の処理
-    if params[:menu].values_at(:encoded_image, :image_content_type).all?
-      image_data = Base64.decode64(params[:menu][:encoded_image])
-      filename = "user_#{current_user.id}の献立の画像"
-      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
-    end
-
     # 食材データを「@menu.steps」に格納
     if params[:menu][:recipe_steps].present?
       filtered_steps = filter_steps_data(params[:menu][:recipe_steps])
@@ -254,6 +247,13 @@ class MenusController < ApplicationController
       filtered_ingredients = filter_ingredients(params[:menu][:ingredients])
       # インスタンス化してmenuに関連付ける
       menu.ingredients = create_ingredient_instances(filtered_ingredients)
+    end
+
+    # 画像データがある場合の処理
+    if params[:menu].values_at(:encoded_image, :image_content_type).all?
+      image_data = Base64.decode64(params[:menu][:encoded_image])
+      filename = "user_#{current_user.id}のレシピの画像"
+      menu.image.attach(io: StringIO.new(image_data), filename: filename, content_type: params[:menu][:image_content_type])
     end
 
     begin
@@ -294,7 +294,7 @@ class MenusController < ApplicationController
       return
     end
 
-    flash[:notice] = "献立が更新されました。"
+    flash[:notice] = "レシピが更新されました。"
     redirect_to user_menu_path(user_id: current_user.id, id: params[:menu][:menu_id])
   end
 
@@ -304,12 +304,12 @@ class MenusController < ApplicationController
     menu = Menu.find(params[:menu_id])
     # menu_idに該当するshopping_list_menusデータがあるかチェック
     if menu.shopping_list_menus.exists?
-      flash[:error] = "この献立は現在選択されています。"
+      flash[:error] = "このレシピは現在選択されています。"
       redirect_to user_menu_path(menu_id: menu.id)
     else
       # menuデータを削除
       menu.destroy
-      flash[:notice] = "献立を削除しました。"
+      flash[:notice] = "レシピを削除しました。"
       redirect_to user_custom_menus_path
     end
   end
@@ -410,7 +410,7 @@ class MenusController < ApplicationController
     end
 
     if current_user_cart.cart_items.exists?(menu_id: params[:menu_id])
-      flash[:error] = "この献立は現在選択されているため、編集（削除）はできません。"
+      flash[:error] = "このレシピは現在選択されているため、編集（削除）はできません。"
       redirect_to user_menu_path(menu_id: params[:menu_id])
     end
   end

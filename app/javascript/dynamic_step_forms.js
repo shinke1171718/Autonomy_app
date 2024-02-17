@@ -59,7 +59,7 @@ function updateStepForm(){
   // 最小フォームカウント：この値は、フォームが存在している（つまりフォームの数が0より大きい）ことを確認するために使用される。
   // 1は、少なくとも1つのフォームが存在することを意味し、この条件を満たした場合のみフォームの再作成を行う。
   const minFormStepCount = INGREDIENT_MIN_FORM_STEPS_COUNT;
-  // 献立を設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
+  // menuを設定された状態で確認画面へ移動し、そこから再編集で入力画面に戻った時の処理
   if (formStepCount >= minFormStepCount) {
     // 編集時に設定されていたフォームの数を設定
     const StepCount = formStepCount

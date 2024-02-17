@@ -6,7 +6,7 @@
 
   <div class="cooking-menu-list">
     <div class="list-contents-title">
-      <p>作る予定の献立</p>
+      <p>作る予定のレシピ</p>
     </div>
 
     <div class="shopping-menu-list">
@@ -23,7 +23,7 @@
 
     <div class="ingredient-list">
       <% if @shopping_lists.empty? %>
-        <p>購入する食材はありません。</p>
+        <p>必要な食材はありません。</p>
       <% else %>
         <% @shopping_lists.each do |category_id, ingredients| %>
           <div class="category-list">

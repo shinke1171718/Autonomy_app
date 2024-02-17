@@ -119,9 +119,9 @@ module ShoppingListUpdater
   end
 
 
-  # カート内のアイテムから献立IDと数量のハッシュを生成するメソッド
+  # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
   def get_menu_item_counts(cart_items)
-    # 献立とその数量を取得
+    # menuとその数量を取得
     # 具体的にはmenu_idとそのitem_countだけをハッシュとして取得
     #例： {チキンカレーのmenu_id => 2, サラダのmenu_id => 1}
     cart_items.each_with_object({}) do |cart_item, counts|
@@ -132,10 +132,10 @@ module ShoppingListUpdater
 
   # カート内のアイテムに基づいて必要な食材を取得し、それらを必要な量だけ複製するメソッド
   def duplicate_ingredients_for_menu(cart_items, menu_item_counts)
-    # 献立に使う食材データを取得
+    # menuに使う食材データを取得
     menu_ingredients = cart_items.flat_map { |cart_item| cart_item.menu.menu_ingredients }
 
-    # 献立の数量に合わせて食材数を倍にする
+    # menuの数量に合わせて食材数を倍にする
     ingredients_duplicated = []
     menu_ingredients.each do |menu_ingredient|
       # 食材の倍数を取得
@@ -302,7 +302,7 @@ module ShoppingListUpdater
         cart_items = current_user_cart.cart_items
         # ショッピングリストを取得または作成
         shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
-        # カート内のアイテムから献立IDと数量のハッシュを生成するメソッド
+        # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
         menu_item_counts = get_menu_item_counts(cart_items)
 
         # カート内のアイテムに基づいて必要な食材を取得し、それらを必要な量だけ複製する
