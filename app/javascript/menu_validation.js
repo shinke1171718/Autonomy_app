@@ -26,17 +26,45 @@ document.addEventListener('submit', function(event) {
     hasError = true;
   }
 
+  if (!checkFormFieldsValidity(event)){
+    hasError = true;
+  }
+
   // ingredientフォームのバリデーション
   const ingredientFormContainers = document.querySelectorAll('.ingredient-form-container');
+  let missingNameCount = 0;
+  let totalContainers = ingredientFormContainers.length;
+  const errorDivTop = document.getElementById('ingredient-error');
+
   ingredientFormContainers.forEach((ingredientFormContainer, index) => {
     const nameInput = ingredientFormContainer.querySelector('.ingredient-name');
     const quantityInput = ingredientFormContainer.querySelector('.ingredient-quantity');
     const errorDiv = ingredientFormContainer.querySelector('.ingredient-error-message');
+
+
+    errorDivTop.textContent = '';
+    errorDivTop.style.color = 'red';
+    errorDivTop.style.backgroundColor = "";
+
+    // nameInput 要素が存在しない場合、カウントアップ
+    if (!nameInput || nameInput.value.trim() === "") {
+      missingNameCount++;
+      return;
+    }
+
     if (nameInput.value.trim() == "") return;
     if (!validateIngredientQuantity(quantityInput, errorDiv)) {
       hasError = true;
     }
   });
+
+  // 全てのフォームコンテナで nameInput が存在しない、または値が入力されていない場合
+  if (totalContainers === 0 || missingNameCount === totalContainers) {
+    errorDivTop.textContent = '最低1つ登録してください。';
+    errorDivTop.style.color = 'red';
+    errorDivTop.style.backgroundColor = "";
+    hasError = true;
+  }
 
   if (hasError) {
     event.preventDefault();
@@ -123,6 +151,45 @@ function validateInputLength(element, sub_errorMessage, inputElement) {
   }
 }
 
+function checkFormFieldsValidity(event) {
+  const stepFormContainers = document.querySelectorAll('.step-form-container');
+  let unfilledFormsCount = 0;
+  let hasError = false;
+
+  const errorDiv = document.getElementById('steps-error');
+  errorDiv.textContent = '';
+  errorDiv.style.color = 'red';
+  errorDiv.style.backgroundColor = "";
+
+  // フォームコンテナが0の場合、即座にエラー表示
+  if (stepFormContainers.length === 0) {
+    errorDiv.textContent = '最低1つ登録してください。';
+    hasError = true;
+    return !hasError;
+  }
+
+  stepFormContainers.forEach((stepFormContainer) => {
+    const dropdown = stepFormContainer.querySelector('.step-category-dropdown select');
+    const textarea = stepFormContainer.querySelector('.step-description textarea');
+
+    const isDropdownEntered = dropdown && dropdown.value;
+    const isTextareaEntered = textarea && textarea.value.trim();
+
+    // ドロップダウンとテキストエリアの両方が未入力の場合、未入力のフォームの数をカウントアップ
+    if (!isDropdownEntered && !isTextareaEntered) {
+      unfilledFormsCount++;
+    }
+  });
+
+  // 全てのフォームが未入力の場合、エラーメッセージを表示
+  if (unfilledFormsCount === stepFormContainers.length) {
+    errorDiv.textContent = '最低1つ登録してください。';
+    hasError = true;
+  }
+
+  return !hasError;
+}
+
 function ValidateStepFormFields(event) {
   const stepFormContainers = document.querySelectorAll('.step-form-container');
   let hasError = false;
@@ -140,6 +207,12 @@ function ValidateStepFormFields(event) {
     // ドロップダウンまたはテキストエリアのいずれかが入力されているかをチェック
     const isDropdownEntered = dropdown && dropdown.value;
     const isTextareaEntered = textarea && textarea.value.trim();
+
+    // ドロップダウンまたはテキストエリアが存在しない場合、エラー設定を行い処理を終了
+    if (!dropdown || !textarea) {
+      hasError = true;
+      return false;
+    }
 
     // 両方が未入力の場合はバリデーションをスキップ
     if (!isDropdownEntered && !isTextareaEntered) {
