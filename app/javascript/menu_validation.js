@@ -1,6 +1,3 @@
-
-setTimeout(initializeRealtimeValidation, 500);
-
 document.addEventListener('submit', function(event) {
   // イベントが発生したフォーム内の 'next_step_button' を探し、ない場合には処理を行わない。
   let nextStepButton = event.target.querySelector('#next_step_button');
@@ -70,46 +67,6 @@ document.addEventListener('submit', function(event) {
     event.preventDefault();
   }
 });
-
-function initializeRealtimeValidation() {
-  const menuNameInput = document.getElementById("menu_name");
-  const menuContentsInput = document.getElementById("menu_contents");
-  const stepFormContainers = document.querySelectorAll('.step-form-container');
-  let errorMessage_name = document.getElementById("menu-error_name");
-  let errorMessage_menu_contents = document.getElementById("menu-error-menu-contents");
-  let inputName = document.querySelector(".name-form-field input");
-  let inputContent = document.querySelector(".menu-contents-field input");
-
-  // メニュー名のリアルタイムバリデーション
-  menuNameInput.addEventListener('input', function() {
-    setupDelayedValidation(menu_name, () => validateAndHighlightInput(menu_name, errorMessage_name, inputName));
-  });
-
-  // メニュー内容のリアルタイムバリデーション
-  menuContentsInput.addEventListener('input', function() {
-    setupDelayedValidation(menu_contents, () => validateInputLength(menu_contents, errorMessage_menu_contents, inputContent));
-  });
-
-  // 各ステップのリアルタイムバリデーション
-  stepFormContainers.forEach((stepFormContainer) => {
-    const dropdown = stepFormContainer.querySelector('.step-category-dropdown select');
-    const textarea = stepFormContainer.querySelector('.step-description textarea');
-
-    // ドロップダウンの変更をリアルタイムでバリデーション（500ms遅延）
-    setupDelayedValidation(dropdown, () => ValidateStepFormFields(stepFormContainer));
-
-    // テキストエリアの入力をリアルタイムでバリデーション（500ms遅延）
-    setupDelayedValidation(textarea, () => ValidateStepFormFields(stepFormContainer));
-  });
-
-  let ingredientFormContainers = document.querySelectorAll('.ingredient-form-container');
-
-  ingredientFormContainers.forEach((ingredientFormContainer) => {
-    const ingredientQuantityInput = ingredientFormContainer.querySelector('.ingredient-quantity');
-    const errorDiv = ingredientFormContainer.querySelector('.ingredient-error-message');
-    setupDelayedValidation(ingredientQuantityInput, () => validateIngredientQuantity(ingredientQuantityInput, errorDiv));
-  });
-}
 
 function setupDelayedValidation(inputElement, validationFunction) {
   let validationTimeout;
