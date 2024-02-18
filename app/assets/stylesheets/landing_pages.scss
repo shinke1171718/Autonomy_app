@@ -1,0 +1,245 @@
+@import 'shared/landing_pages';
+
+.landing-pages-container {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+
+  .landing-pages-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: black;
+    background-size: 100% 100%;
+    height: 55px;
+    @media screen and (max-width: 850px) {
+      height: 45px;
+    }
+
+    .landing-pages-navbar-brand {
+      font-size: 30px;
+      color: rgb(255, 255, 255);
+      @media screen and (max-width: 850px) {
+        font-size: 25px;
+      }
+    }
+  }
+
+  .landing-pages-hero-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: image-url('lp-top.png') no-repeat center center;
+    background-size: cover;
+    height: 600px;
+
+    .landing-pages-hero-text-container{
+      display: block;
+      width: 100%;
+      text-align: center;
+
+      .landing-pages-hero-text {
+        font-size: 40px;
+        color: rgb(0, 0, 0);
+        @media screen and (max-width: 500px) {
+          font-size: 25px;
+        }
+      }
+
+      .landing-pages-hero-buttons{
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        @media screen and (max-width: 600px) {
+          display: block;
+        }
+
+        button{
+          margin-left: 10px;
+          margin-right: 10px;
+          @media screen and (max-width: 600px) {
+            margin-top: 10px;
+            margin-bottom: 10px;
+          }
+        }
+
+        .landing-pages-navbar-item {
+          font-size: 20px;
+          padding: 0 1rem;
+          text-decoration: none;
+          color: rgb(255, 255, 255);
+        }
+
+        .landing-pages-hero-button-item {
+          padding: 15px 30px;
+          background-color: black;
+          color: white;
+          border: none;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 10px;
+
+          &:hover {
+            background-color: #555;
+          }
+        }
+      }
+    }
+
+    .landing-pages-hero-image {
+      width: 50%;
+      height: 100%;
+      object-fit: cover;
+
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .landing-pages-text-section {
+    padding: 70px 20%;
+    background-color: #fff;
+    text-align: center;
+    @media screen and (max-width: 900px) {
+      padding: 30px 3px;
+    }
+
+    .landing-pages-text-title h2{
+      font-size: 24px;
+      margin-bottom: 20px;
+      @media screen and (max-width: 900px) {
+        font-size: 18px;
+      }
+      @media screen and (max-width: 600px) {
+        font-size: 15px;
+      }
+    }
+
+    .landing-pages-text p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      @media screen and (max-width: 600px) {
+        font-size: 10px;
+      }
+    }
+  }
+
+  .landing-pages-recipe-section {
+    display: block;
+    padding: 50px 0;
+    background-color: #f8f8f8;
+
+    .landing-pages-features-title{
+      text-align: center;
+    }
+
+    .landing-pages-features-section{
+      @include top-section;
+
+      .landing-pages-recipe-content {
+        @include responsive-content;
+      }
+
+      // レシピ画像のスタイル
+      .landing-pages-recipe-image {
+        @include top-section-image-style;
+      }
+    }
+  }
+
+  .landing-pages-shopping-list-section {
+    @include step-section;
+    background-color: #f8f8f8;
+
+    .landing-pages-shopping-list-content {
+      @include responsive-content;
+      background-color: #f8f8f8;
+    }
+
+    .landing-pages-shopping-list-image {
+      @include image-style;
+    }
+  }
+
+  .landing-pages-recipe-view-section{
+    @include step-section;
+    background-color: #f8f8f8;
+
+    .landing-pages-cooking-feature-section {
+      @include responsive-content;
+    }
+
+    .landing-pages-recipe-view-image {
+      @include image-style;
+    }
+  }
+
+  .landing-pages-select-step-section {
+    padding: 50px 0;
+    background-color: #ffeeee;
+  
+    .landing-pages-features-title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+  
+    .landing-pages-features-section {
+      @include top-section;
+  
+      .landing-pages-select-step-content {
+        @include responsive-content;
+      }
+  
+      .landing-pages-select-step-image {
+        @include top-section-image-style;
+      }
+    }
+  }
+
+  .landing-pages-shopping-step-section {
+    @include step-section;
+  
+    .landing-pages-shopping-list-content {
+      @include responsive-content;
+    }
+  
+    .landing-pages-shopping-list-image {
+      flex: 1;
+      margin-left: 20px;
+  
+      img {
+        max-width: 230px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .landing-pages-cooking-step-section {
+    @include step-section;
+
+    .landing-pages-optimal-cooking-content {
+      @include responsive-content;
+    }
+
+    .landing-pages-recipe-view-image {
+      @include top-section-image-style;
+    }
+  }
+
+  .landing-pages-footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+  }
+}
+
+
