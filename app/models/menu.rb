@@ -16,8 +16,8 @@ class Menu < ApplicationRecord
   validates :menu_contents, length: { maximum: 20, message: common_error_message }, allow_blank: true
   before_validation :set_default_image
 
-  # validate :validate_ingredients
-  # validate :validate_recipe_steps
+  validate :validate_ingredients
+  validate :validate_recipe_steps
 
   # 複数のingredientデータを格納するために設定しています。
   attr_accessor :ingredients, :encoded_image, :image_content_type, :image_data_url, :recipe_steps

@@ -233,7 +233,7 @@ class MenusController < ApplicationController
   end
 
   def update
-    menu = Menu.find(params[:id])
+    menu = Menu.find(params[:menu][:menu_id])
 
     # 食材データを「@menu.steps」に格納
     if params[:menu][:recipe_steps].present?
@@ -259,8 +259,7 @@ class MenusController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         # MenuIngredient モデルを使用して ingredient_id のリストを取得
-        ingredient_ids = MenuIngredient.where(menu_id: menu.id).pluck(:ingredient_id)
-        ingredients = Ingredient.where(id: ingredient_ids)
+        ingredients = Ingredient.joins(:menu_ingredients).where(menu_ingredients: { menu_id: menu.id })
 
         # 現在登録されているRecipeStepデータを取得
         recipe_steps = RecipeStep.where(menu_id: menu.id)
