@@ -28,6 +28,7 @@
 
         <div class="steps-form-input" id="steps-form-input">
           <%= f.fields_for :steps do |step_form| %>
+            <div id="steps-error" class="steps-error-message"></div>
             <div id="step_form"></div>
           <% end %>
 
