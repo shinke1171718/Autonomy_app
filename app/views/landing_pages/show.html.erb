@@ -1,2 +1,130 @@
-<h1>LandingPages#show</h1>
-<p>Find me in app/views/landing_pages/show.html.erb</p>
+  <div class="landing-pages-container">
+    <nav class="landing-pages-navbar">
+      <div class="landing-pages-navbar-brand">Autonomy</div>
+    </nav>
+
+    <div class="landing-pages-hero-body">
+      <div class="landing-pages-hero-text-container">
+        <div class="landing-pages-hero-text">
+          毎日を、もっと手軽に、<br>
+          もっと美味しく。
+        </div>
+        <div class="landing-pages-hero-buttons">
+          <%= button_to '新規登録', new_user_custom_registration_path, method: :get, class: 'landing-pages-hero-button-item' %>
+          <%= button_to 'ログイン', new_user_custom_session_path, method: :get, class: 'landing-pages-hero-button-item' %>
+          <%= button_to 'ゲスト様（閲覧用）', guest_sign_in_path, method: :get, class: 'landing-pages-hero-button-item' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-pages-text-section">
+      <div class="landing-pages-text-content">
+        <div class="landing-pages-text-title">
+          <h2>「自己決定、もっと手軽に、もっと美味しく。」</h2>
+        </div>
+
+        <div class="landing-pages-text">
+          <p>Autonomyは仕事に「忙しいあなた」のための自炊支援アプリです。</p>
+          <p>時間がなくても、サッとレシピを選び、必要な食材を即リスト化。</p>
+          <p>複数レシピを選ぶと、Autonomyは調理工程を組み合わせて<br>
+          効率的な調理プランを提案します。</p>
+          <p>得意料理をアプリに登録すれば、買い物リスト作成や複数レシピを<br>
+          効率的に調理が可能に。</p>
+          <p>自分の「作りたい」を形にする自炊アシストアプリで、<br>
+          健康と節約を両立させましょう。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-pages-recipe-section">
+      <h2 class="landing-pages-features-title">~アプリの特徴~</h2>
+
+      <div class="landing-pages-features-section">
+        <div class="landing-pages-recipe-content">
+          <h2>①レシピ作成機能</h2>
+          <p>「あなたの食卓を、あなただけのレシピで彩る。」</p>
+          <p>レシピ名、写真、食材、作り方を自由に登録し、<br>
+          個性あふれるあなたの食卓を実現。</p>
+          <p>食材はアプリに登録されている豊富な食材からぶことができ、<br>
+          分量までカスタマイズ可能。</p>
+        </div>
+        <div class="landing-pages-recipe-image">
+          <%= image_tag 'recipe.png', alt: '献立登録機能' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-pages-shopping-list-section">
+      <div class="landing-pages-shopping-list-content">
+        <h2>②買い物リスト機能</h2>
+        <p>選んだレシピに必要な食材が一覧で表示。</p>
+        <p>買い出し中にリストをチェックし、効率的な買い出しを。</p>
+        <p>忘れ物防止にも役立ち、時間も節約できます。</p>
+      </div>
+      <div class="landing-pages-shopping-list-image">
+        <%= image_tag 'shopping-list.png', alt: '買い物リスト機能', width: "230" %>
+      </div>
+    </div>
+
+    <div class="landing-pages-recipe-view-section">
+      <div class="landing-pages-cooking-feature-section">
+        <h2>③まとめて調理機能</h2>
+        <p>Autonomyの「まとめて調理」機能で、複数レシピを同時に<br>
+        選択した場合は、効率的な調理プランを提案。</p>
+        <p>これで一品ずつ別々に作るよりも「調理時間」が<br>
+        大幅に削減されます。</p>
+      </div>
+
+      <div class="landing-pages-recipe-view-image">
+        <%= image_tag 'recipe-view.png', alt: 'レシピビュー' %>
+      </div>
+    </div>
+
+    <div class="landing-pages-select-step-section">
+      <h2 class="landing-pages-features-title">~アプリの使い方~</h2>
+      <div class="landing-pages-features-section">
+        <div class="landing-pages-select-step-content">
+          <h2>ステップ1: 「レシピを選択」</h2>
+          <p>ログイン後は、レシピを選びます。</p>
+          <p>「サンプルレシピ」でアプリが提案する料理を<br>
+          選んでみましょう！</p>
+          <p>また、「オリジナルレシピ」機能を利用して、<br>
+          自分の得意なレシピを登録し、いつでも簡単に<br>
+          選択できるようにしましょう！</p>
+        </div>
+        <div class="landing-pages-select-step-image">
+          <%= image_tag 'select-step.png', alt: 'ステップ選択ビュー' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-pages-shopping-step-section">
+      <div class="landing-pages-shopping-list-content">
+        <h2>ステップ2: 「買い出し」</h2>
+        <p>選んだレシピに必要な食材が一覧で表示されます。</p>
+        <p>買い出しではリストを確認して、買い忘れが<br>
+        ないようにしましょう。</p>
+        <p>リストを使って買い物をすることで、スムーズに<br>
+        必要な食材を揃えられます。</p>
+      </div>
+      <div class="landing-pages-shopping-list-image">
+        <%= image_tag 'shopping-list.png', alt: '買い物リスト機能' %>
+      </div>
+    </div>
+
+    <div class="landing-pages-cooking-step-section">
+      <div class="landing-pages-optimal-cooking-content">
+        <h2>ステップ3: 「調理」</h2>
+        <p>選んだレシピの食材を準備し、キッチンへ。</p>
+        <p>まとめて調理機能を使って、提案された効率的な<br>
+        調理プランに従って料理を進めていきましょう。</p>
+      </div>
+      <div class="landing-pages-recipe-view-image">
+        <%= image_tag 'recipe-view.png', alt: 'レシピビュー' %>
+      </div>
+    </div>
+
+    <footer class="landing-pages-footer">
+      <p>© 2024 Shinke. All rights reserved.</p>
+    </footer>
+  </div>
