@@ -56,8 +56,11 @@
   .ingredients-section{
     width: 40%;
     padding-bottom: 30px;
-    @media screen and (max-width: 1100px) {
-      width: 65%;
+    @media screen and (max-width: 800px) {
+      width: 50%;
+    }
+    @media screen and (max-width: 700px) {
+      width: 80%;
     }
 
     .ingredient-overview{
