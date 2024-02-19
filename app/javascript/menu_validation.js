@@ -19,7 +19,7 @@ document.addEventListener('submit', function(event) {
     hasError = true;
   }
 
-  if (!ValidateStepFormFields(event)) {
+  if (!validateStepFormFields(event)) {
     hasError = true;
   }
 
@@ -147,7 +147,7 @@ function checkFormFieldsValidity(event) {
   return !hasError;
 }
 
-function ValidateStepFormFields(event) {
+function validateStepFormFields(event) {
   const stepFormContainers = document.querySelectorAll('.step-form-container');
   let hasError = false;
 
