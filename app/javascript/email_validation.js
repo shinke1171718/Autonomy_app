@@ -10,9 +10,11 @@ document.addEventListener('turbo:load', function() {
 
   // 名前入力フィールドのバリデーション
   emailInput.addEventListener('input', function() {
+    console.log("きている01");
     clearTimeout(validationTimeout);
     validationTimeout = setTimeout(function() {
       validateEmailInput(emailInput);
+      console.log("きている0");
     }, 500);
   });
 
