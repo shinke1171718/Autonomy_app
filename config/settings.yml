@@ -14,6 +14,9 @@ limits:
   min_items_to_process: 1
   min_items_to_decrement: 1
   unique_unit_id_threshold: 1
+  max_quantity_value: 999
+  max_integer_digits: 3
+  max_decimal_places: 1
 
 confirmation:
   token_validity_hours: 24
