@@ -171,8 +171,8 @@ function createNewStepForm() {
 function handleStepCountDownClick(event) {
   event.preventDefault();
 
-  // クリックされた要素の最も近い ".step-form-field" 要素を取得
-  let container = event.target.closest(".step-form-field");
+  // クリックされた要素の最も近い ".step-form-container" 要素を取得
+  let container = event.target.closest(".step-form-container");
   if (!container) return;
 
   container.remove(); // 該当する要素を削除
