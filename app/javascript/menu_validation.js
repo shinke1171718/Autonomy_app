@@ -204,8 +204,8 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
   const quantityValue = quantityInput.value.trim();
 
   // 数量が半角数字ではない、または空の場合にエラーメッセージを表示
-  if (!quantityValue || !isHalfWidthNumber(quantityValue)) {
-    errorDiv.textContent = "⚠️必須：半角数字（小数可、先頭0不可）で数量の設定してください。";
+  if (!quantityValue || !isValidDecimalPlace(quantityValue)) {
+    errorDiv.textContent = "⚠️必須：999以下、小数点第1位までの半角数字で入力";
     quantityInput.style.backgroundColor = "rgb(255, 184, 184)";
     errorDiv.style.color = "red";
     return false;
@@ -217,7 +217,9 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
   }
 }
 
-// 半角数字のみかどうかをチェックするヘルパー関数
-function isHalfWidthNumber(value) {
-  return /^(?!0\d)\d*(\.\d+)?$/.test(value);
+// 小数点第1位までの数値であるかを検証する関数
+function isValidDecimalPlace(value) {
+  // 数値が999以下かつ小数点第1位までであるか検証
+  // 正規表現では、整数部が1〜3桁の数値、小数点がある場合は小数第1位までの数値であることを確認します
+  return /^([0-9]{1,3})(\.[0-9]?)?$/.test(value) && parseFloat(value) <= 999;
 }
