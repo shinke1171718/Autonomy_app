@@ -47,7 +47,10 @@ document.addEventListener('turbo:load', function() {
     // エラーがある場合は送信を防止
     if (hasError) {
       event.preventDefault();
-      console.log("きている6");
+      console.log("きてい65");
+    } else {
+      event.target.submit();
+      console.log("きている7");
     }
   });
 });
