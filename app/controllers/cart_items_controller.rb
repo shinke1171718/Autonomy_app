@@ -55,8 +55,12 @@ class CartItemsController < ApplicationController
 
   def increment
     cart_item = CartItem.find_by(id: params[:id])
-    cart_item.increment!(:item_count)
 
+    max_item_count = @settings.dig('limits', 'default_max_serving_size')
+    # item_countが10以上の場合は処理を終了する
+    return if cart_item.item_count >= max_item_count
+
+    cart_item.increment!(:item_count)
     redirect_back(fallback_location: root_path)
   end
 
