@@ -112,6 +112,7 @@ function updateMaxStepCountText(stepFormCountView, maxStepFormCountView) {
 
 
 function createNewStepForm() {
+
   const displayOffset = FORM_INDEX_OFFSET;
   let newFormCount_view = stepFormCountView + displayOffset;
 
@@ -120,49 +121,51 @@ function createNewStepForm() {
   const twoDigitThreshold = TWO_DIGIT_DISPLAY_THRESHOLD;
   let paddedNewFormCount = newFormCount_view < twoDigitThreshold ? '0' + newFormCount_view : newFormCount_view;
 
-  // 新しいフォームのHTML構造
-  // 新しいフォームのHTMLを生成
-  let newFormHtml = `
-    <div class="step-form-container">
-      <div id="step-error[${stepFormCount_Back}]" class="step-error-message"></div>
-      <div class="step-form-field">
+  if (stepFormCountView < maxStepFormCountView) {
+    // 新しいフォームのHTML構造
+    // 新しいフォームのHTMLを生成
+    let newFormHtml = `
+      <div class="step-form-container">
+        <div id="step-error[${stepFormCount_Back}]" class="step-error-message"></div>
+        <div class="step-form-field">
 
-        <div class="step-delete-button">
-          <a href="#" class="step-form-count-down" data-action="decrement",  id="step-form-count-down[${stepFormCount_Back}]">❌</a>
-        </div>
-
-        <div class="step-field-wrapper">
-          <div class="step-form-number">
-            ${paddedNewFormCount}
+          <div class="step-delete-button">
+            <a href="#" class="step-form-count-down" data-action="decrement",  id="step-form-count-down[${stepFormCount_Back}]">❌</a>
           </div>
 
-          <div class="step-fields">
-            <div class="step-category-dropdown">
-              <select id="recipe_step_category_id[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
-                <option value="">工程ジャンルを選択</option>
-                <option value="1">野菜の下準備（切る/剥くなど）</option>
-                <option value="2">肉の下準備（切る/解凍など）</option>
-                <option value="3">その他の下準備（切る/解凍など）</option>
-                <option value="4">調理（焼く/煮る/蒸すなど）</option>
-                <option value="5">その他（混ぜる/盛り付けなど）</option>
-              </select>
+          <div class="step-field-wrapper">
+            <div class="step-form-number">
+              ${paddedNewFormCount}
             </div>
-            <div class="step-description">
-              <textarea id="recipe_steps_description[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][description]" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
+
+            <div class="step-fields">
+              <div class="step-category-dropdown">
+                <select id="recipe_step_category_id[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][recipe_step_category_id]" class="select-dropdown">
+                  <option value="">工程ジャンルを選択</option>
+                  <option value="1">野菜の下準備（切る/剥くなど）</option>
+                  <option value="2">肉の下準備（切る/解凍など）</option>
+                  <option value="3">その他の下準備（切る/解凍など）</option>
+                  <option value="4">調理（焼く/煮る/蒸すなど）</option>
+                  <option value="5">その他（混ぜる/盛り付けなど）</option>
+                </select>
+              </div>
+              <div class="step-description">
+                <textarea id="recipe_steps_description[${stepFormCount_Back}]" name="menu[recipe_steps][${stepFormCount_Back}][description]" class="text-field" placeholder="メモ（最大60文字）" rows="2"></textarea>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
 
-  // IDが'step_form'の要素に新しいフォームを追加
-  let stepFormContainer = document.getElementById("step_form");
-  stepFormContainer.insertAdjacentHTML('beforeend', newFormHtml);
+    // IDが'step_form'の要素に新しいフォームを追加
+    let stepFormContainer = document.getElementById("step_form");
+    stepFormContainer.insertAdjacentHTML('beforeend', newFormHtml);
 
-  // ビューとバックエンドの両方のカウンターを増やす
-  stepFormCountView++;
-  stepFormCountBack++;
+    // ビューとバックエンドの両方のカウンターを増やす
+    stepFormCountView++;
+    stepFormCountBack++;
+  }
 }
 
 function handleStepCountDownClick(event) {
