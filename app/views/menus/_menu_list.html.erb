@@ -5,7 +5,7 @@
       <div class="menu-item-title"><%= truncate(menu.menu_name, length: 10, omission: '..') %></div>
       <div class="button-group">
         <%= button_to '選択', cart_items_path(menu_id: menu.id, serving_size: serving_size), method: :post, class: 'select-button', data: { turbo: false } %>
-        <%= button_to '詳細', user_menu_path(current_user, menu), class: 'details-button', method: :get, data: { turbo: false } %>
+        <%= button_to 'レシピ', user_menu_path(current_user, menu), class: 'details-button', method: :get, data: { turbo: false } %>
       </div>
     </div>
   <% end %>

@@ -38,7 +38,7 @@ class CustomSessionsController < ApplicationController
     #セッションの完全な処理
     reset_session
     #sessions#newへ戻る
-    set_flash_and_redirect(:notice, "※ログアウトしました。", new_user_custom_session_path)
+    set_flash_and_redirect(:notice, "※ログアウトしました。", landing_pages_show_path)
   end
 
   def guest_sign_in
