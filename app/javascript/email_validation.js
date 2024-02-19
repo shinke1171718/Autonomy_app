@@ -49,6 +49,7 @@ document.addEventListener('turbo:load', function() {
       event.preventDefault();
       console.log("きてい65");
     } else {
+      event.preventDefault();
       event.target.submit();
       console.log("きている7");
     }
