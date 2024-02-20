@@ -16,10 +16,12 @@ class MenusController < ApplicationController
 
 
   def sample_menus
-    menu_ids = UserMenu.where(user_id: current_user.id).pluck(:menu_id)
-    @default_menus = paginate(Menu.where.not(id: menu_ids))
+    # UserMenuに存在する全てのmenu_idを取得
+    used_menu_ids = UserMenu.pluck(:menu_id)
+    # これらのmenu_idに紐づいていないMenuのデータを取得
+    @default_menus = paginate(Menu.where.not(id: used_menu_ids))
     # ユーザーに紐づいていないメニュー項目の総数を取得
-    @total_menus_count = Menu.where.not(id: menu_ids).count
+    @total_menus_count = Menu.where.not(id: used_menu_ids).count
   end
 
 

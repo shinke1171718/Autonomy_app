@@ -5,6 +5,8 @@ pagination:
 
 ingredient:
   no_quantity_unit_id: 17
+  exception_ingredient_quantity: 0.5
+  default_unit_id: 1
 
 limits:
   max_total_items: 20
@@ -18,6 +20,7 @@ limits:
   max_integer_digits: 3
   max_decimal_places: 1
   max_image_size_in_megabytes: 5
+  min_items_to_scale: 1
 
 confirmation:
   token_validity_hours: 24

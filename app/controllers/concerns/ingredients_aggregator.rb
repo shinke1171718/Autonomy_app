@@ -43,13 +43,15 @@ module IngredientsAggregator
 
     # 複数の食材の合算数値
     total_quantity = 0
+    exception_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id').to_i
+    exception_ingredient_quantity = @settings.dig('ingredient', 'exception_ingredient_quantity')
 
     # グループ内で使用されている全てのunit_idを取得
-    unique_unit_ids = grouped_ingredients.map(&:unit_id).uniq
+    filtered_unit_ids = grouped_ingredients.reject { |ingredient| ingredient.unit_id == exception_unit_id }.map(&:unit_id).uniq
     unique_unit_id_threshold = @settings.dig('limits', 'unique_unit_id_threshold')
 
     # グループ内で使用されている全てのunit_idが同じかどうかを確認
-    is_same_unit_id = grouped_ingredients.map(&:unit_id).uniq.length == unique_unit_id_threshold
+    is_same_unit_id = filtered_unit_ids.length == unique_unit_id_threshold
 
     # 使用するunit_idを決定
     unit_id_to_use = if is_same_unit_id
@@ -67,7 +69,8 @@ module IngredientsAggregator
       total_quantity = grouped_ingredients.reduce(0) do |sum, ingredient|
         material_unit = MaterialUnit.find_by(material_id: ingredient.material_id, unit_id: ingredient.unit_id)
         conversion_factor = material_unit.conversion_factor
-        sum + ingredient.quantity * conversion_factor
+        quantity = ingredient.quantity || exception_ingredient_quantity
+        sum + quantity * conversion_factor
       end
     end
 
