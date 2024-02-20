@@ -105,12 +105,17 @@ class CookingFlowsController < ApplicationController
       menu_name = menus[menu_id].menu_name
       unit_name = units[ingredient.unit_id].unit_name
 
-      # 食材の量をメニュー項目ごとのカウントに基づいて調整
-      quantity = ingredient.quantity * menu_item_counts[menu_id]
+      # ingredient.quantityがnilの場合のみデータを複製
+      # ingredient.quantityが存在しない、または0の場合にはデータを複製
+      if ingredient.quantity.nil?
+        duplicates = Array.new(menu_item_counts[menu_id]) { { ingredient: ingredient, unit_name: unit_name } }
+      else
+        quantity = ingredient.quantity * menu_item_counts[menu_id]
+        duplicates = [{ ingredient: ingredient, quantity: quantity, unit_name: unit_name }]
+      end
 
-      # メニューIDごとに食材データを集約
       grouped[menu_id] ||= {menu_name: menu_name, ingredients: []}
-      grouped[menu_id][:ingredients] << {ingredient: ingredient, quantity: quantity, unit_name: unit_name}
+      grouped[menu_id][:ingredients].concat(duplicates)
     end
 
     # メニューIDごとに集約したデータを配列に変換して返す
