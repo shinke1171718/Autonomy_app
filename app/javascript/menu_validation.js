@@ -19,6 +19,10 @@ document.addEventListener('submit', function(event) {
     hasError = true;
   }
 
+  if (!validateMenuImage()){
+    hasError = true;
+  }
+
   if (!validateStepFormFields(event)) {
     hasError = true;
   }
@@ -222,4 +226,32 @@ function isValidDecimalPlace(value) {
   // 数値が999以下かつ小数点第1位までであるか検証
   // 正規表現では、整数部が1〜3桁の数値、小数点がある場合は小数第1位までの数値であることを確認します
   return /^([0-9]{1,3})(\.[0-9]?)?$/.test(value) && parseFloat(value) <= 999;
+}
+
+function validateMenuImage() {
+  const fileInput = document.getElementById('menu_image');
+  const errorDiv = document.getElementById('menu-error-image');
+  const file = fileInput.files[0];
+  const validImageTypes = ['image/jpeg', 'image/png'];
+  const ONE_KB = 1024; // 1キロバイトは1024バイト
+  const ONE_MB = ONE_KB * 1024; // 1メガバイトは1024キロバイト
+  const MAX_FILE_SIZE = 5 * ONE_MB; // 最大ファイルサイズを5MBに設定
+
+  errorDiv.textContent = '';
+  errorDiv.style.color = '';
+  errorDiv.style.backgroundColor = '';
+
+  if (!file) {
+    return true;
+  }
+
+  // ファイルタイプとファイルサイズの検証を1つの条件でチェック
+  if (!validImageTypes.includes(file.type) || file.size > MAX_FILE_SIZE) {
+    // エラーメッセージとスタイルの設定
+    errorDiv.textContent = '画像は5MB以下のJPEG, PNGファイルを設定してください。';
+    errorDiv.style.color = 'red';
+    return false;
+  }
+
+  return true;
 }

@@ -77,6 +77,12 @@ class MenusController < ApplicationController
       @encoded_image = params[:menu][:encoded_image]
     end
 
+    # アップロードされた画像がある場合のみバリデーションを行い、問題があれば処理を中断
+    if params[:menu][:image].present? && validate_uploaded_image(params[:menu][:image])
+      handle_general_error
+      return
+    end
+
     # 画像が新規アップロードされた場合、uploaded_fileを作成し既存データを上書き
     if params[:menu][:image].present?
       uploaded_file = params[:menu][:image]
@@ -429,5 +435,21 @@ class MenusController < ApplicationController
     steps_array.map do |value|
       RecipeStep.new(recipe_step_category_id: value[:recipe_step_category_id], description: value[:description])
     end
+  end
+
+  # アップロードされた画像のバリデーションを行うメソッド
+  def validate_uploaded_image(uploaded_file)
+    valid_content_types = %w[image/jpeg image/png]
+    max_size_in_megabytes = @settings.dig('limits', 'max_image_size_in_megabytes')
+
+    if !valid_content_types.include?(uploaded_file.content_type)
+      return true
+    end
+
+    if uploaded_file.size > max_size_in_megabytes.megabytes
+      return true
+    end
+
+    return false
   end
 end
