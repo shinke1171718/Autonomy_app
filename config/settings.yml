@@ -17,6 +17,7 @@ limits:
   max_quantity_value: 999
   max_integer_digits: 3
   max_decimal_places: 1
+  max_image_size_in_megabytes: 5
 
 confirmation:
   token_validity_hours: 24
