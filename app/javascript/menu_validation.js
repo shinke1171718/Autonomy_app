@@ -40,8 +40,9 @@ document.addEventListener('submit', function(event) {
   ingredientFormContainers.forEach((ingredientFormContainer, index) => {
     const nameInput = ingredientFormContainer.querySelector('.ingredient-name');
     const quantityInput = ingredientFormContainer.querySelector('.ingredient-quantity');
+    const unitSelect = ingredientFormContainer.querySelector('.ingredient-unit');
     const errorDiv = ingredientFormContainer.querySelector('.ingredient-error-message');
-
+    const NO_QUANTITY_UNIT_ID = "17";
 
     errorDivTop.textContent = '';
     errorDivTop.style.color = 'red';
@@ -54,6 +55,8 @@ document.addEventListener('submit', function(event) {
     }
 
     if (nameInput.value.trim() == "") return;
+    if (unitSelect.value === NO_QUANTITY_UNIT_ID) return;
+
     if (!validateIngredientQuantity(quantityInput, errorDiv)) {
       hasError = true;
     }
@@ -209,7 +212,7 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
 
   // 数量が半角数字ではない、または空の場合にエラーメッセージを表示
   if (!quantityValue || !isValidDecimalPlace(quantityValue)) {
-    errorDiv.textContent = "⚠️必須：999以下、小数点第1位までの半角数字で入力";
+    errorDiv.textContent = "⚠️必須：0より大きく999以下、小数点第1位までの半角数字で入力";
     quantityInput.style.backgroundColor = "rgb(255, 184, 184)";
     errorDiv.style.color = "red";
     return false;
@@ -222,10 +225,16 @@ function validateIngredientQuantity(quantityInput, errorDiv) {
 }
 
 // 小数点第1位までの数値であるかを検証する関数
+// 数値が999以下かつ小数点第1位までであるか検証
+// 正規表現では、整数部が1〜3桁の数値、小数点がある場合は小数第1位までの数値であることを確認します
 function isValidDecimalPlace(value) {
-  // 数値が999以下かつ小数点第1位までであるか検証
-  // 正規表現では、整数部が1〜3桁の数値、小数点がある場合は小数第1位までの数値であることを確認します
-  return /^([0-9]{1,3})(\.[0-9]?)?$/.test(value) && parseFloat(value) <= 999;
+  const MAX_INTEGER_VALUE = 999; // 許容される最大の整数値
+  const INTEGER_DIGIT_RANGE = { min: 1, max: 3 }; // 整数部の許容される桁数の範囲
+  const MAX_DECIMAL_PLACES = 1; // 小数部の最大桁数
+  const regexPattern = `^(?!0+$)([0-9]{${INTEGER_DIGIT_RANGE.min},${INTEGER_DIGIT_RANGE.max}})(\\.[0-9]{1,${MAX_DECIMAL_PLACES}})?$`;
+  const validationRegex = new RegExp(regexPattern);
+
+  return validationRegex.test(value) && parseFloat(value) <= MAX_INTEGER_VALUE;
 }
 
 function validateMenuImage() {
