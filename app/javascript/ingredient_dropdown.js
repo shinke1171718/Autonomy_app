@@ -233,11 +233,18 @@ function handleIngredientNameChange(selectElement, value) {
 
     data.forEach(item => {
       const option = document.createElement('option');
+      const inputElement = selectElement.closest('div').querySelector(".ingredient-quantity");
       option.value = item.id;
       option.textContent = item.name;
       selectElement.appendChild(option);
       selectElement.style.pointerEvents = 'auto';
       selectElement.removeAttribute('tabindex');
+      inputElement.style.backgroundColor = "";
+      inputElement.style.pointerEvents = "auto";
+      inputElement.removeAttribute("readonly");
+      inputElement.removeAttribute("tabindex");
+      inputElement.value = "";
+      inputElement.placeholder = "数量";
     });
   });
 }

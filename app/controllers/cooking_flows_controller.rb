@@ -100,12 +100,13 @@ class CookingFlowsController < ApplicationController
   # ingredientデータの構築
   def build_ingredients_data(menu_ingredients, menus, units, menu_item_counts)
     processed_results = {}
+    no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
     # menu_idごとのデータを格納するハッシュを初期化
     duplicate_ingredients = duplicate_ingredients(menu_ingredients, menu_item_counts)
     # 各menu_idごとに「特殊なunit_id」と「それ以外」のデータを分けて格納する
     categorized_ingredients = duplicate_ingredients.each_with_object({}) do |(menu_id, ingredients), result|
       # 特殊なunit_id（例: 17）のデータとそれ以外のデータを分ける
-      special_unit_ids, other_units = ingredients.partition { |ingredient| ingredient.unit_id == 17 }
+      special_unit_ids, other_units = ingredients.partition { |ingredient| ingredient.unit_id == no_quantity_unit_id }
 
       # 分けたデータをそれぞれ配列に格納し、menu_idごとのハッシュに追加
       result[menu_id] = {
@@ -138,13 +139,14 @@ class CookingFlowsController < ApplicationController
   def duplicate_ingredients(menu_ingredients, menu_item_counts)
     # menu_idごとに複製されたingredientsを格納するハッシュを初期化
     grouped_ingredients = {}
+    default_menu_item_count = @settings.dig('limits', 'default_menu_item_count')
 
     # 各menu_ingredientに対して処理を実行
     menu_ingredients.each do |menu_ingredient|
       menu_id = menu_ingredient.menu_id
       ingredient = menu_ingredient.ingredient
       # 該当するmenu_idのmenu_item_countsを取得、存在しない場合は0とする
-      count = menu_item_counts[menu_id] || 0
+      count = menu_item_counts[menu_id] || default_menu_item_count
 
       # menu_idキーがまだ存在しない場合は、空の配列を作成
       grouped_ingredients[menu_id] ||= []
@@ -165,7 +167,7 @@ class CookingFlowsController < ApplicationController
   end
 
   def cooking_flows_aggregate_ingredients(ingredient_list)
-    min_duplicate_count = 1
+    min_duplicate_count = @settings.dig('limits', 'min_duplicate_count')
     aggregated_ingredients = []
 
     # material_idに基づいてグループ化
@@ -197,12 +199,12 @@ class CookingFlowsController < ApplicationController
     aggregated_ingredients
   end
 
-    # 食材が重複した場合、「MaterialUnit」にある"変換率"をかけて合算し、
+  # 食材が重複した場合、「MaterialUnit」にある"変換率"をかけて合算し、
   # 「Material」にある"デフォルトのunit_id"を単位に設定する
   def cooking_flows_aggregate_quantities(grouped_ingredients)
 
     # 複数の食材の合算数値
-    total_quantity = 0
+    total_quantity = settings.dig('limits', 'total_quantity').to_i
     exception_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id').to_i
     exception_ingredient_quantity = @settings.dig('ingredient', 'exception_ingredient_quantity')
 

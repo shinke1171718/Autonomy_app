@@ -221,7 +221,7 @@ function updateForm(){
   }
 }
 
-// 食材セット時にunitフォームへ専用の単位を設定する（addForm.jsでも使用しています。）
+// 食材セット時にunitフォームへ専用の単位を設定する
 function handleIngredientNameChange(selectElement, value, selectedUnitId) {
   const NO_QUANTITY_UNIT_ID = "17";
   const material_name = value;

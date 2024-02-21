@@ -23,6 +23,9 @@ limits:
   max_decimal_places: 1
   max_image_size_in_megabytes: 5
   min_items_to_scale: 1
+  default_menu_item_count: 0
+  min_duplicate_count: 1
+  total_quantity: 0
 
 confirmation:
   token_validity_hours: 24
