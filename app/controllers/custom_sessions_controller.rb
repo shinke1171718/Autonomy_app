@@ -27,7 +27,7 @@ class CustomSessionsController < ApplicationController
     end
 
     # current_userに値を設定する
-    sign_in(user)
+    sign_in user
     #もし一致する場合にはroot_pathへ移動
     set_flash_and_redirect(:notice, "ログインしました。", root_path)
   end
