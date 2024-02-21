@@ -19,14 +19,16 @@
 
 
   <div class="ingredients-section">
-    <% @ingredients.each do |menu_data| %>
-      <p class="ingredient-overview">　食材リスト（<%= truncate(menu_data[:menu_name], length: 9, omission: '..') %>）　</p>
-      <% menu_data[:ingredients].each do |ingredient_data| %>
+    <% @ingredients.each do |menu_name, ingredients| %>
+      <p class="ingredient-overview">　食材リスト（<%= truncate(menu_name, length: 9, omission: '..') %>）　</p>
+      <% ingredients.each do |ingredient| %>
         <div class="ingredient-item">
-          <p class="material-name"><%= ingredient_data[:ingredient].material_name %></p>
+          <p class="material-name"><%= ingredient.material_name %></p>
           <div class="quantity-unit">
-            <p class="quantity"><%= display_quantity(ingredient_data[:quantity]) %></p>
-            <p class="unit"><%= ingredient_data[:unit_name] %></p>
+            <% if ingredient.quantity.present? %>
+              <p class="quantity"><%= display_quantity(ingredient.quantity) %></p>
+            <% end %>
+            <p class="unit"><%= ingredient.unit.unit_name %></p>
           </div>
         </div>
       <% end %>
