@@ -26,8 +26,6 @@ class CustomSessionsController < ApplicationController
       set_flash_and_redirect(:error, "メールアドレス認証を行ってください。", root_path)
     end
 
-    #セッションIDを払い出す
-    session[:user_id] = user.id
     # current_userに値を設定する
     sign_in(user)
     #もし一致する場合にはroot_pathへ移動
