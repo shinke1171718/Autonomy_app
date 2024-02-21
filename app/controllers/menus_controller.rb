@@ -1,5 +1,4 @@
 class MenusController < ApplicationController
-  include IngredientsAggregator
   include ServingSizeHandler
   include IngredientScaler
   before_action :set_and_sort_materials_by_category, only: [:new, :edit]
@@ -181,10 +180,10 @@ class MenusController < ApplicationController
     # 重複したmenuを基準の単位に変換し、合算する
     menu_ingredients = MenuIngredient.where(menu_id: @menu.id)
     ingredients = menu_ingredients.includes(:ingredient).map(&:ingredient)
-    aggregated_ingredients = aggregate_ingredients(ingredients)
+    aggregated_ingredients = aggregate_ingredients_with_special_handling(ingredients)
 
     # scale_ingredientsメソッドを呼び出して、quantityを更新
-    @scaled_ingredients = scale_ingredients(aggregated_ingredients, @serving_size)
+    @scaled_ingredients = adjust_ingredients_for_menu_count(aggregated_ingredients, @serving_size)
 
     # 作り方の工程データを取得
     @recipe_steps = RecipeStep.where(menu_id: @menu.id)
@@ -454,4 +453,120 @@ class MenusController < ApplicationController
 
     return false
   end
+
+  def adjust_ingredients_for_menu_count(ingredients, menu_count)
+    menu_count = menu_count.to_i
+    # ingredient_settings = @settings['ingredient']
+    no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
+
+    # unit_id == 17のingredientsをフィルタリングし、最初のものを選択
+    unique_no_quantity_ingredient = ingredients.find { |ingredient| ingredient.unit_id == no_quantity_unit_id }
+
+    # unit_id != 17の残りのingredients
+    other_ingredients = ingredients.reject { |ingredient| ingredient.unit_id == no_quantity_unit_id }
+
+    scaled_ingredients = other_ingredients.map do |ingredient|
+      adjust_ingredient_quantity(ingredient, menu_count)
+    end
+
+    # unit_id: 17のingredientがある場合、それを結果に追加
+    scaled_ingredients.unshift(unique_no_quantity_ingredient) if unique_no_quantity_ingredient
+
+    scaled_ingredients.compact
+  end
+
+  def adjust_ingredient_quantity(ingredient, menu_count)
+    min_items_to_scale = @settings.dig('limits', 'min_items_to_scale')
+    new_ingredient = ingredient.dup
+    new_ingredient_quantity = new_ingredient.quantity
+    new_ingredient.quantity= new_ingredient_quantity *= menu_count
+
+    new_ingredient
+  end
+
+  #食材データを受け取り、それをmaterial_idに基づいてグループ化し、各グループの食材を集約する
+  # 特殊な単位「少々（unit_id: 17）」には例外処理を行う
+  def aggregate_ingredients_with_special_handling(ingredient_list)
+    min_duplicate_count = 1
+    no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
+    aggregated_ingredients = []
+
+    # material_idに基づいてグループ化
+    grouped_ingredients = ingredient_list.group_by(&:material_id)
+
+    grouped_ingredients.each do |material_id, ingredients_group|
+      # 重複していない食材の処理
+      if ingredients_group.length <= min_duplicate_count
+        aggregated_ingredients << ingredients_group.first
+        next
+      end
+
+      no_quantity_ingredient = ingredients_group.find { |ingredient| ingredient.unit_id == no_quantity_unit_id }
+
+      aggregated_ingredients << no_quantity_ingredient if no_quantity_ingredient
+
+      # unit_idがno_quantity_unit_idのingredientを除外したingredients_groupを作成
+      filtered_ingredients_group = ingredients_group.reject { |ingredient| ingredient.unit_id == no_quantity_unit_id }
+
+      next if filtered_ingredients_group.empty?
+
+      material = Material.find_by(id: material_id)
+      material_name = material.material_name
+      # 重複している食材の処理
+      total_quantity, unit_id_to_use = aggregate_quantities_with_special_handling(filtered_ingredients_group)
+
+      # 「material_id」、合算した「数量」、「デフォルト単位」を１つのインスタンスとして再構成
+      aggregated_ingredient = Ingredient.new(
+        material_name: material_name,
+        material_id: material_id,
+        quantity: total_quantity,
+        unit_id: unit_id_to_use
+      )
+
+      aggregated_ingredients << aggregated_ingredient
+    end
+
+    aggregated_ingredients
+  end
+
+    # 食材が重複した場合、「MaterialUnit」にある"変換率"をかけて合算し、
+  # 「Material」にある"デフォルトのunit_id"を単位に設定する
+  def aggregate_quantities_with_special_handling(grouped_ingredients)
+
+    # 複数の食材の合算数値
+    total_quantity = 0
+    exception_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id').to_i
+    exception_ingredient_quantity = @settings.dig('ingredient', 'exception_ingredient_quantity')
+
+    # グループ内で使用されている全てのunit_idを取得
+    filtered_unit_ids = grouped_ingredients.reject { |ingredient| ingredient.unit_id == exception_unit_id }.map(&:unit_id).uniq
+    unique_unit_id_threshold = @settings.dig('limits', 'unique_unit_id_threshold')
+
+    # グループ内で使用されている全てのunit_idが同じかどうかを確認
+    is_same_unit_id = filtered_unit_ids.length == unique_unit_id_threshold
+
+    # 使用するunit_idを決定
+    unit_id_to_use = if is_same_unit_id
+      grouped_ingredients.first.unit_id
+    else
+      grouped_ingredients.first.material.default_unit_id
+    end
+
+    # 同じunit_idである場合と異なる場合で合算ロジックを分ける
+    if is_same_unit_id
+      # グループ内のunit_idが全て同じでその単位で合算
+      total_quantity = grouped_ingredients.sum(&:quantity)
+    else
+      # 異なるunit_idが存在する場合、materialのdefault_unit_idを使用して合算
+      total_quantity = grouped_ingredients.reduce(0) do |sum, ingredient|
+        material_unit = MaterialUnit.find_by(material_id: ingredient.material_id, unit_id: ingredient.unit_id)
+        conversion_factor = material_unit.conversion_factor
+        quantity = ingredient.quantity || exception_ingredient_quantity
+        sum + quantity * conversion_factor
+      end
+    end
+
+    [total_quantity, unit_id_to_use]
+  end
+
 end

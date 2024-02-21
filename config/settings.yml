@@ -7,6 +7,8 @@ ingredient:
   no_quantity_unit_id: 17
   exception_ingredient_quantity: 0.5
   default_unit_id: 1
+  min_ingredients_to_merge: 1
+  default_ingredient_quantity: 0
 
 limits:
   max_total_items: 20
