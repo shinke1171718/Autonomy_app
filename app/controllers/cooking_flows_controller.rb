@@ -38,21 +38,21 @@ class CookingFlowsController < ApplicationController
       @ingredients = build_ingredients_data(menu_ingredients, menus, units, @menu_item_counts)
     end
 
-  def complete
-    cooking_flow = CookingFlow.find(params[:id])
+    def complete
+      cooking_flow = CookingFlow.find(params[:id])
 
-    ActiveRecord::Base.transaction do
-      cart = cooking_flow.cart
-      cart.destroy!
+      ActiveRecord::Base.transaction do
+        cart = cooking_flow.cart
+        cart.destroy!
+      end
+
+      flash[:notice] = "調理が完了し、選択したレシピがリセットされました。"
+      redirect_to root_path
+
+    rescue ActiveRecord::RecordNotDestroyed => e
+      flash[:error] = "データの削除中にエラーが発生しました。"
+      redirect_to cooking_flows_path
     end
-
-    flash[:notice] = "調理が完了し、選択したレシピがリセットされました。"
-    redirect_to root_path
-
-  rescue ActiveRecord::RecordNotDestroyed => e
-    flash[:error] = "データの削除中にエラーが発生しました。"
-    redirect_to cooking_flows_path
-  end
 
 
   private
