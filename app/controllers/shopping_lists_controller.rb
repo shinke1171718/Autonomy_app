@@ -4,39 +4,39 @@ class ShoppingListsController < ApplicationController
   include CartChecker
   before_action :ensure_cart_is_not_empty, only: [:create]
 
-  def index
-    shopping_list = current_user_cart.shopping_list
+    def index
+      shopping_list = current_user_cart.shopping_list
 
-    # ショッピングリストメニューを取得
-    shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
+      # ショッピングリストメニューを取得
+      shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
 
-    # ShoppingListMenuが空の場合はroot_pathへリダイレクト
-    if shopping_list_menus.empty?
-      redirect_to root_path and return
+      # ShoppingListMenuが空の場合はroot_pathへリダイレクト
+      if shopping_list_menus.empty?
+        redirect_to root_path and return
+      end
+
+      # メニューデータとカウントを取得
+      @menus = shopping_list_menus.map(&:menu)
+      @menu_item_counts = shopping_list_menus.each_with_object({}) do |slm, counts|
+        counts[slm.menu_id] = slm.menu_count
+      end
+
+      # ショッピングリストアイテムをカテゴリIDに基づいてグループ化する
+      shopping_list_items_by_category = shopping_list.shopping_list_items.includes(:material).group_by do |item|
+        item.material.category_id
+      end
+
+      # すべてのカテゴリを取得して、IDと名前のハッシュを作成
+      @categories = Category.all.index_by(&:id).transform_values(&:category_name)
+
+      # カテゴリIDでソートした結果をインスタンス変数に代入
+      @shopping_lists = shopping_list_items_by_category.sort_by { |category_id, _items| category_id }.to_h
+
+      # JSで動的にデータ更新するため、各カテゴリ内でアイテムをIDに基づいてソート
+      @shopping_lists.each do |category_id, items|
+        items.sort_by!(&:id)
+      end
     end
-
-    # メニューデータとカウントを取得
-    @menus = shopping_list_menus.map(&:menu)
-    @menu_item_counts = shopping_list_menus.each_with_object({}) do |slm, counts|
-      counts[slm.menu_id] = slm.menu_count
-    end
-
-    # ショッピングリストアイテムをカテゴリIDに基づいてグループ化する
-    shopping_list_items_by_category = shopping_list.shopping_list_items.includes(:material).group_by do |item|
-      item.material.category_id
-    end
-
-    # すべてのカテゴリを取得して、IDと名前のハッシュを作成
-    @categories = Category.all.index_by(&:id).transform_values(&:category_name)
-
-    # カテゴリIDでソートした結果をインスタンス変数に代入
-    @shopping_lists = shopping_list_items_by_category.sort_by { |category_id, _items| category_id }.to_h
-
-    # JSで動的にデータ更新するため、各カテゴリ内でアイテムをIDに基づいてソート
-    @shopping_lists.each do |category_id, items|
-      items.sort_by!(&:id)
-    end
-  end
 
 
   def create
