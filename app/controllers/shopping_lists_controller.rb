@@ -39,63 +39,63 @@ class ShoppingListsController < ApplicationController
     end
 
 
-  def create
-    begin
-      ActiveRecord::Base.transaction do
-        # カートの中にあるmenu_idとその個数のデータを取得
-        cart_items = current_user_cart.cart_items
-        # ショッピングリストを取得または作成
-        shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
+    def create
+      begin
+        ActiveRecord::Base.transaction do
+          # カートの中にあるmenu_idとその個数のデータを取得
+          cart_items = current_user_cart.cart_items
+          # ショッピングリストを取得または作成
+          shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
 
-        # チェック済みの食材リストデータを直接データベースから取得
-        checked_items = ShoppingListItem.where(shopping_list_id: shopping_list.id, is_checked: true)
+          # チェック済みの食材リストデータを直接データベースから取得
+          checked_items = ShoppingListItem.where(shopping_list_id: shopping_list.id, is_checked: true)
 
-        # ショッピングリストの中にある食材リストを取得し、チェックされている項目を取得し、
-        # その中に同じ食材があれば合算する処理
-        aggregate_and_update_checked_items(checked_items)
+          # ショッピングリストの中にある食材リストを取得し、チェックされている項目を取得し、
+          # その中に同じ食材があれば合算する処理
+          aggregate_and_update_checked_items(checked_items)
 
-        # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
-        menu_item_counts = get_menu_item_counts(cart_items)
-        # カート内のアイテムに基づいて必要な食材を取得し、それらを必要な量だけ複製する
-        ingredients_duplicated = duplicate_ingredients_for_menu(cart_items, menu_item_counts)
+          # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
+          menu_item_counts = get_menu_item_counts(cart_items)
+          # カート内のアイテムに基づいて必要な食材を取得し、それらを必要な量だけ複製する
+          ingredients_duplicated = duplicate_ingredients_for_menu(cart_items, menu_item_counts)
 
-        # ingredient_idに紐づく食材データを取得
-        # １つ食材idごとに紐づく食材（material_id、unit_id、quantityを含む）データを取得
-        ingredients = ingredients_duplicated.map(&:ingredient)
+          # ingredient_idに紐づく食材データを取得
+          # １つ食材idごとに紐づく食材（material_id、unit_id、quantityを含む）データを取得
+          ingredients = ingredients_duplicated.map(&:ingredient)
 
-        # ingredientsで取得したデータで同じ食材データを持つものは１つにまとめる
-        # 「aggregate_ingredients」はカスタムモジュール
-        # 中身は「material_name、quantity、unit_name」が格納されている
-        aggregated_ingredients = aggregate_ingredients(ingredients)
+          # ingredientsで取得したデータで同じ食材データを持つものは１つにまとめる
+          # 「aggregate_ingredients」はカスタムモジュール
+          # 中身は「material_name、quantity、unit_name」が格納されている
+          aggregated_ingredients = aggregate_ingredients(ingredients)
 
-        # 集約された材料データからShoppingListItemのインスタンスを作成
-        shopping_list_items_instances = create_shopping_list_items(aggregated_ingredients, shopping_list)
+          # 集約された材料データからShoppingListItemのインスタンスを作成
+          shopping_list_items_instances = create_shopping_list_items(aggregated_ingredients, shopping_list)
 
-        # is_checked: false のレコードをすべて削除
-        shopping_list.shopping_list_items.where(is_checked: false).delete_all
+          # is_checked: false のレコードをすべて削除
+          shopping_list.shopping_list_items.where(is_checked: false).delete_all
 
-        # find_matching_items メソッドを呼び出して一致するアイテムのペアを取得
-        matching_items = find_matching_items(checked_items, shopping_list_items_instances)
+          # find_matching_items メソッドを呼び出して一致するアイテムのペアを取得
+          matching_items = find_matching_items(checked_items, shopping_list_items_instances)
 
-        # 「該当するデータがない場合」「is_checked: trueはあるがmatching_itemsはない場合」は既存のアイテムを削除し新規に作成
-        if !shopping_list.shopping_list_items.where(is_checked: true).exists? || matching_items.empty?
-          reset_and_create_shopping_list_items(shopping_list, shopping_list_items_instances, menu_item_counts)
+          # 「該当するデータがない場合」「is_checked: trueはあるがmatching_itemsはない場合」は既存のアイテムを削除し新規に作成
+          if !shopping_list.shopping_list_items.where(is_checked: true).exists? || matching_items.empty?
+            reset_and_create_shopping_list_items(shopping_list, shopping_list_items_instances, menu_item_counts)
+          end
+
+          # matching_itemsがある場合は必要データは残して後は削除
+          if !matching_items.empty?
+            # checked_items と shopping_list_items_instances のデータを処理
+            process_shopping_list(shopping_list,matching_items, shopping_list_items_instances, menu_item_counts)
+          end
         end
-
-        # matching_itemsがある場合は必要データは残して後は削除
-        if !matching_items.empty?
-          # checked_items と shopping_list_items_instances のデータを処理
-          process_shopping_list(shopping_list,matching_items, shopping_list_items_instances, menu_item_counts)
-        end
+      rescue ActiveRecord::RecordInvalid
+        handle_general_error
+        return
       end
-    rescue ActiveRecord::RecordInvalid
-      handle_general_error
+
+      redirect_to shopping_lists_path
       return
     end
-
-    redirect_to shopping_lists_path
-    return
-  end
 
   # menuを減少（削除）を行う際に食材リストですでにチェックされている値（例：✔︎鶏肉 200g）が
   # 変更される場合に確認ダイヤログを出す指示をするアクション
