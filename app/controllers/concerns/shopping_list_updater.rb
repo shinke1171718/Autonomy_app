@@ -298,8 +298,6 @@ module ShoppingListUpdater
   def update_shopping_list
     begin
       ActiveRecord::Base.transaction do
-        # カートの中にあるmenu_idとその個数のデータを取得
-        cart_items = current_user_cart.cart_items
         # ショッピングリストを取得または作成
         shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
         # カート内のアイテムからmenu_idと数量のハッシュを生成するメソッド
@@ -321,7 +319,7 @@ module ShoppingListUpdater
         shopping_list_items_instances = create_shopping_list_items(aggregated_ingredients, shopping_list)
 
         # 該当するデータがない場合、既存のアイテムを削除し新規に作成
-        if !shopping_list.shopping_list_items.where(is_checked: true).exists?
+        if !shopping_list_items.where(is_checked: true).exists?
           reset_and_create_shopping_list_items(shopping_list, shopping_list_items_instances, menu_item_counts)
         end
 

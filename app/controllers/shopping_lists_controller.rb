@@ -2,48 +2,22 @@ class ShoppingListsController < ApplicationController
   include IngredientsAggregator
   include ShoppingListUpdater
   include CartChecker
-  before_action :ensure_cart_is_not_empty, only: [:create]
+  before_action :ensure_cart_is_not_empty, only: [:index, :create]
 
     def index
-      shopping_list = current_user_cart.shopping_list
+      @categories = Category.all
+      @menus = cart_items.includes(menu: { image_attachment: :blob }).map(&:menu)
 
-      # ショッピングリストメニューを取得
-      shopping_list_menus = shopping_list.shopping_list_menus.includes(menu: [image_attachment: :blob])
+      # 各menu_idとその数量（◯人前）を紐付け
+      @menu_item_counts = cart_items.map { |slm| [slm.menu_id, slm.item_count] }.to_h
 
-      # ShoppingListMenuが空の場合はroot_pathへリダイレクト
-      if shopping_list_menus.empty?
-        redirect_to root_path and return
-      end
-
-      # メニューデータとカウントを取得
-      @menus = shopping_list_menus.map(&:menu)
-      @menu_item_counts = shopping_list_menus.each_with_object({}) do |slm, counts|
-        counts[slm.menu_id] = slm.menu_count
-      end
-
-      # ショッピングリストアイテムをカテゴリIDに基づいてグループ化する
-      shopping_list_items_by_category = shopping_list.shopping_list_items.includes(:material).group_by do |item|
-        item.material.category_id
-      end
-
-      # すべてのカテゴリを取得して、IDと名前のハッシュを作成
-      @categories = Category.all.index_by(&:id).transform_values(&:category_name)
-
-      # カテゴリIDでソートした結果をインスタンス変数に代入
-      @shopping_lists = shopping_list_items_by_category.sort_by { |category_id, _items| category_id }.to_h
-
-      # JSで動的にデータ更新するため、各カテゴリ内でアイテムをIDに基づいてソート
-      @shopping_lists.each do |category_id, items|
-        items.sort_by!(&:id)
-      end
+      @shopping_lists = shopping_list_items.group_by(&:category_id).sort.to_h
     end
 
 
     def create
       begin
         ActiveRecord::Base.transaction do
-          # カートの中にあるmenu_idとその個数のデータを取得
-          cart_items = current_user_cart.cart_items
           # ショッピングリストを取得または作成
           shopping_list = current_user_cart.shopping_list || current_user_cart.create_shopping_list
 
@@ -118,8 +92,7 @@ class ShoppingListsController < ApplicationController
       # チェック済みの食材リストデータで同じ食材があれば合算する処理
       # 例：✔︎鶏肉 200g, ✔︎鶏肉 100g → ✔︎鶏肉 300g
       aggregate_and_update_checked_items(checked_items)
-      # カートの中にあるmenuデータを取得
-      cart_items = current_user_cart.cart_items
+
 
       # cart_itemsから指定されたmenu_idを持つアイテムを更新または除外
       # データを減らし、実際のデータと比較することで食材リストのチェックされている値（例：✔︎鶏肉 200g）に影響があるかチェック
@@ -171,7 +144,7 @@ class ShoppingListsController < ApplicationController
       shopping_list_items_instances = create_shopping_list_items(aggregated_ingredients, shopping_list)
 
       # 食材リストデータ（仮）の中にチェック済みの食材データがない場合
-      if !shopping_list.shopping_list_items.where(is_checked: true).exists?
+      if !shopping_list_items.where(is_checked: true).exists?
         render json: { requires_attention: false }
         return
       end
@@ -239,11 +212,11 @@ class ShoppingListsController < ApplicationController
     # 食材リストデータが空の場合に、既存の食材リストの中にチェックが入った食材があれば、
     # 「確認ダイヤログ」を出す指示を出す。なければ関連データを削除して食材リストをリセット
     def handle_empty_cart_items(shopping_list)
-      if shopping_list.shopping_list_items.where(is_checked: true).exists?
+      if shopping_list_items.where(is_checked: true).exists?
         render json: { requires_attention: true }
       else
         # ショッピングリスト内のアイテムとメニューを全て削除
-        shopping_list.shopping_list_items.delete_all
+        shopping_list_items.delete_all
         shopping_list.shopping_list_menus.delete_all
 
         render json: { requires_attention: false }
@@ -253,7 +226,7 @@ class ShoppingListsController < ApplicationController
     # チェック済みのアイテムがshopping_list_items_instancesに完全に一致するか確認するメソッド
     def check_items_match(shopping_list, shopping_list_items_instances)
       # チェック済みのアイテムを取得
-      checked_items = shopping_list.shopping_list_items.where(is_checked: true)
+      checked_items = shopping_list_items.where(is_checked: true)
 
       # チェック済みアイテムがshopping_list_items_instances内に完全に一致するか確認
       checked_items.each do |checked_item|

@@ -13,7 +13,6 @@ class CookingFlowsController < ApplicationController
       # レシピステップカテゴリIDに基づいて分類し、指定された順序（野菜の下準備、その他の下準備、肉の下準備）で並び替え
       sorted_steps = sort_cooking_steps(cooking_steps)
 
-      cart_items = current_user_cart.cart_items
       # メニューデータを取得
       @menus = cart_items.includes(menu: [:image_attachment]).map(&:menu).uniq
       # CartItemモデルのデータからメニューアイテムのカウントを取得
@@ -204,7 +203,7 @@ class CookingFlowsController < ApplicationController
   def cooking_flows_aggregate_quantities(grouped_ingredients)
 
     # 複数の食材の合算数値
-    total_quantity = settings.dig('limits', 'total_quantity').to_i
+    total_quantity = @settings.dig('limits', 'total_quantity').to_i
     exception_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id').to_i
     exception_ingredient_quantity = @settings.dig('ingredient', 'exception_ingredient_quantity')
 

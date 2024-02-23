@@ -27,7 +27,8 @@
       <% else %>
         <% @shopping_lists.each do |category_id, ingredients| %>
           <div class="category-list">
-            <p><%= @categories[category_id] %></p>
+            <% category = @categories.find { |c| c.id == category_id } %>
+            <p><%= category.category_name %></p>
           </div>
           <ul>
             <% ingredients.each do |ingredient| %>
