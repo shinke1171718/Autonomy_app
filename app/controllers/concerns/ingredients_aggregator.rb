@@ -4,7 +4,7 @@ module IngredientsAggregator
 
   #食材データを受け取り、それをmaterial_idに基づいてグループ化し、各グループの食材を集約する
   def aggregate_ingredients(ingredient_list)
-    min_duplicate_count = 1
+    min_duplicate_count = @settings.dig('limits', 'min_duplicate_count')
     aggregated_ingredients = []
 
     # material_idに基づいてグループ化
@@ -42,7 +42,7 @@ module IngredientsAggregator
   def aggregate_quantities(grouped_ingredients)
 
     # 複数の食材の合算数値
-    total_quantity = 0
+    total_quantity = @settings.dig('limits', 'total_quantity')
     exception_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id').to_i
     exception_ingredient_quantity = @settings.dig('ingredient', 'exception_ingredient_quantity')
 
