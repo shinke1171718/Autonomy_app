@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include Devise::Controllers::Helpers
   before_action :authenticate_user!
   before_action :load_settings
-  helper_method :current_user_cart
+  helper_method :current_user_cart, :cart_items, :shopping_list_items
 
   private
 
@@ -23,6 +23,14 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_cart
-    current_user.cart
+    current_user&.cart
+  end
+
+  def cart_items
+    current_user_cart&.cart_items
+  end
+
+  def shopping_list_items
+    current_user&.cart&.shopping_list&.shopping_list_items
   end
 end

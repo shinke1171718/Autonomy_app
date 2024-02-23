@@ -415,7 +415,7 @@ class MenusController < ApplicationController
       current_user.create_cart
     end
 
-    if current_user_cart.cart_items.exists?(menu_id: params[:menu_id])
+    if cart_items.exists?(menu_id: params[:menu_id])
       flash[:error] = "このレシピは現在選択されているため、編集（削除）はできません。"
       redirect_to user_menu_path(menu_id: params[:menu_id])
     end
