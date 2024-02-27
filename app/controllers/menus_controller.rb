@@ -456,11 +456,10 @@ class MenusController < ApplicationController
 
   def adjust_ingredients_for_menu_count(ingredients, menu_count)
     menu_count = menu_count.to_i
-    # ingredient_settings = @settings['ingredient']
     no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
 
     # unit_id == 17のingredientsをフィルタリングし、最初のものを選択
-    unique_no_quantity_ingredient = ingredients.find { |ingredient| ingredient.unit_id == no_quantity_unit_id }
+    unique_no_quantity_ingredients = ingredients.select { |ingredient| ingredient.unit_id == no_quantity_unit_id }
 
     # unit_id != 17の残りのingredients
     other_ingredients = ingredients.reject { |ingredient| ingredient.unit_id == no_quantity_unit_id }
@@ -470,7 +469,7 @@ class MenusController < ApplicationController
     end
 
     # unit_id: 17のingredientがある場合、それを結果に追加
-    scaled_ingredients.unshift(unique_no_quantity_ingredient) if unique_no_quantity_ingredient
+    unique_no_quantity_ingredients.each { |ingredient| scaled_ingredients.unshift(ingredient) } if unique_no_quantity_ingredients
 
     scaled_ingredients.compact
   end
@@ -487,7 +486,7 @@ class MenusController < ApplicationController
   #食材データを受け取り、それをmaterial_idに基づいてグループ化し、各グループの食材を集約する
   # 特殊な単位「少々（unit_id: 17）」には例外処理を行う
   def aggregate_ingredients_with_special_handling(ingredient_list)
-    min_duplicate_count = 1
+    min_duplicate_count = @settings.dig('limits', 'min_duplicate_count')
     no_quantity_unit_id = @settings.dig('ingredient', 'no_quantity_unit_id')
     aggregated_ingredients = []
 
