@@ -2,6 +2,7 @@ class ShoppingListsController < ApplicationController
   include IngredientsAggregator
   include ShoppingListUpdater
   include CartChecker
+  include MenuItemCounts
   before_action :ensure_cart_is_not_empty, only: [:index, :create]
 
   def index
@@ -9,7 +10,7 @@ class ShoppingListsController < ApplicationController
     @menus = cart_items.includes(menu: { image_attachment: :blob }).map(&:menu)
 
     # 各menu_idとその数量（◯人前）を紐付け
-    @menu_item_counts = cart_items.map { |slm| [slm.menu_id, slm.item_count] }.to_h
+    @menu_item_counts = calculate_menu_item_counts(cart_items)
 
     @shopping_lists = shopping_list_items.group_by(&:category_id).sort.to_h
   end
