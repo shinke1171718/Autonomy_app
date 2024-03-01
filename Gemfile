@@ -74,7 +74,6 @@ end
 gem 'devise'
 gem 'pry-rails'
 gem 'pry-byebug'
-gem 'action_args'
 gem 'sassc'
 gem 'image_processing'
 gem 'rack-cors'
