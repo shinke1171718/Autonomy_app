@@ -160,6 +160,9 @@
               border-bottom: 1px solid #ccc;
               padding:5px;
               font-size: 16px;
+              resize: vertical;
+              min-height: 45px;
+              max-height: 180px;
             }
 
             .select-dropdown{
