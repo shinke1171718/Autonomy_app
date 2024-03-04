@@ -83,3 +83,5 @@ gem "google-cloud-storage", require: false
 
 # 環境変数を管理するためのgem
 gem 'dotenv-rails'
+
+gem 'rubocop', require: false
